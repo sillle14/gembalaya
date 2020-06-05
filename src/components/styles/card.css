@@ -1,0 +1,125 @@
+* {
+    box-sizing: border-box;
+}
+
+.card-grid {
+    grid-area: board;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-row {
+    display: flex;
+}
+
+.card-wrapper {
+    flex-basis: 100%;
+    padding: 1%;
+}
+
+.card-aspect-box {
+    position: relative;
+    height: 0;
+    padding-bottom: 120%;
+}
+
+.card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-onyx {
+    background: gray;
+}
+
+.card-sapphire {
+    background: lightblue;
+}
+
+.card-ruby {
+    background: pink;
+}
+
+.card-diamond {
+    background: lightgrey;
+}
+
+.card-emerald {
+    background: lightgreen;
+}
+
+.card-back {
+    color: white;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 5vw;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.card-back-i {
+    background: forestgreen;
+}
+
+.card-back-ii {
+    background: goldenrod;
+}
+
+.card-back-iii {
+    background: midnightblue;
+}
+
+.card-back-count {
+    font-size: 0.8vw;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.card-info {
+    height: 30%;
+    background: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.points {
+    margin-left: 5%;
+    color: rgb(68, 68, 68);
+    font-size: 1.8vw;
+    font-weight: bolder;
+}
+
+.card-costs {
+    height: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-content: flex-end;
+}
+
+.gem-card-cost {
+    height: 50%;
+    flex-basis: 36%;
+    border-radius: 100%;
+    clip-path: none;
+    font-size: 1.3vw;
+    background-clip: content-box;
+    margin: 2%;
+}
+
+/* Fix aspect */
+.gem-card-value {
+    height: 100%;
+    width: 36%;
+    margin-right: 5%;
+}
+
+

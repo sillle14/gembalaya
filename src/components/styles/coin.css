@@ -1,0 +1,44 @@
+.coin-row {
+    display: flex;
+    flex-direction: column;
+    grid-area: gems;
+}
+
+.coin-wrapper {
+    padding: 5%;
+}
+
+.coin-aspect-box {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+}
+
+.coin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    border-radius: 50%;
+}
+
+.coin-inner {
+    width: 90%;
+    height: 90%;
+    background: tan;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gem-coin {
+    transform: scale(0.75);
+}
+
+

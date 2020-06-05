@@ -1,0 +1,33 @@
+.board {
+    display: grid;
+    grid-template-columns: 2fr 1fr 7fr 3fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:    "players gems nobles none"
+                            "players gems board none"
+                            "action action action none"
+}
+
+.selected {
+    outline: 5px solid orangered;
+}
+
+.action-box {
+    background-color: lightblue;
+    display: flex;
+    justify-content: space-between;
+    grid-area: action;
+    padding: 2%;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 15%;
+}
+
+button {
+    font-size: 100%;
+    background-color: lightgrey;
+    border: 3px solid black;
+    border-radius: 10%;
+}

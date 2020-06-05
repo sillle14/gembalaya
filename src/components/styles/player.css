@@ -1,0 +1,50 @@
+.player-column {
+    display: flex;
+    flex-direction: column;
+    grid-area: players;
+}
+
+.player-wrapper {
+    padding: 2%;
+}
+
+.player-aspect-box {
+    position: relative;
+    height: 0;
+    padding-bottom: 50%;
+}
+
+.player-mat {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgb(233, 220, 145);
+    padding: 2%;
+}
+
+.player-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.player-holdings {
+    height: 24%;
+    display: flex;
+}
+
+.player-holdings > * {
+    clip-path: none;
+    height: 100%;
+    width: 12%;
+    font-size: 1.3vw;
+    margin: 0 2%;
+}
+
+.gem-player-coin {
+    border-radius: 100%;
+}

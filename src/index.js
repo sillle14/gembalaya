@@ -10,11 +10,20 @@ import { Lobby } from 'boardgame.io/react';
 
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 
-// TODO: Need https for prod.
-const SERVER = `https://${window.location.hostname}:8000`
+// TODO: http and port 8000 for local
+const SERVER = `https://${window.location.hostname}`
 console.log(process.env)
 
-if (!NO_LOBBY) {
+if (NO_LOBBY) {
+    // Code for local deployment no lobby both players on one screen, no seperate server.
+    ReactDOM.render(
+      <React.StrictMode>
+        <SplendorClient playerID="0"/>
+        <SplendorClient playerID="1"/>
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+} else {
   // Render the lobby. This relies on a running server.
   // TODO: Make the lobby way nicer looking!
   ReactDOM.render(
@@ -27,15 +36,6 @@ if (!NO_LOBBY) {
     </React.StrictMode>,
     document.getElementById("root")
   )
-} else {
-  // Code for local deployment no lobby both players on one screen, no seperate server.
-  ReactDOM.render(
-    <React.StrictMode>
-      <SplendorClient playerID="0"/>
-      <SplendorClient playerID="1"/>
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
 }
 
 

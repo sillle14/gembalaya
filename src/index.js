@@ -8,6 +8,8 @@ import {Splendor} from "./Game"
 
 import { Lobby } from 'boardgame.io/react';
 
+// The below will render the lobby, but it makes it tough to debug.
+// TODO: Come up with a better way of running the lobby.
 // ReactDOM.render(
 //   <React.StrictMode>
 //     <Lobby

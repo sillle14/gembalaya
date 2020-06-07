@@ -4,15 +4,17 @@ function Card(props) {
 
     let costs = []; 
     for (const gem in props.cost) {
-        const className = "gem gem-card-cost gem-" + gem;
-        costs.push(
-            <div className={className} key={gem}>{props.cost[gem]}</div>
-        )
+        if (props.cost[gem] > 0) {
+            const className = "gem gem-card-cost gem-" + gem;
+            costs.push(
+                <div className={className} key={gem}>{props.cost[gem]}</div>
+            )
+        }
     }
 
     return (
         <div className="card-wrapper">
-            <div className={"card-aspect-box" + (props.selected ? " selected": "")} onClick={() => props.onSelectCard({tier: props.tier, position: props.position})}>
+            <div className={"card-aspect-box" + (props.selected ? " selected-card" : "")} onClick={() => props.onSelectCard({tier: props.tier, position: props.position})}>
                 <div className={"card card-" + props.gem}>
                     <div className="card-info">
                         <span className="points">{props.points || ""}</span> 
@@ -30,7 +32,7 @@ function CardBack(props) {
     const numeral = "i".repeat(props.tier + 1) // Tier is 0 indexed
     return (
         <div className="card-wrapper">
-            <div className={"card-aspect-box" + (props.selected ? " selected": "")} onClick={() => props.onSelectCard({tier: props.tier, position: "deck"})}>
+            <div className={"card-aspect-box" + (props.selected ? " selected-card": "")} onClick={() => props.onSelectCard({tier: props.tier, position: "deck"})}>
                 <div className={"card card-back card-back-" + numeral}>
                     {numeral.toUpperCase()}
                     <span className="card-back-count">{"(" + props.count + ")"}</span>
@@ -46,7 +48,7 @@ export function CardGrid(props) {
         let cards = []
         const cardsRemaining = props.decks[tier].length
         const deckSelected = props.selectedCard.tier === tier && props.selectedCard.position === "deck"
-        cards.push(<CardBack key = {tier} tier={tier} count={cardsRemaining} selected={deckSelected} onSelectCard={props.onSelectCard}></CardBack>);
+        cards.push(<CardBack key={tier} tier={tier} count={cardsRemaining} selected={deckSelected} onSelectCard={props.onSelectCard}></CardBack>);
         for (let i = 0; i < 4; i++) {
             const selected = props.selectedCard.tier === tier && props.selectedCard.position === i
             const card = props.board[tier][i]

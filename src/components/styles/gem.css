@@ -40,3 +40,28 @@
     height: 65%;
     background: gold;
 }
+
+.gem-onyx-text {
+    color: black;
+    font-weight: bold;
+}
+
+.gem-ruby-text {
+    color: red;
+    font-weight: bold;
+}
+
+.gem-sapphire-text {
+    color: blue;
+    font-weight: bold;
+}
+
+.gem-diamond-text {
+    color: white;
+    font-weight: bold;
+}
+
+.gem-emerald-text {
+    color: green;
+    font-weight: bold;
+}

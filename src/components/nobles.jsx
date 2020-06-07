@@ -3,10 +3,12 @@ import React from "react"
 function Noble(props) {
     let costs = []; 
     for (const gem in props.cost) {
-        const className = "gem gem-noble-cost gem-" + gem;
-        costs.push(
-            <div className={className} key={gem}>{props.cost[gem]}</div>
-        )
+        if (props.cost[gem] > 0) {
+            const className = "gem gem-noble-cost gem-" + gem;
+            costs.push(
+                <div className={className} key={gem}>{props.cost[gem]}</div>
+            )
+        }
     }
     return <div className="noble-wrapper"><div className="noble-aspect-box"><div className="noble">
         <span className="points">3</span>

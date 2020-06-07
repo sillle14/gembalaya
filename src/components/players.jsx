@@ -4,17 +4,18 @@ function Player(props) {
 
     let cards = []
     for (const gem in props.cards) {
-        cards.push(<div key={gem} className={"gem gem-" + gem}>{props.cards[gem]}</div>)
+        // No gold cards.
+        if (gem !== "gold") { cards.push(<div key={gem} className={"gem gem-" + gem}>{props.cards[gem]}</div>) }
     }
 
-    let coins = []
-    for (const gem in props.coins) {
-        coins.push(<div key={gem} className={"gem gem-player-coin gem-" + gem}>{props.coins[gem]}</div>)
+    let gems = []
+    for (const gem in props.gems) {
+        gems.push(<div key={gem} className={"gem gem-player-coin gem-" + gem}>{props.gems[gem]}</div>)
     }
 
     return (
         <div className="player-wrapper">
-            <div className="player-aspect-box">
+            <div className={"player-aspect-box" + (props.active ? " selected-card" : "")}>
                 <div className="player-mat">
                     <div className="player-info">
                         <span className="points">{props.score}</span>
@@ -24,7 +25,7 @@ function Player(props) {
                         {cards}
                     </div>
                     <div className="player-holdings">
-                        {coins}
+                        {gems}
                     </div>
                 </div>
             </div>
@@ -36,13 +37,15 @@ export function Players(props) {
     let players = []
     for (const playerID in props.players) {
         const player = props.players[playerID]
+        const active = props.currentPlayer === playerID
         players.push(
         <Player 
             key={playerID}
             cards={player.cards}
-            coins={player.coins}
+            gems={player.gems}
             score={player.score}
             playerID={playerID}
+            active={active}
         ></Player>
         )
     }

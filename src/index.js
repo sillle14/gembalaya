@@ -1,12 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import SplendorClient from './App';
 import * as serviceWorker from './serviceWorker';
+import { Table } from './components/board'
+import {Splendor} from "./Game"
+
+import { Lobby } from 'boardgame.io/react';
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <Lobby
+//       gameServer={`http://${window.location.hostname}:8000`}
+//       lobbyServer={`http://${window.location.hostname}:8000`}
+//       gameComponents={[{game: Splendor, board: Table}]}
+//     />
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// )
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SplendorClient playerID="0"/>
+    <SplendorClient playerID="1"/>
   </React.StrictMode>,
   document.getElementById('root')
 );

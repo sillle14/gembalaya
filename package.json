@@ -9,6 +9,7 @@
     "boardgame.io": "^0.39.12",
     "esm": "^3.2.25",
     "koa-static": "^5.0.0",
+    "minimist": "^1.2.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -16,8 +17,10 @@
     "typescript": "^3.9.3"
   },
   "scripts": {
-    "start": "node -r esm src/server.js",
-    "start-local": "react-scripts start",
+    "start": "SINGLE_PORT=1 node -r esm server.js",
+    "dev": "REACT_APP_NO_LOBBY=1 react-scripts start",
+    "dev-lobby": "react-scripts start",
+    "dev-server": "node -r esm server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

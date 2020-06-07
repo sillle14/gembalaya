@@ -16,8 +16,7 @@
     "typescript": "^3.9.3"
   },
   "scripts": {
-    "serve": "node -r esm src/server.js",
-    "start": "node -r esm server.js",
+    "start": "node -r esm src/server.js",
     "start-local": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

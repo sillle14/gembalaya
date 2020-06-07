@@ -17,7 +17,8 @@
   },
   "scripts": {
     "serve": "node -r esm src/server.js",
-    "start": "react-scripts start",
+    "start": "node -r esm server.js",
+    "start-local": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

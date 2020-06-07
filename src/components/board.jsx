@@ -10,6 +10,7 @@ import "./styles/noble.css"
 import "./styles/player.css"
 import "./styles/board.css"
 import Bundle from "../bundle.js"
+import Player from "../player.js"
 
 function CoinMessage(props) {
     let message = ["Take "]
@@ -25,6 +26,10 @@ function CoinMessage(props) {
 function ActionBox(props) {
 
     let options;
+
+    if (!props.myTurn) {
+        return <div className="action-box">Wait for your turn!</div>
+    }
 
     if (Object.keys(props.selectedCard).length !== 0) {
         const buyDisabled = props.validCardBuy ? "" : "disabled"
@@ -64,13 +69,19 @@ export class Table extends React.Component {
 
     onSelectCard(cardID) {
         this.setState(prevState => {
+            // If it is not your turn, do nothing.
+            if (this.props.playerID !== this.props.ctx.currentPlayer) {
+                return
+            }
             let validCardBuy
             if (cardID.position === "deck") {
                 validCardBuy = false   // Can't buy off the deck
             } else {
                 validCardBuy = true
                 const cardCost = this.props.G.board[cardID.tier][cardID.position].cost
-                const purchasingPower = this.props.G.players[this.props.ctx.currentPlayer].effectiveGems
+                const purchasingPower = Player.getEffectiveGems(
+                    this.props.G.players[this.props.ctx.currentPlayer]
+                )
                 try {
                     // Raises an error if the player can't afford the card.
                     new Bundle(purchasingPower).subtractBundle(cardCost)
@@ -86,11 +97,12 @@ export class Table extends React.Component {
     onSelectCoin(gem) {
         this.setState(prevState => {
             if (
+                this.props.playerID !== this.props.ctx.currentPlayer ||  // Not your turn.
                 gem === "gold" ||                                       // Can't take gold.
                 prevState.selectedCoins.gemCount >= 3 ||                // Can't take more than 3 coins.
                 prevState.selectedCoins[gem] > 1 ||                     // Can't take more than 2 of each.
                 this.props.G.gems[gem] < 1                              // Can't take if none left.
-            ) { return {} }
+            ) { return }
 
             // Doubles are only allow if no other gems are picked and there at least four left.
             if (
@@ -143,6 +155,7 @@ export class Table extends React.Component {
                     validCardReserve={this.state.validCardReserve}
                     takeGems={this.takeGems}
                     buyCard={this.buyCard}
+                    myTurn={this.props.playerID === this.props.ctx.currentPlayer}
                 ></ActionBox>
             </div>
         )

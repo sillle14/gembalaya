@@ -49,7 +49,7 @@ class Bundle {
         Bundle.discountBundles(this, otherBundle)
     }
 
-    static discountBundle(bundle1, bundle2) {
+    static discountBundles(bundle1, bundle2) {
         for (const gem in bundle2) {
             bundle1[gem] = Math.max(bundle1[gem] - bundle2[gem], 0)
         }

@@ -61,7 +61,7 @@ function buyCard(G, ctx, cardPosition) {
     effectiveCost.discountBundle(player.cards)
 
     Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.
-    Bundle.addBundles(G.gems.addBundle, effectiveCost)  // Return gems.
+    Bundle.addBundles(G.gems, effectiveCost)            // Return gems.
     player.cards[card.gem] += 1                         // Add bonus.
     player.score += card.points                         // Add score.
 

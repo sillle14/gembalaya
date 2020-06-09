@@ -25,11 +25,15 @@ function CoinMessage(props) {
 
 function ActionBox(props) {
 
-    let options;
+    if (props.gameOver) {
+        return <div className="action-box">{"Game over. Winner(s): " + props.gameOver.winners.join(", ")}</div>
+    }
 
     if (!props.myTurn) {
         return <div className="action-box">Wait for your turn!</div>
     }
+
+    let options;
 
     if (Object.keys(props.selectedCard).length !== 0) {
         const buyDisabled = props.validCardBuy ? "" : "disabled"
@@ -69,10 +73,12 @@ export class Table extends React.Component {
 
     onSelectCard(cardID) {
         this.setState(prevState => {
-            // If it is not your turn, do nothing.
-            if (this.props.playerID !== this.props.ctx.currentPlayer) {
-                return
-            }
+            
+            if (
+            this.props.playerID !== this.props.ctx.currentPlayer ||     // If it is not your turn, do nothing.
+            this.props.ctx.gameover                                     // No moves if the game is over.
+            ) { return }
+
             let validCardBuy
             if (cardID.position === "deck") {
                 validCardBuy = false   // Can't buy off the deck
@@ -101,7 +107,8 @@ export class Table extends React.Component {
                 gem === "gold" ||                                       // Can't take gold.
                 prevState.selectedCoins.gemCount >= 3 ||                // Can't take more than 3 coins.
                 prevState.selectedCoins[gem] > 1 ||                     // Can't take more than 2 of each.
-                this.props.G.gems[gem] < 1                              // Can't take if none left.
+                this.props.G.gems[gem] < 1 ||                           // Can't take if none left.
+                this.props.ctx.gameover                                 // No moves if game over.
             ) { return }
 
             // Doubles are only allow if no other gems are picked and there at least four left.
@@ -129,13 +136,16 @@ export class Table extends React.Component {
     takeGems() {
         this.clearSelection()
         this.props.moves.takeGems(this.state.selectedCoins)
-        // TODO: Gem discarding.
+        // TODO: Gem discarding and nobles
+        this.props.moves.checkForWin()
         this.props.events.endTurn()
     }
 
     buyCard() {
         this.clearSelection()
         this.props.moves.buyCard(this.state.selectedCard)
+        // TODO: Check for nobles
+        this.props.moves.checkForWin()
         this.props.events.endTurn()
     }
     
@@ -156,6 +166,7 @@ export class Table extends React.Component {
                     takeGems={this.takeGems}
                     buyCard={this.buyCard}
                     myTurn={this.props.playerID === this.props.ctx.currentPlayer}
+                    gameOver={this.props.ctx.gameover}
                 ></ActionBox>
             </div>
         )

@@ -1,6 +1,6 @@
 import React from "react"
 
-function Card(props) {
+export function Card(props) {
 
     let costs = []; 
     for (const gem in props.cost) {

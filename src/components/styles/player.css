@@ -48,3 +48,20 @@
 .gem-player-coin {
     border-radius: 100%;
 }
+
+.player-reserves {
+    height: 30%;
+    padding: 5%;
+    background: lightblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.player-reserves-cards {
+    display: flex;
+}
+
+.player-reserves-cards > div {
+    flex-basis: 30%;
+}

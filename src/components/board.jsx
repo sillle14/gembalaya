@@ -2,7 +2,7 @@ import React from "react"
 import {NobleSet} from "./nobles.jsx"
 import {Piles} from "./coins.jsx"
 import {CardGrid} from "./cards.jsx"
-import {Players} from "./players.jsx"
+import {Players, PlayerReserves} from "./players.jsx"
 import "./styles/gem.css"
 import "./styles/coin.css"
 import "./styles/card.css"
@@ -58,7 +58,7 @@ export class Table extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedCard: {},
+            selectedCardPosition: {},
             selectedCoins: new Bundle(),
             validGemPick: false,
             validCardBuy: false,
@@ -71,20 +71,19 @@ export class Table extends React.Component {
         this.buyCard = this.buyCard.bind(this)
     }
 
-    onSelectCard(cardID) {
+    onSelectCard(cardPosition) {
         this.setState(prevState => {
-            
             if (
-            this.props.playerID !== this.props.ctx.currentPlayer ||     // If it is not your turn, do nothing.
-            this.props.ctx.gameover                                     // No moves if the game is over.
+                this.props.playerID !== this.props.ctx.currentPlayer ||     // If it is not your turn, do nothing.
+                this.props.ctx.gameover                                     // No moves if the game is over.
             ) { return }
 
             let validCardBuy
-            if (cardID.position === "deck") {
-                validCardBuy = false   // Can't buy off the deck
+            if (cardPosition.position === "deck" || cardPosition.tier === "reserve") {
+                validCardBuy = false   // Can't buy off the deck or from reserves
             } else {
                 validCardBuy = true
-                const cardCost = this.props.G.board[cardID.tier][cardID.position].cost
+                const cardCost = this.props.G.board[cardPosition.tier][cardPosition.position].cost
                 const purchasingPower = Player.getEffectiveGems(
                     this.props.G.players[this.props.ctx.currentPlayer]
                 )
@@ -96,7 +95,7 @@ export class Table extends React.Component {
                 }
             }
             
-            return {selectedCard: cardID, validCardBuy: validCardBuy, selectedCoins: new Bundle()}
+            return {selectedCardPosition: cardPosition, validCardBuy: validCardBuy, selectedCoins: new Bundle()}
         })
     }
 
@@ -143,7 +142,7 @@ export class Table extends React.Component {
 
     buyCard() {
         this.clearSelection()
-        this.props.moves.buyCard(this.state.selectedCard)
+        this.props.moves.buyCard(this.state.selectedCardPosition)
         // TODO: Check for nobles
         this.props.moves.checkForWin()
         this.props.events.endTurn()
@@ -153,11 +152,11 @@ export class Table extends React.Component {
         return (
             <div className="board">
                 <Players players={this.props.G.players} currentPlayer={this.props.ctx.currentPlayer}></Players>
-                <CardGrid board={this.props.G.board} decks={this.props.G.decks} selectedCard={this.state.selectedCard} onSelectCard={this.onSelectCard}></CardGrid>
+                <CardGrid board={this.props.G.board} decks={this.props.G.decks} selectedCard={this.state.selectedCardPosition} onSelectCard={this.onSelectCard}></CardGrid>
                 <NobleSet nobles={this.props.G.nobles}></NobleSet>
                 <Piles gems={this.props.G.gems} selectedCoins={this.state.selectedCoins} onSelectCoin={this.onSelectCoin}></Piles>
                 <ActionBox 
-                    selectedCard={this.state.selectedCard} 
+                    selectedCard={this.state.selectedCardPosition} 
                     selectedCoins={this.state.selectedCoins}
                     clearSelection={this.clearSelection}
                     validGemPick={this.state.validGemPick}
@@ -168,6 +167,11 @@ export class Table extends React.Component {
                     myTurn={this.props.playerID === this.props.ctx.currentPlayer}
                     gameOver={this.props.ctx.gameover}
                 ></ActionBox>
+                <div className="sidebar">
+                    <PlayerReserves 
+                        reserves={this.props.G.players[this.props.playerID].reserves}
+                    ></PlayerReserves>
+                </div>
             </div>
         )
     }

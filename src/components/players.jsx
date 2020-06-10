@@ -1,4 +1,5 @@
 import React from "react"
+import { Card } from "./cards.jsx"
 
 function Player(props) {
 
@@ -50,4 +51,29 @@ export function Players(props) {
         )
     }
     return <div className="player-column">{players}</div>
+}
+
+export function PlayerReserves(props) {
+
+    let reserves = []
+    for (let i = 0; i < props.reserves.length; i++) {
+        const card = props.reserves[i]
+        reserves.push(<Card 
+            key={i} 
+            tier={"reserve"}
+            position={i} 
+            cost={card.cost} 
+            gem={card.gem} 
+            points={card.points} 
+            selected={false}
+            onSelectCard={props.onSelectCard}
+        ></Card>)
+    }
+
+    return (
+        <div className="player-reserves">
+            <span>Your Reserves:</span>
+            <div className="player-reserves-cards">{reserves}</div>
+        </div>
+    )
 }

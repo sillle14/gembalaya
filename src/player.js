@@ -5,7 +5,7 @@ class Player {
         this.score = 0
         this.gems = new Bundle()
         this.cards = new Bundle()
-        this.reserve = []
+        this.reserves = [{gem: "onyx", tier: 1, points: 1, cost: new Bundle({sapphire: 4})}]
     }
 
     get effectiveGems() {

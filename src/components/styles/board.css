@@ -2,9 +2,14 @@
     display: grid;
     grid-template-columns: 2fr 1fr 7fr 3fr;
     grid-template-rows: auto auto auto;
-    grid-template-areas:    "players gems nobles none"
-                            "players gems board none"
-                            "action action action none"
+    grid-template-areas:    "players gems nobles sidebar"
+                            "players gems board sidebar"
+                            "action action action sidebar"
+}
+
+.sidebar {
+    grid-area: sidebar;
+    padding: 1%;
 }
 
 .selected-card {

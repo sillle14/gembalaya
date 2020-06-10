@@ -58,14 +58,19 @@ export function PlayerReserves(props) {
     let reserves = []
     for (let i = 0; i < props.reserves.length; i++) {
         const card = props.reserves[i]
+        const selectedCard = props.selectedCard
+        let selected = (
+            selectedCard.reserved &&
+            selectedCard.playerID === props.playerID &&
+            selectedCard.position === i
+        )
         reserves.push(<Card 
             key={i} 
-            tier={"reserve"}
-            position={i} 
+            cardPosition={{reserved: true, playerID: props.playerID, position: i}}
             cost={card.cost} 
             gem={card.gem} 
             points={card.points} 
-            selected={false}
+            selected={selected}
             onSelectCard={props.onSelectCard}
         ></Card>)
     }

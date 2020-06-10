@@ -54,6 +54,19 @@ function ActionBox(props) {
     )
 }
 
+function getCardFromPosition(cardPosition, G) {
+    if (cardPosition.reserved) {
+        // In a reserve board.
+        return G.players[cardPosition.playerID].reserves[cardPosition.position]
+    } else if (cardPosition.position) {
+        // On the main board.
+        return G.board[cardPosition.tier][cardPosition.position]
+    } else {
+        // From the deck.
+        return G.decks[cardPosition.tier][0]
+    }
+}
+
 export class Table extends React.Component {
     constructor(props) {
         super(props)
@@ -83,7 +96,7 @@ export class Table extends React.Component {
                 validCardBuy = false   // Can't buy off the deck or from reserves
             } else {
                 validCardBuy = true
-                const cardCost = this.props.G.board[cardPosition.tier][cardPosition.position].cost
+                const cardCost = getCardFromPosition(cardPosition, this.props.G).cost
                 const purchasingPower = Player.getEffectiveGems(
                     this.props.G.players[this.props.ctx.currentPlayer]
                 )
@@ -94,7 +107,6 @@ export class Table extends React.Component {
                     validCardBuy = false;
                 }
             }
-            
             return {selectedCardPosition: cardPosition, validCardBuy: validCardBuy, selectedCoins: new Bundle()}
         })
     }
@@ -124,12 +136,12 @@ export class Table extends React.Component {
 
             // Picking the gems is a valid move if there are 3 gems (guaranteed to be distinct) or 2 of the same.
             const validGemPick = selectedCoins.gemCount === 3 || (Object.values(selectedCoins).filter(count => count === 2).length > 0)
-            return {selectedCoins: selectedCoins, validGemPick: validGemPick, selectedCard: {}}
+            return {selectedCoins: selectedCoins, validGemPick: validGemPick, selectedCardPosition: {}}
         })
     }
 
     clearSelection() {
-        this.setState({selectedCard: {}, selectedCoins: new Bundle()})
+        this.setState({selectedCardPosition: {}, selectedCoins: new Bundle()})
     }
 
     takeGems() {
@@ -168,8 +180,11 @@ export class Table extends React.Component {
                     gameOver={this.props.ctx.gameover}
                 ></ActionBox>
                 <div className="sidebar">
-                    <PlayerReserves 
+                    <PlayerReserves
                         reserves={this.props.G.players[this.props.playerID].reserves}
+                        onSelectCard={this.onSelectCard}
+                        playerID={this.props.playerID}
+                        selectedCard={this.state.selectedCardPosition} 
                     ></PlayerReserves>
                 </div>
             </div>

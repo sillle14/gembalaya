@@ -14,7 +14,8 @@ export function Card(props) {
 
     return (
         <div className="card-wrapper">
-            <div className={"card-aspect-box" + (props.selected ? " selected-card" : "")} onClick={() => props.onSelectCard({tier: props.tier, position: props.position})}>
+            <div className={"card-aspect-box" + (props.selected ? " selected-card" : "")} 
+                onClick={() => props.onSelectCard(props.cardPosition)}>
                 <div className={"card card-" + props.gem}>
                     <div className="card-info">
                         <span className="points">{props.points || ""}</span> 
@@ -32,7 +33,7 @@ function CardBack(props) {
     const numeral = "i".repeat(props.tier + 1) // Tier is 0 indexed
     return (
         <div className="card-wrapper">
-            <div className={"card-aspect-box" + (props.selected ? " selected-card": "")} onClick={() => props.onSelectCard({tier: props.tier, position: "deck"})}>
+            <div className={"card-aspect-box" + (props.selected ? " selected-card": "")} onClick={() => props.onSelectCard({tier: props.tier})}>
                 <div className={"card card-back card-back-" + numeral}>
                     {numeral.toUpperCase()}
                     <span className="card-back-count">{"(" + props.count + ")"}</span>
@@ -47,15 +48,14 @@ export function CardGrid(props) {
     for (let tier = 2; tier > -1; tier--) {
         let cards = []
         const cardsRemaining = props.decks[tier].length
-        const deckSelected = props.selectedCard.tier === tier && props.selectedCard.position === "deck"
+        const deckSelected = props.selectedCard.tier === tier && props.selectedCard.position === undefined
         cards.push(<CardBack key={tier} tier={tier} count={cardsRemaining} selected={deckSelected} onSelectCard={props.onSelectCard}></CardBack>);
         for (let i = 0; i < 4; i++) {
             const selected = props.selectedCard.tier === tier && props.selectedCard.position === i
             const card = props.board[tier][i]
             cards.push(<Card 
                 key={"tier: " + tier + " positon:" + i} 
-                tier={tier}
-                position={i} 
+                cardPosition={{tier: tier, position: i}}
                 cost={card.cost} 
                 gem={card.gem} 
                 points={card.points} 

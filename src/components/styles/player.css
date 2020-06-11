@@ -52,7 +52,7 @@
 .player-reserves {
     height: 30%;
     padding: 5%;
-    background: lightblue;
+    background: rgb(233, 220, 145);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -64,8 +64,10 @@
 
 .player-reserves-cards {
     display: flex;
+    margin: 0 -2%;
 }
 
 .player-reserves-cards > div {
     flex-basis: 30%;
+    margin: 0 2%;
 }

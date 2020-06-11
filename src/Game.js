@@ -54,8 +54,17 @@ function takeGems(G, ctx, gems) {
 }
 
 function buyCard(G, ctx, cardPosition) {
-    const card = G.board[cardPosition.tier][cardPosition.position]
+    let card
     const player = G.players[ctx.currentPlayer]
+    if (cardPosition.reserved) {
+        card = player.reserves.splice(cardPosition.postion, 1)[0]
+    } else {
+        card = G.board[cardPosition.tier][cardPosition.position]
+        // Replace the card. 
+        // TODO: Handle last card.
+        G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
+    }
+
     let effectiveCost = new Bundle(card.cost)
     effectiveCost.discountBundle(player.cards)
 
@@ -63,10 +72,6 @@ function buyCard(G, ctx, cardPosition) {
     Bundle.addBundles(G.gems, effectiveCost)            // Return gems.
     player.cards[card.gem] += 1                         // Add bonus.
     player.score += card.points                         // Add score.
-
-    // Replace the card. 
-    // TODO: Handle last card.
-    G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
 }
 
 function reserveCard(G, ctx, cardPosition) {
@@ -85,8 +90,11 @@ function reserveCard(G, ctx, cardPosition) {
     // Add the card to the players reserves.
     player.reserves.push(card)
 
-    // Take a gold gem.
-    Bundle.addBundles(player.gems, {gold: 1})
+    // Take a gold gem, if there is one left.
+    try {
+        Bundle.subtractBundles(G.gems, {gold: 1})
+        Bundle.addBundles(player.gems, {gold: 1})
+    } catch { }
 }
 
 // Call this move at the end of a players turn, since we don't check for win conditions otherwise.

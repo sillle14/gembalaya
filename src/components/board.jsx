@@ -93,8 +93,8 @@ export class Table extends React.Component {
             ) { return }
 
             let validCardBuy
-            if (cardPosition.position === "deck" || cardPosition.reserved) {
-                validCardBuy = false   // Can't buy off the deck or from reserves
+            if (cardPosition.position === "deck") {
+                validCardBuy = false   // Can't buy off the deck
             } else {
                 validCardBuy = true
                 const cardCost = getCardFromPosition(cardPosition, this.props.G).cost

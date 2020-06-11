@@ -77,7 +77,7 @@ export function PlayerReserves(props) {
 
     return (
         <div className="player-reserves">
-            <span>Your Reserves:</span>
+            <span className="player-reserves-label">Your Reserves:</span>
             <div className="player-reserves-cards">{reserves}</div>
         </div>
     )

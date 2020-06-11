@@ -58,6 +58,10 @@
     justify-content: space-evenly;
 }
 
+.player-reserves-label {
+    margin-bottom: auto;
+}
+
 .player-reserves-cards {
     display: flex;
 }

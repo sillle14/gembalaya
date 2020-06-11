@@ -38,7 +38,10 @@ function ActionBox(props) {
     if (Object.keys(props.selectedCard).length !== 0) {
         const buyDisabled = props.validCardBuy ? "" : "disabled"
         const reserveDisabled = props.validCardReserve ? "" : "disabled"
-        options = <div className="options"><button disabled={buyDisabled} onClick={props.buyCard}>Buy</button><button disabled={reserveDisabled}>Reserve</button></div>
+        options = <div className="options">
+            <button disabled={buyDisabled} onClick={props.buyCard}>Buy</button>
+            <button disabled={reserveDisabled} onClick={props.reserveCard}>Reserve</button>
+        </div>
     } else if (props.selectedCoins.gemCount !== 0) {
         const disabled = props.validGemPick ? "" : "disabled"
         options = <div className="options"><CoinMessage gems={props.selectedCoins}></CoinMessage><button disabled={disabled} onClick={props.takeGems}>Confirm</button></div>
@@ -54,7 +57,7 @@ function ActionBox(props) {
     )
 }
 
-function getCardFromPosition(cardPosition, G) {
+export function getCardFromPosition(cardPosition, G) {
     if (cardPosition.reserved) {
         // In a reserve board.
         return G.players[cardPosition.playerID].reserves[cardPosition.position]
@@ -79,6 +82,7 @@ export class Table extends React.Component {
         this.clearSelection = this.clearSelection.bind(this)
         this.takeGems = this.takeGems.bind(this)
         this.buyCard = this.buyCard.bind(this)
+        this.reserveCard = this.reserveCard.bind(this)
     }
 
     onSelectCard(cardPosition) {
@@ -148,7 +152,7 @@ export class Table extends React.Component {
     takeGems() {
         this.clearSelection()
         this.props.moves.takeGems(this.state.selectedCoins)
-        // TODO: Gem discarding and nobles
+        // TODO: Gem discarding and nobles Move this into a separate function
         this.props.moves.checkForWin()
         this.props.events.endTurn()
     }
@@ -157,6 +161,14 @@ export class Table extends React.Component {
         this.clearSelection()
         this.props.moves.buyCard(this.state.selectedCardPosition)
         // TODO: Check for nobles
+        this.props.moves.checkForWin()
+        this.props.events.endTurn()
+    }
+
+    reserveCard() {
+        this.clearSelection()
+        this.props.moves.reserveCard(this.state.selectedCardPosition)
+        // TODO: Gem discarding and nobles
         this.props.moves.checkForWin()
         this.props.events.endTurn()
     }
@@ -177,6 +189,7 @@ export class Table extends React.Component {
                     validCardReserve={this.state.validCardReserve}
                     takeGems={this.takeGems}
                     buyCard={this.buyCard}
+                    reserveCard={this.reserveCard}
                     myTurn={this.props.playerID === this.props.ctx.currentPlayer}
                     gameOver={this.props.ctx.gameover}
                 ></ActionBox>

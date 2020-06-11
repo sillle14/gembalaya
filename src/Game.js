@@ -3,7 +3,6 @@ import Player from "./player.js"
 import Bundle from "./bundle.js"
 
 
-
 // Map player counts to starting gem piles
 const playerCountSettings = {
     2: {gems: 4, nobles: 3},
@@ -37,9 +36,9 @@ function setupGame(ctx, setupData) {
         gold: 5  // Always 5 gold
     })
 
-    // NOTE: Running with a server deconstructs the G object in such a way that all prototypes are lost. So,
-    //       although the Bundle class is useful for organization, only its static methods can be used on 
-    //       objects in G.
+    // NOTE: Running with a server means clients only recieve deconstructed G objects in such a way that all 
+    //      prototypes are lost. So, although the Bundle class is useful for organization, only its static 
+    //      methods can be used on objects in G.
     return {
         decks: [tier1Deck, tier2Deck, tier3Deck],
         board: [tier1Board, tier2Board, tier3Board],
@@ -70,6 +69,26 @@ function buyCard(G, ctx, cardPosition) {
     G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
 }
 
+function reserveCard(G, ctx, cardPosition) {
+    const player = G.players[ctx.currentPlayer]
+    let card
+    if (cardPosition.position) {
+        // For some reason, we need to copy the card from the game state.
+        card = {...G.board[cardPosition.tier][cardPosition.position]}
+        
+        // Replace the card. 
+        // TODO: Handle last card.
+        G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
+    } else {
+        card = {...G.decks[cardPosition.tier].pop()}
+    }
+    // Add the card to the players reserves.
+    player.reserves.push(card)
+
+    // Take a gold gem.
+    Bundle.addBundles(player.gems, {gold: 1})
+}
+
 // Call this move at the end of a players turn, since we don't check for win conditions otherwise.
 function checkForWin(G, ctx) {
     // Only end if it is the first player's turn.
@@ -95,6 +114,7 @@ export const Splendor = {
     moves: {
         takeGems: takeGems,
         buyCard: buyCard,
+        reserveCard: reserveCard,
         checkForWin: checkForWin,
     },
 

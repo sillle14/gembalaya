@@ -73,9 +73,6 @@ export class Table extends React.Component {
         this.state = {
             selectedCardPosition: {},
             selectedCoins: new Bundle(),
-            validGemPick: false,
-            validCardBuy: false,
-            validCardReserve: false  // TODO
         }
         this.onSelectCard = this.onSelectCard.bind(this)
         this.onSelectCoin = this.onSelectCoin.bind(this)
@@ -92,7 +89,7 @@ export class Table extends React.Component {
             ) { return }
 
             let validCardBuy
-            if (cardPosition.position === "deck" || cardPosition.tier === "reserve") {
+            if (cardPosition.position === "deck" || cardPosition.reserved) {
                 validCardBuy = false   // Can't buy off the deck or from reserves
             } else {
                 validCardBuy = true
@@ -107,7 +104,11 @@ export class Table extends React.Component {
                     validCardBuy = false;
                 }
             }
-            return {selectedCardPosition: cardPosition, validCardBuy: validCardBuy, selectedCoins: new Bundle()}
+            const validCardReserve = (
+                this.props.G.players[this.props.playerID].reserves.length < 3 &&
+                !cardPosition.reserved
+            )
+            return {selectedCardPosition: cardPosition, validCardBuy: validCardBuy, validCardReserve: validCardReserve, selectedCoins: new Bundle()}
         })
     }
 

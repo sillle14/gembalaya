@@ -10,17 +10,39 @@ function Noble(props) {
             )
         }
     }
-    return <div className="noble-wrapper"><div className="noble-aspect-box"><div className="noble">
-        <span className="points">3</span>
-        <div className="noble-cost">{costs}</div>
-    </div></div></div>
+    let borderClass = ""
+    if (props.selected) {
+        borderClass = " selected-noble"
+    } else if (props.available) {
+        borderClass = " available-noble"
+    }
+    return (
+        <div className="noble-wrapper">
+            <div className={"noble-aspect-box" + borderClass} onClick={() => props.onSelectNoble(props.position)}>
+                <div className="noble">
+                    <span className="points">3</span>
+                    <div className="noble-cost">{costs}</div>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export function NobleSet(props) {
     let nobles = [];
     for (let i = 0; i < props.nobles.length; i++) {
         const cost = props.nobles[i].cost
-        nobles.push(<Noble key={i} cost={cost}></Noble>)
+        const available = (props.availableNobles || []).includes(i) && props.nobleSelection
+        const selected = i === props.selectedNoble
+        nobles.push(<Noble
+            key={i} 
+            cost={cost} 
+            available={available} 
+            selected={selected}
+            position={i}
+            onSelectNoble={props.onSelectNoble}
+        ></Noble>
+        )
     }
     return (
         <div className="noble-row">{nobles}</div>

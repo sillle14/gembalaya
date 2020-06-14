@@ -19,8 +19,8 @@ function setupGame(ctx, setupData) {
     let tier3Board = tier3Deck.splice(0, 4)
 
     const gemCount = playerCountSettings[ctx.numPlayers].gems
-    const gameNobles = ctx.random.Shuffle(nobles)
-    const test = gameNobles.slice(0, playerCountSettings[ctx.numPlayers].nobles)
+    let gameNobles = ctx.random.Shuffle(nobles)
+    gameNobles = gameNobles.slice(0, playerCountSettings[ctx.numPlayers].nobles)
 
     let players = {}
     for (let i = 0; i < ctx.numPlayers; i ++) {
@@ -43,7 +43,7 @@ function setupGame(ctx, setupData) {
         decks: [tier1Deck, tier2Deck, tier3Deck],
         board: [tier1Board, tier2Board, tier3Board],
         gems: gems,
-        nobles: test,
+        nobles: gameNobles,
         players: players
     }
 }
@@ -95,6 +95,12 @@ function reserveCard(G, ctx, cardPosition) {
     } catch { }
 }
 
+function takeNoble(G, ctx, noblePosition) {
+    const player = G.players[ctx.currentPlayer]
+    G.nobles.splice(noblePosition, 1)
+    player.score += 3
+}
+
 // Call this move at the end of a players turn, since we don't check for win conditions otherwise.
 function checkForWin(G, ctx) {
     // Only end if it is the first player's turn.
@@ -121,6 +127,7 @@ export const Splendor = {
         takeGems: takeGems,
         buyCard: buyCard,
         reserveCard: reserveCard,
+        takeNoble: takeNoble,
         checkForWin: checkForWin,
     },
 

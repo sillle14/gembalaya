@@ -12,8 +12,12 @@
     padding: 1%;
 }
 
-.selected-card {
+.selected-card, .selected-noble {
     outline: 5px solid orangered;
+}
+
+.available-noble {
+    outline: 5px solid green;
 }
 
 .selected-coin > .coin {

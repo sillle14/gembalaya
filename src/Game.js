@@ -61,7 +61,6 @@ function buyCard(G, ctx, cardPosition) {
     } else {
         card = G.board[cardPosition.tier][cardPosition.position]
         // Replace the card. 
-        // TODO: Handle last card.
         G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
     }
 
@@ -82,7 +81,6 @@ function reserveCard(G, ctx, cardPosition) {
         card = {...G.board[cardPosition.tier][cardPosition.position]}
         
         // Replace the card. 
-        // TODO: Handle last card.
         G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
     } else {
         card = {...G.decks[cardPosition.tier].pop()}

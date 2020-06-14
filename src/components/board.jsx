@@ -61,7 +61,7 @@ export function getCardFromPosition(cardPosition, G) {
     if (cardPosition.reserved) {
         // In a reserve board.
         return G.players[cardPosition.playerID].reserves[cardPosition.position]
-    } else if (cardPosition.position) {
+    } else if (cardPosition.position !== undefined) {
         // On the main board.
         return G.board[cardPosition.tier][cardPosition.position]
     } else {
@@ -87,9 +87,16 @@ export class Table extends React.Component {
 
     onSelectCard(cardPosition) {
         this.setState(prevState => {
+            console.log(cardPosition)
             if (
                 this.props.playerID !== this.props.ctx.currentPlayer ||     // If it is not your turn, do nothing.
                 this.props.ctx.gameover                                     // No moves if the game is over.
+            ) { return }
+
+            // Can't reserve from an empty deck.
+            if (
+                cardPosition.position === undefined &&
+                this.props.G.decks[cardPosition.tier].length === 0
             ) { return }
 
             let validCardBuy

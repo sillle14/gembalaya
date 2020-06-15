@@ -2,6 +2,20 @@ import { tier1Cards, tier2Cards, tier3Cards, nobles } from './static'
 import Player from "./player.js"
 import Bundle from "./bundle.js"
 
+// Refactoring TODOs:
+// * coin -> gem
+// * only use moves
+// * simplify css
+// * organization
+// * splendor -> gembalya
+// * ' -> " (look up which is best)
+
+// Other TODOs:
+// * better lobby
+// * add a log
+// * better deployment
+// * show other players reserves
+
 
 // Map player counts to starting gem piles
 const playerCountSettings = {

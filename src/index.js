@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import SplendorClient from './App';
+import SplendorClient from './games/gembalaya/App';
 import * as serviceWorker from './serviceWorker';
-import { Table } from './components/board'
-import {Splendor} from "./Game"
+import { Table } from "./games/gembalaya/components/board"
+import {Splendor} from "./games/gembalaya/Game"
 
 import { Lobby } from 'boardgame.io/react';
 
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 
 // TODO: fix this
-const SERVER = `https://${window.location.hostname}` // Prod
-// const SERVER = `http://${window.location.hostname}:8000`  // Local
+// const SERVER = `https://${window.location.hostname}` // Prod
+ const SERVER = `http://${window.location.hostname}:8000`  // Local
 
 if (NO_LOBBY) {
     // Code for local deployment no lobby both players on one screen, no seperate server.

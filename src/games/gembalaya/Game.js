@@ -7,8 +7,6 @@ import Bundle from './bundle.js'
 // * only use moves
 // * simplify css
 // * organization
-// * splendor -> gembalya
-// * " -> ' (look up which is best)
 
 // Other TODOs:
 // * better lobby
@@ -134,8 +132,8 @@ function checkForWin(G, ctx) {
     }
 }
 
-export const Splendor = {
-    name: 'Splendor',
+export const Gembalaya = {
+    name: 'Gembalaya',
     setup: setupGame,
     moves: {
         takeGems: takeGems,

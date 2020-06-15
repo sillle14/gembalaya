@@ -74,7 +74,7 @@ export function getCardFromPosition(cardPosition, G) {
     }
 }
 
-export class Table extends React.Component {
+export class GembalayaTable extends React.Component {
     constructor(props) {
         super(props)
         this.state = {

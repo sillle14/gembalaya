@@ -1,10 +1,10 @@
 import { Server } from 'boardgame.io/server';
 import path from 'path';
 import serve from 'koa-static';
-import { Splendor } from './src/games/gembalaya/Game';
+import { Gembalaya } from './src/games/gembalaya/Game';
 
 const PORT = process.env.PORT || 8000;
-const server = Server({ games: [Splendor] })
+const server = Server({ games: [Gembalaya] })
 
 const SINGLE_PORT = process.env.SINGLE_PORT
 

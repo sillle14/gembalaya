@@ -1,32 +1,32 @@
-import React from "react"
-import {NobleSet} from "./nobles.jsx"
-import {Piles} from "./coins.jsx"
-import {CardGrid} from "./cards.jsx"
-import {Players, PlayerReserves} from "./players.jsx"
-import "./styles/gem.css"
-import "./styles/coin.css"
-import "./styles/card.css"
-import "./styles/noble.css"
-import "./styles/player.css"
-import "./styles/board.css"
-import Bundle from "../bundle.js"
-import Player from "../player.js"
+import React from 'react'
+import {NobleSet} from './nobles.jsx'
+import {Piles} from './coins.jsx'
+import {CardGrid} from './cards.jsx'
+import {Players, PlayerReserves} from './players.jsx'
+import './styles/gem.css'
+import './styles/coin.css'
+import './styles/card.css'
+import './styles/noble.css'
+import './styles/player.css'
+import './styles/board.css'
+import Bundle from '../bundle.js'
+import Player from '../player.js'
 
 function CoinMessage(props) {
-    let message = ["Take "]
+    let message = ['Take ']
     for (const gem in props.gems) {
         if (props.gems[gem] > 0) {
-            message.push(<span key={gem} className={"gem-" + gem + "-text"}>{props.gems[gem] + " " + gem + " "}</span>)
+            message.push(<span key={gem} className={'gem-' + gem + '-text'}>{props.gems[gem] + ' ' + gem + ' '}</span>)
         }
     }
-    message.push("?")
+    message.push('?')
     return <span>{message}</span>
 }
 
 function ActionBox(props) {
 
     if (props.gameOver) {
-        return <div className="action-box">{"Game over. Winner(s): " + props.gameOver.winners.join(", ")}</div>
+        return <div className="action-box">{'Game over. Winner(s): ' + props.gameOver.winners.join(', ')}</div>
     }
 
     if (!props.myTurn) {
@@ -36,14 +36,14 @@ function ActionBox(props) {
     let options;
 
     if (Object.keys(props.selectedCard).length !== 0) {
-        const buyDisabled = props.validCardBuy ? "" : "disabled"
-        const reserveDisabled = props.validCardReserve ? "" : "disabled"
+        const buyDisabled = props.validCardBuy ? '' : 'disabled'
+        const reserveDisabled = props.validCardReserve ? '' : 'disabled'
         options = <div className="options">
             <button disabled={buyDisabled} onClick={props.buyCard}>Buy</button>
             <button disabled={reserveDisabled} onClick={props.reserveCard}>Reserve</button>
         </div>
     } else if (props.selectedCoins.gemCount !== 0) {
-        const disabled = props.validGemPick ? "" : "disabled"
+        const disabled = props.validGemPick ? '' : 'disabled'
         options = <div className="options"><CoinMessage gems={props.selectedCoins}></CoinMessage><button disabled={disabled} onClick={props.takeGems}>Confirm</button></div>
     } else if (props.nobleSelection && (props.selectedNoble || props.selectedNoble === 0)) {
         options = <button onClick={props.takeNoble}>Select</button>
@@ -125,7 +125,7 @@ export class Table extends React.Component {
         ) { return }
 
         let validCardBuy
-        if (cardPosition.position === "deck") {
+        if (cardPosition.position === 'deck') {
             validCardBuy = false   // Can't buy off the deck
         } else {
             validCardBuy = true
@@ -156,7 +156,7 @@ export class Table extends React.Component {
         this.setState(prevState => {
             if (
                 this.props.playerID !== this.props.ctx.currentPlayer || // Not your turn.
-                gem === "gold" ||                                       // Can't take gold.
+                gem === 'gold' ||                                       // Can't take gold.
                 prevState.selectedCoins.gemCount >= 3 ||                // Can't take more than 3 coins.
                 prevState.selectedCoins[gem] > 1 ||                     // Can't take more than 2 of each.
                 this.props.G.gems[gem] < 1 ||                           // Can't take if none left.

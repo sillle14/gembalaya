@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import SplendorClient from './games/gembalaya/App';
 import * as serviceWorker from './serviceWorker';
-import { Table } from "./games/gembalaya/components/board"
-import {Splendor} from "./games/gembalaya/Game"
+import { Table } from './games/gembalaya/components/board'
+import {Splendor} from './games/gembalaya/Game'
 
 import { Lobby } from 'boardgame.io/react';
 
@@ -18,8 +18,8 @@ if (NO_LOBBY) {
     // Code for local deployment no lobby both players on one screen, no seperate server.
     ReactDOM.render(
       <React.StrictMode>
-        <SplendorClient playerID="0"/>
-        <SplendorClient playerID="1"/>
+        <SplendorClient playerID='0'/>
+        <SplendorClient playerID='1'/>
       </React.StrictMode>,
       document.getElementById('root')
     );
@@ -34,7 +34,7 @@ if (NO_LOBBY) {
         gameComponents={[{game: Splendor, board: Table}]}
       />
     </React.StrictMode>,
-    document.getElementById("root")
+    document.getElementById('root')
   )
 }
 

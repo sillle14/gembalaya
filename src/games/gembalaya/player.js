@@ -1,4 +1,4 @@
-import Bundle from "./bundle.js"
+import Bundle from './bundle.js'
 
 class Player {
     constructor () {

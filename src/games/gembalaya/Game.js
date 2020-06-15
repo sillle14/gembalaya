@@ -1,6 +1,6 @@
 import { tier1Cards, tier2Cards, tier3Cards, nobles } from './static'
-import Player from "./player.js"
-import Bundle from "./bundle.js"
+import Player from './player.js'
+import Bundle from './bundle.js'
 
 // Refactoring TODOs:
 // * coin -> gem
@@ -8,7 +8,7 @@ import Bundle from "./bundle.js"
 // * simplify css
 // * organization
 // * splendor -> gembalya
-// * ' -> " (look up which is best)
+// * " -> ' (look up which is best)
 
 // Other TODOs:
 // * better lobby
@@ -135,7 +135,7 @@ function checkForWin(G, ctx) {
 }
 
 export const Splendor = {
-    name: "Splendor",
+    name: 'Splendor',
     setup: setupGame,
     moves: {
         takeGems: takeGems,

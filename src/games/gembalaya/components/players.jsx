@@ -1,26 +1,26 @@
-import React from "react"
-import { Card } from "./cards.jsx"
+import React from 'react'
+import { Card } from './cards.jsx'
 
 function Player(props) {
 
     let cards = []
     for (const gem in props.cards) {
         // No gold cards.
-        if (gem !== "gold") { cards.push(<div key={gem} className={"gem gem-" + gem}>{props.cards[gem]}</div>) }
+        if (gem !== 'gold') { cards.push(<div key={gem} className={'gem gem-' + gem}>{props.cards[gem]}</div>) }
     }
 
     let gems = []
     for (const gem in props.gems) {
-        gems.push(<div key={gem} className={"gem gem-player-coin gem-" + gem}>{props.gems[gem]}</div>)
+        gems.push(<div key={gem} className={'gem gem-player-coin gem-' + gem}>{props.gems[gem]}</div>)
     }
 
     return (
         <div className="player-wrapper">
-            <div className={"player-aspect-box" + (props.active ? " selected-card" : "")}>
+            <div className={'player-aspect-box' + (props.active ? ' selected-card' : '')}>
                 <div className="player-mat">
                     <div className="player-info">
                         <span className="points">{props.score}</span>
-                        <span className="player-name">{"Player " + props.playerID}</span>
+                        <span className="player-name">{'Player ' + props.playerID}</span>
                     </div>
                     <div className="player-holdings">
                         {cards}
@@ -50,7 +50,7 @@ export function Players(props) {
         ></Player>
         )
     }
-    return <div className="player-column">{players}</div>
+    return <div className='player-column'>{players}</div>
 }
 
 export function PlayerReserves(props) {

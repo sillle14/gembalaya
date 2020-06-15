@@ -1,24 +1,24 @@
-import React from "react"
+import React from 'react'
 
 function Noble(props) {
     let costs = []; 
     for (const gem in props.cost) {
         if (props.cost[gem] > 0) {
-            const className = "gem gem-noble-cost gem-" + gem;
+            const className = 'gem gem-noble-cost gem-' + gem;
             costs.push(
                 <div className={className} key={gem}>{props.cost[gem]}</div>
             )
         }
     }
-    let borderClass = ""
+    let borderClass = ''
     if (props.selected) {
-        borderClass = " selected-noble"
+        borderClass = ' selected-noble'
     } else if (props.available) {
-        borderClass = " available-noble"
+        borderClass = ' available-noble'
     }
     return (
         <div className="noble-wrapper">
-            <div className={"noble-aspect-box" + borderClass} onClick={() => props.onSelectNoble(props.position)}>
+            <div className={'noble-aspect-box' + borderClass} onClick={() => props.onSelectNoble(props.position)}>
                 <div className="noble">
                     <span className="points">3</span>
                     <div className="noble-cost">{costs}</div>

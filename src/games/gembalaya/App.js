@@ -1,6 +1,6 @@
 import { Client } from 'boardgame.io/react';
 import { Table } from './components/board'
-import {Splendor} from "./Game"
+import {Splendor} from './Game'
 import logger from 'redux-logger';
 import { applyMiddleware } from 'redux';
 import { SocketIO } from 'boardgame.io/multiplayer'

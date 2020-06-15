@@ -39,10 +39,10 @@ class Bundle {
             deficit += Math.max(bundle2[gem] - bundle1[gem], 0)
             bundle1[gem] = Math.max(bundle1[gem] - bundle2[gem], 0)
         }
-        if (bundle1["gold"] < deficit) {
-            throw new Error("Not enough gems")
+        if (bundle1['gold'] < deficit) {
+            throw new Error('Not enough gems')
         }
-        bundle1["gold"] -= deficit
+        bundle1['gold'] -= deficit
     }
 
     discountBundle(otherBundle) {

@@ -31,6 +31,7 @@
 .action-box {
     background-color: lightblue;
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     grid-area: action;
     padding: 2%;

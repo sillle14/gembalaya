@@ -25,7 +25,7 @@ function Coin(props) {
 export function Piles(props) {
     let gemPiles = [];
     function addGem(gem) {
-        const selected = props.selectedCoins[gem] || false
+        const selected = props.myTurn && (props.selectedCoins[gem] || false)
         gemPiles.push(<Coin gem={gem} key={gem} count={props.gems[gem]} selected={selected} onSelectCoin={props.onSelectCoin}></Coin>)
     }
     gems.forEach(addGem)

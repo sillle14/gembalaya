@@ -10,9 +10,8 @@ import './styles/noble.css'
 import './styles/player.css'
 import './styles/board.css'
 import Bundle from '../bundle.js'
-import Player from '../player.js'
 
-function CoinMessage(props) {
+function GemMessage(props) {
     let message = ['Take ']
     for (const gem in props.gems) {
         if (props.gems[gem] > 0) {
@@ -39,12 +38,18 @@ function ActionBox(props) {
         const buyDisabled = props.validCardBuy ? '' : 'disabled'
         const reserveDisabled = props.validCardReserve ? '' : 'disabled'
         options = <div className="options">
-            <button disabled={buyDisabled} onClick={props.buyCard}>Buy</button>
-            <button disabled={reserveDisabled} onClick={props.reserveCard}>Reserve</button>
+            <button disabled={buyDisabled} onClick={() => props.buyCard()}>Buy</button>
+            <button disabled={reserveDisabled} onClick={() => props.reserveCard()}>Reserve</button>
         </div>
-    } else if (props.selectedCoins.gemCount !== 0) {
+    } else if (Bundle.getGemCount(props.selectedGems) !== 0) {
         const disabled = props.validGemPick ? '' : 'disabled'
-        options = <div className="options"><CoinMessage gems={props.selectedCoins}></CoinMessage><button disabled={disabled} onClick={props.takeGems}>Confirm</button></div>
+        options = [
+            <div key="option" className="options">
+                <GemMessage gems={props.selectedGems}></GemMessage>
+                <button disabled={disabled} onClick={() => props.takeGems()}>Confirm</button>
+            </div>,
+            <button key="clear" onClick={() => props.clearGems()}>Clear</button>
+        ]
     } else if (props.nobleSelection && (props.selectedNoble || props.selectedNoble === 0)) {
         options = <button onClick={props.takeNoble}>Select</button>
     } else if (props.nobleSelection) {
@@ -55,23 +60,10 @@ function ActionBox(props) {
 
     return (
         <div className="action-box">
-            <button onClick={props.clearSelection}>Clear</button>
+            
             {options}
         </div>
     )
-}
-
-export function getCardFromPosition(cardPosition, G) {
-    if (cardPosition.reserved) {
-        // In a reserve board.
-        return G.players[cardPosition.playerID].reserves[cardPosition.position]
-    } else if (cardPosition.position !== undefined) {
-        // On the main board.
-        return G.board[cardPosition.tier][cardPosition.position]
-    } else {
-        // From the deck.
-        return G.decks[cardPosition.tier][0]
-    }
 }
 
 export class GembalayaTable extends React.Component {
@@ -81,14 +73,7 @@ export class GembalayaTable extends React.Component {
             selectedCardPosition: {},
             selectedCoins: new Bundle(),
         }
-        this.onSelectCard = this.onSelectCard.bind(this)
-        this.onSelectCoin = this.onSelectCoin.bind(this)
-        this.clearSelection = this.clearSelection.bind(this)
-        this.takeGems = this.takeGems.bind(this)
-        this.buyCard = this.buyCard.bind(this)
         this.takeNoble = this.takeNoble.bind(this)
-        this.reserveCard = this.reserveCard.bind(this)
-        this.checkForNobles = this.checkForNobles.bind(this)
         this.onSelectNoble = this.onSelectNoble.bind(this)
 
         this.cleanup = this.cleanup.bind(this)
@@ -111,77 +96,6 @@ export class GembalayaTable extends React.Component {
         window.removeEventListener('beforeunload', this.cleanup);
     }
 
-    onSelectCard(cardPosition) {
-        if (
-            this.props.playerID !== this.props.ctx.currentPlayer ||     // If it is not your turn, do nothing.
-            this.props.ctx.gameover ||                                  // No moves if the game is over.
-            this.state.nobleSelection
-        ) { return }
-
-        // Can't reserve from an empty deck.
-        if (
-            cardPosition.position === undefined &&
-            this.props.G.decks[cardPosition.tier].length === 0
-        ) { return }
-
-        let validCardBuy
-        if (cardPosition.position === 'deck') {
-            validCardBuy = false   // Can't buy off the deck
-        } else {
-            validCardBuy = true
-            const cardCost = getCardFromPosition(cardPosition, this.props.G).cost
-            const purchasingPower = Player.getEffectiveGems(
-                this.props.G.players[this.props.ctx.currentPlayer]
-            )
-            try {
-                // Raises an error if the player can't afford the card.
-                new Bundle(purchasingPower).subtractBundle(cardCost)
-            } catch {
-                validCardBuy = false;
-            }
-        }
-        const validCardReserve = (
-            this.props.G.players[this.props.playerID].reserves.length < 3 &&
-            !cardPosition.reserved
-        )
-        this.setState({
-            selectedCardPosition: cardPosition,
-            validCardBuy: validCardBuy, 
-            validCardReserve: validCardReserve, 
-            selectedCoins: new Bundle()
-        })
-    }
-
-    onSelectCoin(gem) {
-        this.setState(prevState => {
-            if (
-                this.props.playerID !== this.props.ctx.currentPlayer || // Not your turn.
-                gem === 'gold' ||                                       // Can't take gold.
-                prevState.selectedCoins.gemCount >= 3 ||                // Can't take more than 3 coins.
-                prevState.selectedCoins[gem] > 1 ||                     // Can't take more than 2 of each.
-                this.props.G.gems[gem] < 1 ||                           // Can't take if none left.
-                this.props.ctx.gameover ||                              // No moves if game over.
-                this.state.nobleSelection                               // Can't take card if noble selection phase
-            ) { return }
-
-            // Doubles are only allow if no other gems are picked and there at least four left.
-            if (
-                prevState.selectedCoins[gem] === 1 &&
-                (prevState.selectedCoins.gemCount !== 1 || this.props.G.gems[gem] < 4)
-            ) { return {} }
-
-            // If a double has already been selected, no more gems are allowed.
-            if (Object.values(prevState.selectedCoins).filter(count => count > 1).length > 0) { return {} }
-
-            let selectedCoins = new Bundle(prevState.selectedCoins)
-            selectedCoins[gem] += 1
-
-            // Picking the gems is a valid move if there are 3 gems (guaranteed to be distinct) or 2 of the same.
-            const validGemPick = selectedCoins.gemCount === 3 || (Object.values(selectedCoins).filter(count => count === 2).length > 0)
-            return {selectedCoins: selectedCoins, validGemPick: validGemPick, selectedCardPosition: {}}
-        })
-    }
-
     onSelectNoble(position) {
         if (
             this.props.playerID !== this.props.ctx.currentPlayer || // Not your turn.
@@ -191,78 +105,25 @@ export class GembalayaTable extends React.Component {
         this.setState({selectedNoble: position})
     }
 
-    clearSelection() {
-        this.setState({selectedCardPosition: {}, selectedCoins: new Bundle(), selectedNoble: null, nobleSelection: false})
-    }
-
-    checkForNobles() {
-        let availableNobles = []
-        const currentPlayer = this.props.G.players[this.props.ctx.currentPlayer]
-        for (let i = 0; i < this.props.G.nobles.length; i ++) {
-            const noble = this.props.G.nobles[i]
-            console.log(noble.cost)
-            try {
-                // Raises an error if the player can't afford the card.
-                new Bundle(currentPlayer.cards).subtractBundle(noble.cost)
-                availableNobles.push(i)
-            } catch { }
-        }
-        return availableNobles
-    }
-
-    takeGems() {
-        this.clearSelection()
-        this.props.moves.takeGems(this.state.selectedCoins)
-
-        const availableNobles = this.checkForNobles()
-        if (availableNobles.length > 0) {
-            this.setState({availableNobles: availableNobles, nobleSelection: true})
-            return
-        }
-        // TODO: Gem discarding
-        this.props.moves.checkForWin()
-        this.props.events.endTurn()
-    }
-
-    buyCard() {
-        this.clearSelection()
-        this.props.moves.buyCard(this.state.selectedCardPosition)
-
-        const availableNobles = this.checkForNobles()
-        if (availableNobles.length > 0) {
-            this.setState({availableNobles: availableNobles, nobleSelection: true})
-            return
-        }
-        this.props.moves.checkForWin()
-        this.props.events.endTurn()
-    }
-
     takeNoble() {
         this.clearSelection()
         this.props.moves.takeNoble(this.state.selectedNoble)
         this.props.moves.checkForWin()
         this.props.events.endTurn()
     }
-
-    reserveCard() {
-        this.clearSelection()
-        this.props.moves.reserveCard(this.state.selectedCardPosition)
-
-        const availableNobles = this.checkForNobles()
-        if (availableNobles.length > 0) {
-            this.setState({availableNobles: availableNobles, nobleSelection: true})
-            return
-        }
-        // TODO: gem discarding
-        this.props.moves.checkForWin()
-        this.props.events.endTurn()
-    }
     
     render () {
+        const myTurn = this.props.playerID === this.props.ctx.currentPlayer
         return (
             <div className="board">
                 <Players players={this.props.G.players} currentPlayer={this.props.ctx.currentPlayer}></Players>
-                <CardGrid board={this.props.G.board} decks={this.props.G.decks} selectedCard={this.state.selectedCardPosition} onSelectCard={this.onSelectCard}></CardGrid>
+                <CardGrid 
+                    board={this.props.G.board} 
+                    decks={this.props.G.decks} 
+                    selectedCard={this.props.G.selectedCardPosition} 
+                    onSelectCard={this.props.moves.selectCard}
+                    myTurn={myTurn}
+                ></CardGrid>
                 <NobleSet
                     nobles={this.props.G.nobles}
                     nobleSelection={this.state.nobleSelection}
@@ -270,18 +131,18 @@ export class GembalayaTable extends React.Component {
                     selectedNoble={this.state.selectedNoble}
                     onSelectNoble={this.onSelectNoble}
                 ></NobleSet>
-                <Piles gems={this.props.G.gems} selectedCoins={this.state.selectedCoins} onSelectCoin={this.onSelectCoin}></Piles>
+                <Piles gems={this.props.G.gems} selectedCoins={this.props.G.selectedGems} onSelectCoin={this.props.moves.selectGem} myTurn={myTurn}></Piles>
                 <ActionBox 
-                    selectedCard={this.state.selectedCardPosition} 
-                    selectedCoins={this.state.selectedCoins}
-                    clearSelection={this.clearSelection}
-                    validGemPick={this.state.validGemPick}
-                    validCardBuy={this.state.validCardBuy}
-                    validCardReserve={this.state.validCardReserve}
-                    takeGems={this.takeGems}
-                    buyCard={this.buyCard}
-                    reserveCard={this.reserveCard}
-                    myTurn={this.props.playerID === this.props.ctx.currentPlayer}
+                    selectedCard={this.props.G.selectedCardPosition} 
+                    selectedGems={this.props.G.selectedGems}
+                    clearGems={this.props.moves.clearGems}
+                    validGemPick={this.props.G.validGemPick}
+                    validCardBuy={this.props.G.validCardBuy}
+                    validCardReserve={this.props.G.validCardReserve}
+                    takeGems={this.props.moves.takeGems}
+                    buyCard={this.props.moves.buyCard}
+                    reserveCard={this.props.moves.reserveCard}
+                    myTurn={myTurn}
                     gameOver={this.props.ctx.gameover}
                     nobleSelection={this.state.nobleSelection}
                     selectedNoble={this.state.selectedNoble}
@@ -290,9 +151,9 @@ export class GembalayaTable extends React.Component {
                 <div className="sidebar">
                     <PlayerReserves
                         reserves={this.props.G.players[this.props.playerID].reserves}
-                        onSelectCard={this.onSelectCard}
+                        onSelectCard={this.props.moves.selectCard}
                         playerID={this.props.playerID}
-                        selectedCard={this.state.selectedCardPosition} 
+                        selectedCard={this.props.G.selectedCardPosition}  
                     ></PlayerReserves>
                 </div>
             </div>

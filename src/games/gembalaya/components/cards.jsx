@@ -48,10 +48,10 @@ export function CardGrid(props) {
     for (let tier = 2; tier > -1; tier--) {
         let cards = []
         const cardsRemaining = props.decks[tier].length
-        const deckSelected = props.selectedCard.tier === tier && props.selectedCard.position === undefined
+        const deckSelected = props.selectedCard.tier === tier && props.selectedCard.position === undefined && props.myTurn
         cards.push(<CardBack key={tier} tier={tier} count={cardsRemaining} selected={deckSelected} onSelectCard={props.onSelectCard}></CardBack>);
         for (let i = 0; i < props.board[tier].length; i++) {
-            const selected = props.selectedCard.tier === tier && props.selectedCard.position === i
+            const selected = props.selectedCard.tier === tier && props.selectedCard.position === i && props.myTurn
             const card = props.board[tier][i]
             if (card) {
                 cards.push(<Card 

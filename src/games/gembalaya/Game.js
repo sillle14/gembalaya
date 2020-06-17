@@ -1,10 +1,11 @@
 import { tier1Cards, tier2Cards, tier3Cards, nobles } from './static'
-import Player from './player.js'
-import Bundle from './bundle.js'
+import * as moves from './moves'
+import Player from './player'
+import Bundle from './bundle'
 
 // Refactoring TODOs:
 // * coin -> gem
-// * only use moves
+// * only use moves DONE except for nobles
 // * simplify css
 // * organization
 
@@ -48,87 +49,24 @@ function setupGame(ctx, setupData) {
         gold: 5  // Always 5 gold
     })
 
-    // NOTE: Running with a server means clients only recieve deconstructed G objects in such a way that all 
-    //      prototypes are lost. So, although the Bundle class is useful for organization, only its static 
-    //      methods can be used on objects in G.
+    // NOTE: G is communicated between servers and clients in JSON, so only JSON serializable objects are allowed here.
+    //      So, although the Bundle class is useful for organization, only its static methods can be used safely on objects in G.
     return {
+        // Core components
         decks: [tier1Deck, tier2Deck, tier3Deck],
         board: [tier1Board, tier2Board, tier3Board],
         gems: gems,
         nobles: gameNobles,
-        players: players
-    }
-}
+        players: players,
 
-function takeGems(G, ctx, gems) {
-    Bundle.subtractBundles(G.gems, gems)
-    Bundle.addBundles(G.players[ctx.currentPlayer].gems, gems)
-}
-
-function buyCard(G, ctx, cardPosition) {
-    let card
-    const player = G.players[ctx.currentPlayer]
-    if (cardPosition.reserved) {
-        card = player.reserves.splice(cardPosition.postion, 1)[0]
-    } else {
-        card = G.board[cardPosition.tier][cardPosition.position]
-        // Replace the card. 
-        G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
-    }
-
-    let effectiveCost = new Bundle(card.cost)
-    effectiveCost.discountBundle(player.cards)
-
-    Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.
-    Bundle.addBundles(G.gems, effectiveCost)            // Return gems.
-    player.cards[card.gem] += 1                         // Add bonus.
-    player.score += card.points                         // Add score.
-}
-
-function reserveCard(G, ctx, cardPosition) {
-    const player = G.players[ctx.currentPlayer]
-    let card
-    if (cardPosition.position) {
-        // For some reason, we need to copy the card from the game state.
-        card = {...G.board[cardPosition.tier][cardPosition.position]}
-        
-        // Replace the card. 
-        G.board[cardPosition.tier][cardPosition.position] = G.decks[cardPosition.tier].pop()
-    } else {
-        card = {...G.decks[cardPosition.tier].pop()}
-    }
-    // Add the card to the players reserves.
-    player.reserves.push(card)
-
-    // Take a gold gem, if there is one left.
-    try {
-        Bundle.subtractBundles(G.gems, {gold: 1})
-        Bundle.addBundles(player.gems, {gold: 1})
-    } catch { }
-}
-
-function takeNoble(G, ctx, noblePosition) {
-    const player = G.players[ctx.currentPlayer]
-    G.nobles.splice(noblePosition, 1)
-    player.score += 3
-}
-
-// Call this move at the end of a players turn, since we don't check for win conditions otherwise.
-function checkForWin(G, ctx) {
-    // Only end if it is the first player's turn.
-    // Note that turn 0 is setup, so the turns are effectively indexed at 1.
-    if ((ctx.turn) % ctx.numPlayers === 0){
-        // If anyone has more than 15, check for a winner.
-        if (Object.values(G.players).filter(player => player.score >= 15).length > 0) {
-            const winningScore = Math.max.apply(null, Object.values(G.players).map(player => player.score))
-            let winners = []
-            for (const playerID in G.players) {
-                if (G.players[playerID].score === winningScore) {
-                    winners.push(playerID)
-                }
-            }
-            ctx.events.endGame({winners: winners})
-        }
+        // Game state
+        selectedGems: new Bundle(),
+        selectedCardPosition: {},
+        selectedNoble: null,
+        validGemPick: false,
+        validCardBuy: false,
+        validCardReserve: false,
+        availableNobles: []
     }
 }
 
@@ -136,11 +74,13 @@ export const Gembalaya = {
     name: 'Gembalaya',
     setup: setupGame,
     moves: {
-        takeGems: takeGems,
-        buyCard: buyCard,
-        reserveCard: reserveCard,
-        takeNoble: takeNoble,
-        checkForWin: checkForWin,
+        takeGems: moves.takeGems,
+        buyCard: moves.buyCard,
+        reserveCard: moves.reserveCard,
+        takeNoble: moves.takeNoble,
+        selectGem: moves.selectGem,
+        selectCard: moves.selectCard,
+        clearGems: moves.clearGems,
     },
 
     minPlayers: 2,

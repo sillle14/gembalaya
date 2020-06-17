@@ -1,0 +1,209 @@
+import { INVALID_MOVE } from 'boardgame.io/core'
+import Bundle from './bundle.js'
+import Player from './player.js'
+
+/***************
+ *   HELPERS   *
+ ***************/
+
+function getCardFromPosition(cardPosition, G) {
+    if (cardPosition.reserved) {
+        // In a reserve board.
+        return G.players[cardPosition.playerID].reserves[cardPosition.position]
+    } else if (cardPosition.position !== undefined) {
+        // On the main board.
+        return G.board[cardPosition.tier][cardPosition.position]
+    } else {
+        // From the deck.
+        return G.decks[cardPosition.tier][0]
+    }
+}
+
+// Call this at the end of a player's turn, since we don't check for win conditions otherwise.
+function checkForWin(G, ctx) {
+    // Only end if it is the first player's turn.
+    // Note that turn 0 is setup, so the turns are effectively indexed at 1.
+    if ((ctx.turn) % ctx.numPlayers === 0){
+        // If anyone has more than 15, check for a winner.
+        if (Object.values(G.players).filter(player => player.score >= 15).length > 0) {
+            const winningScore = Math.max.apply(null, Object.values(G.players).map(player => player.score))
+            let winners = []
+            for (const playerID in G.players) {
+                if (G.players[playerID].score === winningScore) {
+                    winners.push(playerID)
+                }
+            }
+            ctx.events.endGame({winners: winners})
+        }
+    }
+}
+
+function checkForNobles(G, ctx) {
+    let availableNobles = []
+    const currentPlayer = G.players[ctx.currentPlayer]
+    for (let i = 0; i < G.nobles.length; i ++) {
+        const noble = G.nobles[i]
+        try {
+            // Raises an error if the player can't afford the card.
+            new Bundle(currentPlayer.cards).subtractBundle(noble.cost)
+            availableNobles.push(i)
+        } catch { }
+    }
+    return availableNobles
+}
+
+/***************
+ *   ACTIONS   *
+ ***************/
+
+
+export function takeGems(G, ctx) {
+    // Take the gems.
+    Bundle.subtractBundles(G.gems, G.selectedGems)
+    Bundle.addBundles(G.players[ctx.currentPlayer].gems, G.selectedGems)
+
+    // Clear selection
+    G.selectedGems = new Bundle()
+
+    const availableNobles = checkForNobles(G, ctx)
+    if (availableNobles.length > 0) {
+        // TODO: Implement noble phase.
+    }
+    // TODO: Gem discarding
+    checkForWin(G, ctx)
+    ctx.events.endTurn()
+}
+
+export function buyCard(G, ctx) {
+    let card
+    const player = G.players[ctx.currentPlayer]
+    if (G.selectedCardPosition.reserved) {
+        card = player.reserves.splice(G.selectedCardPosition.postion, 1)[0]
+    } else {
+        card = G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position]
+        // Replace the card. 
+        G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position] = G.decks[G.selectedCardPosition.tier].pop()
+    }
+
+    let effectiveCost = new Bundle(card.cost)
+    effectiveCost.discountBundle(player.cards)
+
+    Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.
+    Bundle.addBundles(G.gems, effectiveCost)            // Return gems.
+    player.cards[card.gem] += 1                         // Add bonus.
+    player.score += card.points                         // Add score.
+
+    // Clear selected card
+    G.selectedCardPosition = {}
+
+    const availableNobles = checkForNobles(G, ctx)
+    if (availableNobles.length > 0) {
+        // TODO: Implement noble phase.
+    }
+    checkForWin(G, ctx)
+    ctx.events.endTurn()
+}
+
+export function reserveCard(G, ctx) {
+    const player = G.players[ctx.currentPlayer]
+    let card
+    if (G.selectedCardPosition.position === undefined) {
+        card = {...G.decks[G.selectedCardPosition.tier].pop()}
+    } else {
+        // For some reason, we need to copy the card from the game state.
+        card = {...G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position]}
+        
+        // Replace the card. 
+        G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position] = G.decks[G.selectedCardPosition.tier].pop()
+    }
+    // Add the card to the players reserves.
+    player.reserves.push(card)
+
+    // Take a gold gem, if there is one left.
+    try {
+        Bundle.subtractBundles(G.gems, {gold: 1})
+        Bundle.addBundles(player.gems, {gold: 1})
+    } catch { }
+
+    // Clear selected card
+    G.selectedCardPosition = {}
+
+    const availableNobles = checkForNobles(G, ctx)
+    if (availableNobles.length > 0) {
+        // TODO: Implement noble phase.
+    }
+    checkForWin(G, ctx)
+    ctx.events.endTurn()
+}
+
+export function takeNoble(G, ctx, noblePosition) {
+    const player = G.players[ctx.currentPlayer]
+    G.nobles.splice(noblePosition, 1)
+    player.score += 3
+}
+
+/*******************
+ *    SELECTIONS   *
+ *******************/
+
+export function selectGem(G, ctx, gem) {
+    // TODO: Check that moves can't be taken on game over and when it isn't your turn.
+    // TODO: Use phases to make sure you can't use this move in noble selection.
+    if (
+        gem === 'gold' ||                                       // Can't take gold.
+        Bundle.getGemCount(G.selectedGems) >= 3 ||              // Can't take more than 3 coins.
+        G.selectedGems[gem] > 1 ||                              // Can't take more than 2 of each.
+        G.gems[gem] < 1                                         // Can't take if none left.
+    ) { return INVALID_MOVE }
+
+    // Doubles are only allow if no other gems are picked and there at least four left.
+    if (
+        G.selectedGems[gem] === 1 &&
+        (Bundle.getGemCount(G.selectedGems) !== 1 || G.gems[gem] < 4)
+    ) { return INVALID_MOVE }
+
+    // If a double has already been selected, no more gems are allowed.
+    if (Object.values(G.selectedGems).filter(count => count > 1).length > 0) { return INVALID_MOVE }
+
+    // Select the gem.
+    G.selectedGems[gem] += 1
+
+    // Clear any selected cards.
+    G.selectedCardPosition = {}
+
+    // Picking the gems is a valid move if there are 3 gems (guaranteed to be distinct) or 2 of the same.
+    G.validGemPick = G.selectedGems.gemCount === 3 || (Object.values(G.selectedGems).filter(count => count === 2).length > 0)
+}
+
+export function clearGems(G, ctx) { G.selectedGems = new Bundle() }
+
+export function selectCard(G, ctx, cardPosition) {
+    // Can't reserve from an empty deck.
+    if (cardPosition.position === undefined && G.decks[cardPosition.tier].length === 0) { 
+        return INVALID_MOVE 
+    }
+
+    if (cardPosition.position === 'deck') {
+        G.validCardBuy = false   // Can't buy off the deck
+    } else {
+        G.validCardBuy = true
+        const cardCost = getCardFromPosition(cardPosition, G).cost
+        const purchasingPower = Player.getEffectiveGems(G.players[ctx.currentPlayer])
+        try {
+            // Raises an error if the player can't afford the card.
+            new Bundle(purchasingPower).subtractBundle(cardCost)
+        } catch {
+            G.validCardBuy = false;
+        }
+    }
+    G.validCardReserve = (
+        G.players[ctx.currentPlayer].reserves.length < 3 &&
+        !cardPosition.reserved
+    )
+
+    // Clear selected gems.
+    G.selectedGems = new Bundle()
+
+    // Select the card.
+    G.selectedCardPosition = cardPosition
+}

@@ -55,12 +55,11 @@ function ActionBox(props) {
     } else if (props.nobleStage) {
         options = <span>Select a noble.</span>
     } else {
-        options = <span>Select a move.</span>
+        options = <span>Select a card or gem.</span>
     }
 
     return (
         <div className="action-box">
-            
             {options}
         </div>
     )

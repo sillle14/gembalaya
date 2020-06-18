@@ -11,8 +11,8 @@ import { Lobby } from 'boardgame.io/react';
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 
 // TODO: fix this
-// const SERVER = `https://${window.location.hostname}` // Prod
- const SERVER = `http://${window.location.hostname}:8000`  // Local
+const SERVER = `https://${window.location.hostname}` // Prod
+// const SERVER = `http://${window.location.hostname}:8000`  // Local
 
 if (NO_LOBBY) {
     // Code for local deployment no lobby both players on one screen, no seperate server.

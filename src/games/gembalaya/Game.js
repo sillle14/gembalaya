@@ -5,7 +5,6 @@ import Bundle from './bundle'
 
 // Refactoring TODOs:
 // * coin -> gem
-// * only use moves DONE except for nobles
 // * simplify css
 // * organization
 
@@ -82,7 +81,16 @@ export const Gembalaya = {
         selectCard: moves.selectCard,
         clearGems: moves.clearGems,
     },
-
+    turn: {
+        stages: {
+            nobles: {
+                moves: {
+                    selectNoble: moves.selectNoble,
+                    takeNoble: moves.takeNoble
+                }
+            }
+        }
+    },
     minPlayers: 2,
     maxPlayers: 4,
 };

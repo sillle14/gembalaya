@@ -32,8 +32,8 @@ export function NobleSet(props) {
     let nobles = [];
     for (let i = 0; i < props.nobles.length; i++) {
         const cost = props.nobles[i].cost
-        const available = (props.availableNobles || []).includes(i) && props.nobleSelection
-        const selected = i === props.selectedNoble
+        const available = (props.availableNobles || []).includes(i) && props.myTurn
+        const selected = i === props.selectedNoble && props.myTurn
         nobles.push(<Noble
             key={i} 
             cost={cost} 

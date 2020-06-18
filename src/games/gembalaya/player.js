@@ -2,7 +2,7 @@ import Bundle from './bundle.js'
 
 class Player {
     constructor () {
-        this.score = 0
+        this.score = 15
         this.gems = new Bundle()
         this.cards = new Bundle()
         this.reserves = []

@@ -65,13 +65,14 @@ export function takeGems(G, ctx) {
     // Clear selection
     G.selectedGems = new Bundle()
 
-    const availableNobles = checkForNobles(G, ctx)
-    if (availableNobles.length > 0) {
-        // TODO: Implement noble phase.
+    G.availableNobles = checkForNobles(G, ctx)
+    if (G.availableNobles.length > 0) {
+        ctx.events.setStage('nobles')
+    } else {
+        // TODO: Gem discarding
+        checkForWin(G, ctx)
+        ctx.events.endTurn()
     }
-    // TODO: Gem discarding
-    checkForWin(G, ctx)
-    ctx.events.endTurn()
 }
 
 export function buyCard(G, ctx) {
@@ -96,12 +97,13 @@ export function buyCard(G, ctx) {
     // Clear selected card
     G.selectedCardPosition = {}
 
-    const availableNobles = checkForNobles(G, ctx)
-    if (availableNobles.length > 0) {
-        // TODO: Implement noble phase.
+    G.availableNobles = checkForNobles(G, ctx)
+    if (G.availableNobles.length > 0) {
+        ctx.events.setStage('nobles')
+    } else {
+        checkForWin(G, ctx)
+        ctx.events.endTurn()
     }
-    checkForWin(G, ctx)
-    ctx.events.endTurn()
 }
 
 export function reserveCard(G, ctx) {
@@ -128,18 +130,25 @@ export function reserveCard(G, ctx) {
     // Clear selected card
     G.selectedCardPosition = {}
 
-    const availableNobles = checkForNobles(G, ctx)
-    if (availableNobles.length > 0) {
-        // TODO: Implement noble phase.
+    G.availableNobles = checkForNobles(G, ctx)
+    if (G.availableNobles.length > 0) {
+        ctx.events.setStage('nobles')
+    } else {
+        // TODO: Gem discarding
+        checkForWin(G, ctx)
+        ctx.events.endTurn()
     }
-    checkForWin(G, ctx)
-    ctx.events.endTurn()
 }
 
-export function takeNoble(G, ctx, noblePosition) {
-    const player = G.players[ctx.currentPlayer]
-    G.nobles.splice(noblePosition, 1)
-    player.score += 3
+export function takeNoble(G, ctx) {
+    G.nobles.splice(G.selectedNoble, 1)
+    G.players[ctx.currentPlayer].score += 3
+
+    G.selectedNoble = null
+    G.availableNobles = []
+
+    checkForWin(G, ctx)
+    ctx.events.endTurn()
 }
 
 /*******************
@@ -147,8 +156,6 @@ export function takeNoble(G, ctx, noblePosition) {
  *******************/
 
 export function selectGem(G, ctx, gem) {
-    // TODO: Check that moves can't be taken on game over and when it isn't your turn.
-    // TODO: Use phases to make sure you can't use this move in noble selection.
     if (
         gem === 'gold' ||                                       // Can't take gold.
         Bundle.getGemCount(G.selectedGems) >= 3 ||              // Can't take more than 3 coins.
@@ -206,4 +213,11 @@ export function selectCard(G, ctx, cardPosition) {
 
     // Select the card.
     G.selectedCardPosition = cardPosition
+}
+
+export function selectNoble(G, ctx, position) {
+    if (!(G.availableNobles || []).includes(position)) {
+        return INVALID_MOVE
+    }
+    G.selectedNoble = position 
 }

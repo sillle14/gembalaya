@@ -50,9 +50,9 @@ function ActionBox(props) {
             </div>,
             <button key="clear" onClick={() => props.clearGems()}>Clear</button>
         ]
-    } else if (props.nobleSelection && (props.selectedNoble || props.selectedNoble === 0)) {
-        options = <button onClick={props.takeNoble}>Select</button>
-    } else if (props.nobleSelection) {
+    } else if (props.nobleStage && (props.selectedNoble || props.selectedNoble === 0)) {
+        options = <button onClick={() => props.takeNoble()}>Select</button>
+    } else if (props.nobleStage) {
         options = <span>Select a noble.</span>
     } else {
         options = <span>Select a move.</span>
@@ -67,53 +67,10 @@ function ActionBox(props) {
 }
 
 export class GembalayaTable extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            selectedCardPosition: {},
-            selectedCoins: new Bundle(),
-        }
-        this.takeNoble = this.takeNoble.bind(this)
-        this.onSelectNoble = this.onSelectNoble.bind(this)
-
-        this.cleanup = this.cleanup.bind(this)
-    }
-
-    cleanup() {
-        // If a player is in noble selection phase on reload, end their turn so they can't go again.
-        if (this.state.nobleSelection) {
-            this.props.events.endTurn()
-        }
-    }
-
-    // See https://stackoverflow.com/a/39085062
-    componentDidMount(){
-        window.addEventListener('beforeunload', this.cleanup);
-    }
-  
-    componentWillUnmount() {
-        this.cleanup();
-        window.removeEventListener('beforeunload', this.cleanup);
-    }
-
-    onSelectNoble(position) {
-        if (
-            this.props.playerID !== this.props.ctx.currentPlayer || // Not your turn.
-            this.props.ctx.gameover ||                              // No moves if game over.
-            !this.state.nobleSelection                              // Only during noble selection
-        ) { return }
-        this.setState({selectedNoble: position})
-    }
-
-    takeNoble() {
-        this.clearSelection()
-        this.props.moves.takeNoble(this.state.selectedNoble)
-        this.props.moves.checkForWin()
-        this.props.events.endTurn()
-    }
     
     render () {
         const myTurn = this.props.playerID === this.props.ctx.currentPlayer
+        const nobleStage = this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.props.ctx.currentPlayer]
         return (
             <div className="board">
                 <Players players={this.props.G.players} currentPlayer={this.props.ctx.currentPlayer}></Players>
@@ -126,10 +83,10 @@ export class GembalayaTable extends React.Component {
                 ></CardGrid>
                 <NobleSet
                     nobles={this.props.G.nobles}
-                    nobleSelection={this.state.nobleSelection}
-                    availableNobles={this.state.availableNobles}
-                    selectedNoble={this.state.selectedNoble}
-                    onSelectNoble={this.onSelectNoble}
+                    availableNobles={this.props.G.availableNobles}
+                    myTurn={myTurn}
+                    selectedNoble={this.props.G.selectedNoble}
+                    onSelectNoble={this.props.moves.selectNoble}
                 ></NobleSet>
                 <Piles gems={this.props.G.gems} selectedCoins={this.props.G.selectedGems} onSelectCoin={this.props.moves.selectGem} myTurn={myTurn}></Piles>
                 <ActionBox 
@@ -144,9 +101,9 @@ export class GembalayaTable extends React.Component {
                     reserveCard={this.props.moves.reserveCard}
                     myTurn={myTurn}
                     gameOver={this.props.ctx.gameover}
-                    nobleSelection={this.state.nobleSelection}
-                    selectedNoble={this.state.selectedNoble}
-                    takeNoble={this.takeNoble}
+                    nobleStage={nobleStage}
+                    selectedNoble={this.props.G.selectedNoble}
+                    takeNoble={this.props.moves.takeNoble}
                 ></ActionBox>
                 <div className="sidebar">
                     <PlayerReserves

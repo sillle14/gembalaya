@@ -158,7 +158,7 @@ export function takeNoble(G, ctx) {
 export function selectGem(G, ctx, gem) {
     if (
         gem === 'gold' ||                                       // Can't take gold.
-        Bundle.getGemCount(G.selectedGems) >= 3 ||              // Can't take more than 3 coins.
+        Bundle.getGemCount(G.selectedGems) >= 3 ||              // Can't take more than 3 gems.
         G.selectedGems[gem] > 1 ||                              // Can't take more than 2 of each.
         G.gems[gem] < 1                                         // Can't take if none left.
     ) { return INVALID_MOVE }

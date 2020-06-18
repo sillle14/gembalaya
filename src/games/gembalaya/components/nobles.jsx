@@ -18,7 +18,7 @@ function Noble(props) {
     }
     return (
         <div className="noble-wrapper">
-            <div className={'noble-aspect-box' + borderClass} onClick={() => props.onSelectNoble(props.position)}>
+            <div className={'noble-aspect-box' + borderClass} onClick={() => props.selectNoble(props.position)}>
                 <div className="noble">
                     <span className="points">3</span>
                     <div className="noble-cost">{costs}</div>
@@ -40,7 +40,7 @@ export function NobleSet(props) {
             available={available} 
             selected={selected}
             position={i}
-            onSelectNoble={props.onSelectNoble}
+            selectNoble={props.selectNoble}
         ></Noble>
         )
     }

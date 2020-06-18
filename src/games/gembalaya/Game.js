@@ -4,7 +4,6 @@ import Player from './player'
 import Bundle from './bundle'
 
 // Refactoring TODOs:
-// * coin -> gem
 // * simplify css
 // * organization
 

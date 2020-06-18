@@ -15,7 +15,7 @@ export function Card(props) {
     return (
         <div className="card-wrapper">
             <div className={'card-aspect-box' + (props.selected ? ' selected-card' : '')} 
-                onClick={() => props.onSelectCard(props.cardPosition)}>
+                onClick={() => props.selectCard(props.cardPosition)}>
                 <div className={'card card-' + props.gem}>
                     <div className="card-info">
                         <span className="points">{props.points || ''}</span> 
@@ -33,7 +33,7 @@ function CardBack(props) {
     const numeral = 'i'.repeat(props.tier + 1) // Tier is 0 indexed
     return (
         <div className="card-wrapper">
-            <div className={'card-aspect-box' + (props.selected ? ' selected-card': '')} onClick={() => props.onSelectCard({tier: props.tier})}>
+            <div className={'card-aspect-box' + (props.selected ? ' selected-card': '')} onClick={() => props.selectCard({tier: props.tier})}>
                 <div className={'card card-back card-back-' + numeral}>
                     {numeral.toUpperCase()}
                     <span className="card-back-count">{'(' + props.count + ')'}</span>
@@ -49,7 +49,7 @@ export function CardGrid(props) {
         let cards = []
         const cardsRemaining = props.decks[tier].length
         const deckSelected = props.selectedCard.tier === tier && props.selectedCard.position === undefined && props.myTurn
-        cards.push(<CardBack key={tier} tier={tier} count={cardsRemaining} selected={deckSelected} onSelectCard={props.onSelectCard}></CardBack>);
+        cards.push(<CardBack key={tier} tier={tier} count={cardsRemaining} selected={deckSelected} selectCard={props.selectCard}></CardBack>);
         for (let i = 0; i < props.board[tier].length; i++) {
             const selected = props.selectedCard.tier === tier && props.selectedCard.position === i && props.myTurn
             const card = props.board[tier][i]
@@ -61,7 +61,7 @@ export function CardGrid(props) {
                     gem={card.gem} 
                     points={card.points} 
                     selected={selected}
-                    onSelectCard={props.onSelectCard}
+                    selectCard={props.selectCard}
                 ></Card>)
             }
         }

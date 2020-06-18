@@ -71,7 +71,7 @@ export function PlayerReserves(props) {
             gem={card.gem} 
             points={card.points} 
             selected={selected}
-            onSelectCard={props.onSelectCard}
+            selectCard={props.selectCard}
         ></Card>)
     }
 

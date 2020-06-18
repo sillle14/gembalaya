@@ -1,6 +1,6 @@
 import React from 'react'
 import {NobleSet} from './nobles.jsx'
-import {Piles} from './coins.jsx'
+import {Piles} from './gems.jsx'
 import {CardGrid} from './cards.jsx'
 import {Players, PlayerReserves} from './players.jsx'
 import './styles/gem.css'
@@ -78,7 +78,7 @@ export class GembalayaTable extends React.Component {
                     board={this.props.G.board} 
                     decks={this.props.G.decks} 
                     selectedCard={this.props.G.selectedCardPosition} 
-                    onSelectCard={this.props.moves.selectCard}
+                    selectCard={this.props.moves.selectCard}
                     myTurn={myTurn}
                 ></CardGrid>
                 <NobleSet
@@ -86,9 +86,9 @@ export class GembalayaTable extends React.Component {
                     availableNobles={this.props.G.availableNobles}
                     myTurn={myTurn}
                     selectedNoble={this.props.G.selectedNoble}
-                    onSelectNoble={this.props.moves.selectNoble}
+                    selectNoble={this.props.moves.selectNoble}
                 ></NobleSet>
-                <Piles gems={this.props.G.gems} selectedCoins={this.props.G.selectedGems} onSelectCoin={this.props.moves.selectGem} myTurn={myTurn}></Piles>
+                <Piles gems={this.props.G.gems} selectedGems={this.props.G.selectedGems} selectGem={this.props.moves.selectGem} myTurn={myTurn}></Piles>
                 <ActionBox 
                     selectedCard={this.props.G.selectedCardPosition} 
                     selectedGems={this.props.G.selectedGems}
@@ -108,7 +108,7 @@ export class GembalayaTable extends React.Component {
                 <div className="sidebar">
                     <PlayerReserves
                         reserves={this.props.G.players[this.props.playerID].reserves}
-                        onSelectCard={this.props.moves.selectCard}
+                        selectCard={this.props.moves.selectCard}
                         playerID={this.props.playerID}
                         selectedCard={this.props.G.selectedCardPosition}  
                     ></PlayerReserves>

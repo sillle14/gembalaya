@@ -10,6 +10,7 @@ import Bundle from './bundle'
 // Other TODOs:
 // * better lobby
 // * show other players reserves
+// * discard when more than 10 gems
 
 
 // Map player counts to starting gem piles

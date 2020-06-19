@@ -20,8 +20,8 @@
   "scripts": {
     "start": "SINGLE_PORT=1 node -r esm server.js",
     "dev": "REACT_APP_NO_LOBBY=1 react-scripts start",
-    "dev-lobby": "react-scripts start",
-    "dev-server": "nodemon --inspect --trace-warnings -r esm server.js",
+    "dev-lobby": "REACT_APP_ENV=dev react-scripts start",
+    "dev-server": "ENV=dev nodemon --inspect --trace-warnings -r esm server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -10,20 +10,25 @@ import { Lobby } from 'boardgame.io/react';
 
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 
-// TODO: fix this
-const SERVER = `https://${window.location.hostname}` // Prod
-// const SERVER = `http://${window.location.hostname}:8000`  // Local
-
 if (NO_LOBBY) {
-    // Code for local deployment no lobby both players on one screen, no seperate server.
-    ReactDOM.render(
-      <React.StrictMode>
-        <GembalayaClient playerID='0'/>
-        <GembalayaClient playerID='1'/>
-      </React.StrictMode>,
-      document.getElementById('root')
-    );
+  // Code for local deployment no lobby both players on one screen, no seperate server.
+  ReactDOM.render(
+    <React.StrictMode>
+      <GembalayaClient playerID='0'/>
+      <GembalayaClient playerID='1'/>
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
 } else {
+  const ENV = process.env.REACT_APP_ENV
+
+  let SERVER
+  if (ENV === 'dev') {
+    SERVER = `http://${window.location.hostname}:8000`  // Local
+  } else {
+    SERVER = `https://${window.location.hostname}` // Prod
+  }
+
   // Render the lobby. This relies on a running server.
   // TODO: Make the lobby way nicer looking!
   ReactDOM.render(

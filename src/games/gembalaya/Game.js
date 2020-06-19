@@ -10,7 +10,6 @@ import Bundle from './bundle'
 // Other TODOs:
 // * better lobby
 // * add a log
-// * better deployment
 // * show other players reserves
 
 

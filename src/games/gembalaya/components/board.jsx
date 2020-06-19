@@ -3,6 +3,7 @@ import {NobleSet} from './nobles.jsx'
 import {Piles} from './gems.jsx'
 import {CardGrid} from './cards.jsx'
 import {Players, PlayerReserves} from './players.jsx'
+import {Logs, logBundle} from './logs.jsx'
 import './styles/gem.css'
 import './styles/coin.css'
 import './styles/card.css'
@@ -13,11 +14,7 @@ import Bundle from '../bundle.js'
 
 function GemMessage(props) {
     let message = ['Take ']
-    for (const gem in props.gems) {
-        if (props.gems[gem] > 0) {
-            message.push(<span key={gem} className={'gem-' + gem + '-text'}>{props.gems[gem] + ' ' + gem + ' '}</span>)
-        }
-    }
+    message = message.concat(logBundle(props.gems))
     message.push('?')
     return <span>{message}</span>
 }
@@ -111,6 +108,7 @@ export class GembalayaTable extends React.Component {
                         playerID={this.props.playerID}
                         selectedCard={this.props.G.selectedCardPosition}  
                     ></PlayerReserves>
+                    <Logs logs={this.props.G.logs}></Logs>
                 </div>
             </div>
         )

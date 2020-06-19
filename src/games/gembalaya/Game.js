@@ -9,7 +9,6 @@ import Bundle from './bundle'
 
 // Other TODOs:
 // * better lobby
-// * add a log
 // * show other players reserves
 
 
@@ -63,7 +62,8 @@ function setupGame(ctx, setupData) {
         validGemPick: false,
         validCardBuy: false,
         validCardReserve: false,
-        availableNobles: []
+        availableNobles: [],
+        logs: []
     }
 }
 

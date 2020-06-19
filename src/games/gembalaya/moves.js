@@ -33,6 +33,7 @@ function checkForWin(G, ctx) {
                     winners.push(playerID)
                 }
             }
+            G.logs.push({move: 'endGame', winners: winners})
             ctx.events.endGame({winners: winners})
         }
     }
@@ -61,6 +62,8 @@ export function takeGems(G, ctx) {
     // Take the gems.
     Bundle.subtractBundles(G.gems, G.selectedGems)
     Bundle.addBundles(G.players[ctx.currentPlayer].gems, G.selectedGems)
+
+    G.logs.push({player: ctx.currentPlayer, move: 'takeGems', gems: G.selectedGems})
 
     // Clear selection
     G.selectedGems = new Bundle()
@@ -93,6 +96,8 @@ export function buyCard(G, ctx) {
     Bundle.addBundles(G.gems, effectiveCost)            // Return gems.
     player.cards[card.gem] += 1                         // Add bonus.
     player.score += card.points                         // Add score.
+
+    G.logs.push({player: ctx.currentPlayer, move: 'buyCard', card: card, fromReserve: G.selectedCardPosition.reserved})
 
     // Clear selected card
     G.selectedCardPosition = {}
@@ -127,6 +132,8 @@ export function reserveCard(G, ctx) {
         Bundle.addBundles(player.gems, {gold: 1})
     } catch { }
 
+    G.logs.push({player: ctx.currentPlayer, move: 'reserveCard', card: card, hidePoints: G.selectedCardPosition.position === undefined})
+
     // Clear selected card
     G.selectedCardPosition = {}
 
@@ -143,6 +150,8 @@ export function reserveCard(G, ctx) {
 export function takeNoble(G, ctx) {
     G.nobles.splice(G.selectedNoble, 1)
     G.players[ctx.currentPlayer].score += 3
+
+    G.logs.push({player: ctx.currentPlayer, move: 'takeNoble'})
 
     G.selectedNoble = null
     G.availableNobles = []

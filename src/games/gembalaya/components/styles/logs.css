@@ -1,0 +1,21 @@
+.logs {
+    background: lightblue;
+    height: 100%;
+    padding: 5%;
+    margin-top: 1%;
+}
+
+.log-break {
+    border: 1px solid black;
+}
+
+.log-spacer {
+    border: 10px solid black;
+}
+
+.scroll {
+    overflow: auto;
+    height: 50vh;
+    display: flex;
+    flex-direction: column-reverse;
+}

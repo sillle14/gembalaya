@@ -11,7 +11,11 @@ function Player(props) {
 
     let gems = []
     for (const gem in props.gems) {
-        gems.push(<div key={gem} className={'gem gem-player-coin gem-' + gem}>{props.gems[gem]}</div>)
+        gems.push(<div
+            key={gem} 
+            className={'gem gem-player-coin gem-' + gem}
+            onClick={() => props.selectDiscard(gem)}
+        >{props.gems[gem]}</div>)
     }
 
     return (
@@ -47,6 +51,7 @@ export function Players(props) {
             score={player.score}
             playerID={playerID}
             active={active}
+            selectDiscard={props.selectDiscard}
         ></Player>
         )
     }

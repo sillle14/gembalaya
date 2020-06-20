@@ -71,6 +71,8 @@ export function takeGems(G, ctx) {
     G.availableNobles = checkForNobles(G, ctx)
     if (G.availableNobles.length > 0) {
         ctx.events.setStage('nobles')
+    } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
+        ctx.events.setStage('discard')
     } else {
         // TODO: Gem discarding
         checkForWin(G, ctx)
@@ -140,6 +142,8 @@ export function reserveCard(G, ctx) {
     G.availableNobles = checkForNobles(G, ctx)
     if (G.availableNobles.length > 0) {
         ctx.events.setStage('nobles')
+    } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
+        ctx.events.setStage('discard')
     } else {
         // TODO: Gem discarding
         checkForWin(G, ctx)
@@ -155,6 +159,16 @@ export function takeNoble(G, ctx) {
 
     G.selectedNoble = null
     G.availableNobles = []
+
+    checkForWin(G, ctx)
+    ctx.events.endTurn()
+}
+
+export function discardGems(G, ctx) {
+    Bundle.subtractBundles(G.players[ctx.currentPlayer].gems, G.discardedGems)
+    Bundle.addBundles(G.gems, G.discardedGems)
+    G.logs.push({player: ctx.currentPlayer, move: 'discardGems', gems: G.discardedGems})
+    G.discardedGems = new Bundle()
 
     checkForWin(G, ctx)
     ctx.events.endTurn()
@@ -191,7 +205,7 @@ export function selectGem(G, ctx, gem) {
     G.validGemPick = G.selectedGems.gemCount === 3 || (Object.values(G.selectedGems).filter(count => count === 2).length > 0)
 }
 
-export function clearGems(G, ctx) { G.selectedGems = new Bundle() }
+export function clearGems(G, ctx) { G.selectedGems = new Bundle(); G.discardedGems = new Bundle() }
 
 export function selectCard(G, ctx, cardPosition) {
     // Can't reserve from an empty deck.
@@ -229,4 +243,20 @@ export function selectNoble(G, ctx, position) {
         return INVALID_MOVE
     }
     G.selectedNoble = position 
+}
+
+export function selectDiscard(G, ctx, gem) {
+    const ifDiscard = new Bundle(G.players[ctx.currentPlayer].gems)
+    try {
+        G.discardedGems[gem] += 1
+        ifDiscard.subtractBundle(G.discardedGems)  // Raises an error if there are not enough to discard
+    } catch {
+        G.discardedGems[gem] -= 1  // Reset the discard count
+        return INVALID_MOVE
+    }
+    if (ifDiscard.gemCount < 10) {
+        G.discardedGems[gem] -= 1  // Reset the discard count
+        return INVALID_MOVE
+    }
+    G.validDiscard = ifDiscard.gemCount === 10
 }

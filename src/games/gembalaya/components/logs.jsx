@@ -56,6 +56,15 @@ function Log(props) {
             }
             details = <span>{`Game over. ${winStatement}`}</span>
             break;
+        case 'discardGems':
+            details = [
+                <span key="header">{`Player ${log.player} discards gems:`}</span>,
+                <br key="br"></br>,
+                <span key="gems">{[<span key="span">&nbsp;&nbsp;&nbsp;&nbsp;</span>].concat(logBundle(log.gems))}</span>
+            ]
+            break
+        default:
+            break
     }
 
     return <div>{details}</div>
@@ -64,14 +73,13 @@ function Log(props) {
 export function Logs(props) {
     let logs = []
     for (let i = props.logs.length - 1; i >= 0; i--) {
-        console.log(i)
         logs.push(<Log key={i} log={props.logs[i]}></Log>)
         logs.push(<br key={i + "br"}></br>)
     }
 
     return (
         <div className="logs">
-            <span>Game Logs:</span>
+            <span>Game Log:</span>
             <hr className="log-break"></hr>
             <div className="scroll">
                 {logs}

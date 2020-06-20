@@ -13,13 +13,14 @@ import './styles/board.css'
 import Bundle from '../bundle.js'
 
 function GemMessage(props) {
-    let message = ['Take ']
+    let message = [props.verb + ' ']
     message = message.concat(logBundle(props.gems))
     message.push('?')
     return <span>{message}</span>
 }
 
 function ActionBox(props) {
+    // TODO: Organize this better
 
     if (props.gameOver) {
         return <div className="action-box">{'Game over. Winner(s): ' + props.gameOver.winners.join(', ')}</div>
@@ -42,15 +43,26 @@ function ActionBox(props) {
         const disabled = props.validGemPick ? '' : 'disabled'
         options = [
             <div key="option" className="options">
-                <GemMessage gems={props.selectedGems}></GemMessage>
+                <GemMessage gems={props.selectedGems} verb="Take"></GemMessage>
                 <button disabled={disabled} onClick={() => props.takeGems()}>Confirm</button>
             </div>,
             <button key="clear" onClick={() => props.clearGems()}>Clear</button>
         ]
-    } else if (props.nobleStage && (props.selectedNoble || props.selectedNoble === 0)) {
+    } else if (props.stage === "nobles" && (props.selectedNoble || props.selectedNoble === 0)) {
         options = <button onClick={() => props.takeNoble()}>Select</button>
-    } else if (props.nobleStage) {
+    } else if (props.stage === "nobles") {
         options = <span>Select a noble.</span>
+    } else if (props.stage === "discard" && Bundle.getGemCount(props.discardedGems) > 0) {
+        const disabled = props.validDiscard ? '' : 'disabled'
+        options = [
+            <div key="option" className="options">
+                <GemMessage gems={props.discardedGems} verb="Discard"></GemMessage>
+                <button disabled={disabled} onClick={() => props.discardGems()}>Confirm</button>
+            </div>,
+            <button key="clear" onClick={() => props.clearGems()}>Clear</button>
+        ]
+    } else if (props.stage === "discard") {
+        options = <span>Discard down to 10 gems.</span>
     } else {
         options = <span>Select a card or gem.</span>
     }
@@ -66,10 +78,14 @@ export class GembalayaTable extends React.Component {
     
     render () {
         const myTurn = this.props.playerID === this.props.ctx.currentPlayer
-        const nobleStage = this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.props.ctx.currentPlayer]
+        const stage = this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.props.ctx.currentPlayer]
         return (
             <div className="board">
-                <Players players={this.props.G.players} currentPlayer={this.props.ctx.currentPlayer}></Players>
+                <Players 
+                    players={this.props.G.players} 
+                    currentPlayer={this.props.ctx.currentPlayer}
+                    selectDiscard={this.props.moves.selectDiscard}
+                ></Players>
                 <CardGrid 
                     board={this.props.G.board} 
                     decks={this.props.G.decks} 
@@ -88,16 +104,19 @@ export class GembalayaTable extends React.Component {
                 <ActionBox 
                     selectedCard={this.props.G.selectedCardPosition} 
                     selectedGems={this.props.G.selectedGems}
+                    discardedGems={this.props.G.discardedGems}
                     clearGems={this.props.moves.clearGems}
                     validGemPick={this.props.G.validGemPick}
+                    validDiscard={this.props.G.validDiscard}
                     validCardBuy={this.props.G.validCardBuy}
                     validCardReserve={this.props.G.validCardReserve}
                     takeGems={this.props.moves.takeGems}
+                    discardGems={this.props.moves.discardGems}
                     buyCard={this.props.moves.buyCard}
                     reserveCard={this.props.moves.reserveCard}
                     myTurn={myTurn}
                     gameOver={this.props.ctx.gameover}
-                    nobleStage={nobleStage}
+                    stage={stage}
                     selectedNoble={this.props.G.selectedNoble}
                     takeNoble={this.props.moves.takeNoble}
                 ></ActionBox>

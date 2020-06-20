@@ -64,7 +64,9 @@ function setupGame(ctx, setupData) {
         validCardBuy: false,
         validCardReserve: false,
         availableNobles: [],
-        logs: []
+        logs: [],
+        discardedGems: new Bundle(),
+        validDiscard: false,
     }
 }
 
@@ -86,6 +88,13 @@ export const Gembalaya = {
                 moves: {
                     selectNoble: moves.selectNoble,
                     takeNoble: moves.takeNoble
+                }
+            },
+            discard: {
+                moves: {
+                    selectDiscard: moves.selectDiscard,
+                    discardGems: moves.discardGems,
+                    clearGems: moves.clearGems,
                 }
             }
         }

@@ -9,6 +9,8 @@
 
 .sidebar {
     grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
     padding: 1%;
 }
 

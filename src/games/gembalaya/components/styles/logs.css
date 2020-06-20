@@ -1,6 +1,7 @@
 .logs {
     background: lightblue;
     padding: 5%;
+    height: 100%;
     margin-top: 1%;
 }
 
@@ -13,8 +14,9 @@
 }
 
 .scroll {
-    overflow: auto;
-    height: 50vh;
+    overflow-y: auto;
     display: flex;
+    max-height: 50vh;
     flex-direction: column-reverse;
+    font-size: 1.1vw;
 }

@@ -21,11 +21,13 @@ function getCardFromPosition(cardPosition, G) {
 
 // Call this at the end of a player's turn, since we don't check for win conditions otherwise.
 function checkForWin(G, ctx) {
-    // Only end if it is the first player's turn.
-    // Note that turn 0 is setup, so the turns are effectively indexed at 1.
-    if ((ctx.turn) % ctx.numPlayers === 0){
-        // If anyone has more than 15, check for a winner.
-        if (Object.values(G.players).filter(player => player.score >= 15).length > 0) {
+    
+    // If anyone has more than 15, check for a winner.
+    if (Object.values(G.players).filter(player => player.score >= 15).length > 0) {
+        G.logs.push({move: 'gameEnd'})
+        // Only end if it is the first player's turn.
+        // Note that turn 0 is setup, so the turns are effectively indexed at 1.
+        if ((ctx.turn) % ctx.numPlayers === 0) {
             const winningScore = Math.max.apply(null, Object.values(G.players).map(player => player.score))
             let winners = []
             for (const playerID in G.players) {

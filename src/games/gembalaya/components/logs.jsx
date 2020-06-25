@@ -63,6 +63,8 @@ function Log(props) {
                 <span key="gems">{[<span key="span">&nbsp;&nbsp;&nbsp;&nbsp;</span>].concat(logBundle(log.gems))}</span>
             ]
             break
+        case 'gameEnd':
+            details=<span>15 points reached. Last round!</span>
         default:
             break
     }

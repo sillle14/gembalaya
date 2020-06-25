@@ -94,8 +94,13 @@ export function buyCard(G, ctx) {
     let effectiveCost = new Bundle(card.cost)
     effectiveCost.discountBundle(player.cards)
 
+    let spend = new Bundle(player.gems)
     Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.
-    Bundle.addBundles(G.gems, effectiveCost)            // Return gems.
+
+    // Recalculate the true spend to account for gold gems.
+    spend.subtractBundle(player.gems)
+
+    Bundle.addBundles(G.gems, spend)                    // Return gems.
     player.cards[card.gem] += 1                         // Add bonus.
     player.score += card.points                         // Add score.
 

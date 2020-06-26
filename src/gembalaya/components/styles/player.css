@@ -24,12 +24,12 @@
     flex-direction: column;
     justify-content: space-between;
     background: rgb(233, 220, 145);
-    padding: 2%;
 }
 
 .player-info {
     display: flex;
     justify-content: space-between;
+    padding: 2px;
 }
 
 .player-holdings {
@@ -37,12 +37,25 @@
     display: flex;
 }
 
-.player-holdings > * {
+.player-public-reserves {
+    height: 16%;
+    display: flex;
+    align-content: center;
+}
+
+.player-public-reserves > div {
+    height: 100%;
+    width: 8%;
+    font-size: 1.3vw;
+    margin: -2px 2px;
+}
+
+.player-holdings > div {
     clip-path: none;
     height: 100%;
     width: 12%;
     font-size: 1.3vw;
-    margin: 0 2%;
+    margin: -2% 2%;
 }
 
 .gem-player-coin {

@@ -18,6 +18,15 @@ function Player(props) {
         >{props.gems[gem]}</div>)
     }
 
+    let reserves = [<span key="label">Reserves:&nbsp;</span>]
+    for (let i = 0; i < props.reserves.length; i++) {
+        const tier = 'i'.repeat(props.reserves[i].tier)
+        reserves.push(<div
+            key={i}
+            className={'card-back card-back-' + tier}
+        >{tier.toUpperCase()}</div>)
+    }
+
     return (
         <div className="player-wrapper">
             <div className={'player-aspect-box' + (props.active ? ' selected-player' : '')}>
@@ -31,6 +40,9 @@ function Player(props) {
                     </div>
                     <div className="player-holdings">
                         {gems}
+                    </div>
+                    <div className="player-public-reserves">
+                        {reserves}
                     </div>
                 </div>
             </div>
@@ -52,6 +64,7 @@ export function Players(props) {
             playerID={playerID}
             active={active}
             selectDiscard={props.selectDiscard}
+            reserves={player.reserves}
         ></Player>
         )
     }

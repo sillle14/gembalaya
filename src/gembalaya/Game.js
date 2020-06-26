@@ -8,8 +8,8 @@ import Bundle from './bundle'
 // * organization of action box
 
 // Other TODOs:
-// * better lobby
-// * show other players reserves
+// * player names
+// * more lobby css work
 
 
 // Map player counts to starting gem piles

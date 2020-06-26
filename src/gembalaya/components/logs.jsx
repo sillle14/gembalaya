@@ -29,9 +29,9 @@ function Log(props) {
         case 'reserveCard':
             const action = log.move === 'buyCard' ? 'buys' : 'reserves'
             details = [
-                <span>{`Player ${log.player} ${action} tier ${log.card.tier} `}</span>,
+                <span key="reserve 1">{`Player ${log.player} ${action} tier ${log.card.tier} `}</span>,
                 logGem(log.card.gem),
-                <span> card</span>
+                <span key="reserve 2"> card</span>
             ]
             if (log.card.points) {
                 if (!log.hidePoints) {

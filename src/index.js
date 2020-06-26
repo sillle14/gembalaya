@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import GembalayaClient from './games/gembalaya/App';
+import GembalayaClient from './gembalaya/App';
 import * as serviceWorker from './serviceWorker';
-import { GembalayaTable } from './games/gembalaya/components/board'
-import {Gembalaya} from './games/gembalaya/Game'
+import { GembalayaTable } from './gembalaya/components/board'
+import {Gembalaya} from './gembalaya/Game'
 
 import { Lobby } from 'boardgame.io/react';
 

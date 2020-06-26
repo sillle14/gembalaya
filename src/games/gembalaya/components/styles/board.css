@@ -14,7 +14,7 @@
     padding: 1%;
 }
 
-.selected-card, .selected-noble {
+.selected-card, .selected-noble, .selected-player {
     outline: 5px solid orangered;
 }
 
@@ -37,6 +37,11 @@
     justify-content: space-between;
     grid-area: action;
     padding: 2%;
+    margin: 1%;
+}
+
+.action-text {
+    padding: 4px 0;
 }
 
 .options > *{

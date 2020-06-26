@@ -20,7 +20,7 @@ function Player(props) {
 
     return (
         <div className="player-wrapper">
-            <div className={'player-aspect-box' + (props.active ? ' selected-card' : '')}>
+            <div className={'player-aspect-box' + (props.active ? ' selected-player' : '')}>
                 <div className="player-mat">
                     <div className="player-info">
                         <span className="points">{props.score}</span>

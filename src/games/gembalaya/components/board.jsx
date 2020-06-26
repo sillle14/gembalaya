@@ -23,11 +23,13 @@ function ActionBox(props) {
     // TODO: Organize this better
 
     if (props.gameOver) {
-        return <div className="action-box">{'Game over. Winner(s): ' + props.gameOver.winners.join(', ')}</div>
+        return <div className="action-box"><span className="action-text">
+            {'Game over. Winner(s): ' + props.gameOver.winners.join(', ')}
+        </span></div>
     }
 
     if (!props.myTurn) {
-        return <div className="action-box">Wait for your turn!</div>
+        return <div className="action-box"><span className="action-text">Wait for your turn!</span></div>
     }
 
     let options;
@@ -51,7 +53,7 @@ function ActionBox(props) {
     } else if (props.stage === "nobles" && (props.selectedNoble || props.selectedNoble === 0)) {
         options = <button onClick={() => props.takeNoble()}>Select</button>
     } else if (props.stage === "nobles") {
-        options = <span>Select a noble.</span>
+        options = <span className="action-text">Select a noble.</span>
     } else if (props.stage === "discard" && Bundle.getGemCount(props.discardedGems) > 0) {
         const disabled = props.validDiscard ? '' : 'disabled'
         options = [
@@ -62,13 +64,13 @@ function ActionBox(props) {
             <button key="clear" onClick={() => props.clearGems()}>Clear</button>
         ]
     } else if (props.stage === "discard") {
-        options = <span>Discard down to 10 gems.</span>
+        options = <span className="action-text">Discard down to 10 gems.</span>
     } else {
-        options = <span>Select a card or gem.</span>
+        options = <span className="action-text">Select a card or gem.</span>
     }
 
     return (
-        <div className="action-box">
+        <div className="action-box selected-player">
             {options}
         </div>
     )

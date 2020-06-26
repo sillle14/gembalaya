@@ -29,14 +29,14 @@ function checkForWin(G, ctx) {
         // Note that turn 0 is setup, so the turns are effectively indexed at 1.
         if ((ctx.turn) % ctx.numPlayers === 0) {
             const winningScore = Math.max.apply(null, Object.values(G.players).map(player => player.score))
-            let winners = []
+            let winnerIDs = []
             for (const playerID in G.players) {
                 if (G.players[playerID].score === winningScore) {
-                    winners.push(playerID)
+                    winnerIDs.push(playerID)
                 }
             }
-            G.logs.push({move: 'endGame', winners: winners})
-            ctx.events.endGame({winners: winners})
+            G.logs.push({move: 'endGame', winnerIDs: winnerIDs})
+            ctx.events.endGame({winnerIDs: winnerIDs})
         }
     }
 }
@@ -65,7 +65,7 @@ export function takeGems(G, ctx) {
     Bundle.subtractBundles(G.gems, G.selectedGems)
     Bundle.addBundles(G.players[ctx.currentPlayer].gems, G.selectedGems)
 
-    G.logs.push({player: ctx.currentPlayer, move: 'takeGems', gems: G.selectedGems})
+    G.logs.push({playerID: ctx.currentPlayer, move: 'takeGems', gems: G.selectedGems})
 
     // Clear selection
     G.selectedGems = new Bundle()
@@ -106,7 +106,7 @@ export function buyCard(G, ctx) {
     player.cards[card.gem] += 1                         // Add bonus.
     player.score += card.points                         // Add score.
 
-    G.logs.push({player: ctx.currentPlayer, move: 'buyCard', card: card, fromReserve: G.selectedCardPosition.reserved})
+    G.logs.push({playerID: ctx.currentPlayer, move: 'buyCard', card: card, fromReserve: G.selectedCardPosition.reserved})
 
     // Clear selected card
     G.selectedCardPosition = {}
@@ -141,7 +141,7 @@ export function reserveCard(G, ctx) {
         Bundle.addBundles(player.gems, {gold: 1})
     } catch { }
 
-    G.logs.push({player: ctx.currentPlayer, move: 'reserveCard', card: card, hidePoints: G.selectedCardPosition.position === undefined})
+    G.logs.push({playerID: ctx.currentPlayer, move: 'reserveCard', card: card, hidePoints: G.selectedCardPosition.position === undefined})
 
     // Clear selected card
     G.selectedCardPosition = {}
@@ -162,7 +162,7 @@ export function takeNoble(G, ctx) {
     G.nobles.splice(G.selectedNoble, 1)
     G.players[ctx.currentPlayer].score += 3
 
-    G.logs.push({player: ctx.currentPlayer, move: 'takeNoble'})
+    G.logs.push({playerID: ctx.currentPlayer, move: 'takeNoble'})
 
     G.selectedNoble = null
     G.availableNobles = []
@@ -174,7 +174,7 @@ export function takeNoble(G, ctx) {
 export function discardGems(G, ctx) {
     Bundle.subtractBundles(G.players[ctx.currentPlayer].gems, G.discardedGems)
     Bundle.addBundles(G.gems, G.discardedGems)
-    G.logs.push({player: ctx.currentPlayer, move: 'discardGems', gems: G.discardedGems})
+    G.logs.push({playerID: ctx.currentPlayer, move: 'discardGems', gems: G.discardedGems})
     G.discardedGems = new Bundle()
 
     checkForWin(G, ctx)

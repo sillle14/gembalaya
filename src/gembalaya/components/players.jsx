@@ -33,7 +33,7 @@ function Player(props) {
                 <div className="player-mat">
                     <div className="player-info">
                         <span className="points">{props.score}</span>
-                        <span className="player-name">{'Player ' + props.playerID}</span>
+                        <span className="player-name">{props.playerName}</span>
                     </div>
                     <div className="player-holdings">
                         {cards}
@@ -54,6 +54,7 @@ export function Players(props) {
     let players = []
     for (const playerID in props.players) {
         const player = props.players[playerID]
+        const playerName = props.playerMap[playerID]
         const active = props.currentPlayer === playerID
         players.push(
         <Player 
@@ -61,7 +62,7 @@ export function Players(props) {
             cards={player.cards}
             gems={player.gems}
             score={player.score}
-            playerID={playerID}
+            playerName={playerName}
             active={active}
             selectDiscard={props.selectDiscard}
             reserves={player.reserves}

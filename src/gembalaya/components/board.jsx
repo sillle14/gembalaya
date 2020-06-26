@@ -24,8 +24,9 @@ function ActionBox(props) {
     // TODO: Organize this better
 
     if (props.gameOver) {
+        const winners = props.gameOver.winnerIDs.map((id) => props.playerMap[id])
         return <div className="action-box"><span className="action-text">
-            {'Game over. Winner(s): ' + props.gameOver.winners.join(', ')}
+            {'Game over. Winner(s): ' + winners.join(', ')}
         </span></div>
     }
 
@@ -78,6 +79,23 @@ function ActionBox(props) {
 }
 
 export class GembalayaTable extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.playerMap = {}
+        if (this.props.gameMetadata) {
+            for (let i = 0; i < this.props.gameMetadata.length; i ++) {
+                // Limit to 10 characters
+                this.playerMap[this.props.gameMetadata[i].id] = this.props.gameMetadata[i].name.slice(0, 10)
+            }
+        } else {
+            for (let i = 0; i < this.props.ctx.numPlayers; i ++) {
+                this.playerMap[i] = 'Player ' + i
+            }
+        }
+    }
+
+    //TODO: Game metadata holds player names, but only in lobby mode. Use that to get names if possible.
     
     render () {
         const myTurn = this.props.playerID === this.props.ctx.currentPlayer
@@ -88,6 +106,7 @@ export class GembalayaTable extends React.Component {
                     players={this.props.G.players} 
                     currentPlayer={this.props.ctx.currentPlayer}
                     selectDiscard={this.props.moves.selectDiscard}
+                    playerMap={this.playerMap}
                 ></Players>
                 <CardGrid 
                     board={this.props.G.board} 
@@ -119,6 +138,7 @@ export class GembalayaTable extends React.Component {
                     reserveCard={this.props.moves.reserveCard}
                     myTurn={myTurn}
                     gameOver={this.props.ctx.gameover}
+                    playerMap={this.playerMap}
                     stage={stage}
                     selectedNoble={this.props.G.selectedNoble}
                     takeNoble={this.props.moves.takeNoble}
@@ -130,7 +150,7 @@ export class GembalayaTable extends React.Component {
                         playerID={this.props.playerID}
                         selectedCard={this.props.G.selectedCardPosition}  
                     ></PlayerReserves>
-                    <Logs logs={this.props.G.logs}></Logs>
+                    <Logs logs={this.props.G.logs} playerMap={this.playerMap}></Logs>
                 </div>
             </div>
         )

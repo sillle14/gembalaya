@@ -10,6 +10,7 @@ import './styles/card.css'
 import './styles/noble.css'
 import './styles/player.css'
 import './styles/board.css'
+import './styles/logs.css'
 import Bundle from '../bundle.js'
 
 function GemMessage(props) {

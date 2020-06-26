@@ -5,8 +5,8 @@ import GembalayaClient from './gembalaya/App';
 import * as serviceWorker from './serviceWorker';
 import { GembalayaTable } from './gembalaya/components/board'
 import {Gembalaya} from './gembalaya/Game'
-
 import { Lobby } from 'boardgame.io/react';
+import './gembalaya/components/styles/lobby.css'
 
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 

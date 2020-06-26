@@ -1,5 +1,4 @@
 import React from 'react'
-import './styles/logs.css'
 
 function logGem(gem) {
     return <span key={gem} className={'gem-' + gem + '-text'}>{gem}</span>

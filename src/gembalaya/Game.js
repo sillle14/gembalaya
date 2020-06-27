@@ -8,7 +8,6 @@ import Bundle from './bundle'
 // * organization of action box
 
 // Other TODOs:
-// * player names
 // * more lobby css work
 
 

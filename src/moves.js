@@ -24,7 +24,7 @@ function checkForWin(G, ctx) {
     
     // If anyone has more than 15, check for a winner.
     if (Object.values(G.players).filter(player => player.score >= 15).length > 0) {
-        G.logs.push({move: 'gameEnd'})
+        G.logs.push({move: 'gameEnd'}) // TODO: Only if it's the first time!
         // Only end if it is the first player's turn.
         // Note that turn 0 is setup, so the turns are effectively indexed at 1.
         if ((ctx.turn) % ctx.numPlayers === 0) {
@@ -92,9 +92,13 @@ export function buyCard(G, ctx) {
         // Replace the card. 
         G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position] = G.decks[G.selectedCardPosition.tier].pop()
     }
+    console.log(card)
+    console.log(player)
 
     let effectiveCost = new Bundle(card.cost)
     effectiveCost.discountBundle(player.cards)
+
+    console.log(effectiveCost)
 
     let spend = new Bundle(player.gems)
     Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.
@@ -209,6 +213,7 @@ export function selectGem(G, ctx, gem) {
     G.selectedCardPosition = {}
 
     // Picking the gems is a valid move if there are 3 gems (guaranteed to be distinct) or 2 of the same.
+    // TODO: less than 3 should be allowed if all other piles are empty!
     G.validGemPick = G.selectedGems.gemCount === 3 || (Object.values(G.selectedGems).filter(count => count === 2).length > 0)
 }
 

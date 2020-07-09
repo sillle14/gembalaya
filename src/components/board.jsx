@@ -150,7 +150,7 @@ export class GembalayaTable extends React.Component {
                         playerID={this.props.playerID}
                         selectedCard={this.props.G.selectedCardPosition}  
                     ></PlayerReserves>
-                    <Logs logs={this.props.G.logs} playerMap={this.playerMap}></Logs>
+                    <Logs logs={this.props.G.logs} playerMap={this.playerMap} playerID={this.props.playerID}></Logs>
                 </div>
             </div>
         )

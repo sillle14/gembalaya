@@ -1,4 +1,5 @@
 import React from 'react'
+import { animateScroll } from 'react-scroll'
 
 function logGem(gem) {
     return <span key={gem} className={'gem-' + gem + '-text'}>{gem}</span>
@@ -66,6 +67,7 @@ function Log(props) {
             break
         case 'gameEnd':
             details=<span>15 points reached. Last round!</span>
+            break
         default:
             break
     }
@@ -73,20 +75,40 @@ function Log(props) {
     return <div>{details}</div>
 }
 
-export function Logs(props) {
-    let logs = []
-    for (let i = props.logs.length - 1; i >= 0; i--) {
-        logs.push(<Log key={i} log={props.logs[i]} playerMap={props.playerMap}></Log>)
-        logs.push(<br key={i + "br"}></br>)
+export class Logs extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.bottom = React.createRef();
     }
 
-    return (
-        <div className="logs">
-            <span>Game Log:</span>
-            <hr className="log-break"></hr>
-            <div className="scroll">
-                {logs}
+    scrollToBottom = () => {
+        animateScroll.scrollToBottom({containerId: this.props.playerID + '-log', duration: 0});
+    }
+    
+    componentDidMount() { this.scrollToBottom() }
+
+    componentDidUpdate(prevProps) { 
+        if (this.props.logs.length !== prevProps.logs.length) {
+            this.scrollToBottom() 
+        }
+    }
+
+    render () {
+        let logs = []
+        for (let i = this.props.logs.length - 1; i >= 0; i--) {
+            logs.push(<Log key={i} log={this.props.logs[i]} playerMap={this.props.playerMap}></Log>)
+            logs.push(<br key={i + "br"}></br>)
+        }
+    
+        return (
+            <div className="logs">
+                <span>Game Log:</span>
+                <hr className="log-break"></hr>
+                <div className="scroll" id={this.props.playerID + '-log'}>
+                    {logs}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }

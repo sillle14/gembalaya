@@ -6,10 +6,13 @@ import Bundle from './bundle'
 // Refactoring TODOs:
 // * simplify css
 // * organization of action box
-// * file organization
 
 // Other TODOs:
 // * more lobby css work
+// * log scroll to bottom
+// * pick less gems when piles are empty
+// * log eog statement only once
+// * reserve bug
 
 
 // Map player counts to starting gem piles

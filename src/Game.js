@@ -9,9 +9,7 @@ import Bundle from './bundle'
 
 // Other TODOs:
 // * more lobby css work
-// * log scroll to bottom
 // * pick less gems when piles are empty
-// * log eog statement only once
 // * reserve bug
 
 

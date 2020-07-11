@@ -9,7 +9,6 @@ import Bundle from './bundle'
 
 // Other TODOs:
 // * more lobby css work
-// * pick less gems when piles are empty
 // * reserve bug
 
 

@@ -216,8 +216,27 @@ export function selectGem(G, ctx, gem) {
     G.selectedCardPosition = {}
 
     // Picking the gems is a valid move if there are 3 gems (guaranteed to be distinct) or 2 of the same.
-    // TODO: less than 3 should be allowed if all other piles are empty!
     G.validGemPick = G.selectedGems.gemCount === 3 || (Object.values(G.selectedGems).filter(count => count === 2).length > 0)
+
+    // If all the other piles are empty, picking less than three gems is allowed.
+    let otherGemsAvailable = false
+    for (const gemType in G.gems) {
+        if (gemType !== 'gold' && G.selectedGems[gemType] === 0 && G.gems[gemType] > 0) {
+            otherGemsAvailable = true
+        }
+    }
+
+    // If all the other piles are empty, picking less than three gems is allowed.
+    if (!otherGemsAvailable) {
+        // Picks of 2 are allow.
+        if (Bundle.getGemCount(G.selectedGems) === 2) {
+            G.validGemPick = true
+        }
+        // Picks of one gem are allowed, if there aren't enough to pick 2. In this case, note that the current gem is the only gem selected.
+        if (Bundle.getGemCount(G.selectedGems) === 1 && G.gems[gem] < 4) {
+            G.validGemPick = true
+        } 
+    }
 }
 
 export function clearGems(G, ctx) { G.selectedGems = new Bundle(); G.discardedGems = new Bundle() }

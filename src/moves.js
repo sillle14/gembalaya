@@ -89,19 +89,19 @@ export function buyCard(G, ctx) {
     let card
     const player = G.players[ctx.currentPlayer]
     if (G.selectedCardPosition.reserved) {
-        card = player.reserves.splice(G.selectedCardPosition.postion, 1)[0]
+        // For some reason, defining the card as the output of splice led to issues, I think because of the operation occuring
+        //  both on the server and client. In any case, it works to define the card first.
+        card = player.reserves[G.selectedCardPosition.position]
+        player.reserves.splice(G.selectedCardPosition.position, 1)
     } else {
         card = G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position]
         // Replace the card. 
         G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position] = G.decks[G.selectedCardPosition.tier].pop()
     }
-    console.log(card)
-    console.log(player)
 
     let effectiveCost = new Bundle(card.cost)
     effectiveCost.discountBundle(player.cards)
 
-    console.log(effectiveCost)
 
     let spend = new Bundle(player.gems)
     Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.

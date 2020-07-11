@@ -9,7 +9,6 @@ import Bundle from './bundle'
 
 // Other TODOs:
 // * more lobby css work
-// * reserve bug
 
 
 // Map player counts to starting gem piles

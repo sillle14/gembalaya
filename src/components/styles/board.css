@@ -24,7 +24,8 @@
 }
 
 .gb-available-noble {
-    outline: 5px solid green;
+    box-shadow: 0 0 0 4px #388e3c;
+    border-radius: 3px;
 }
 
 .gb-selected-coin > .gb-coin {

@@ -18,8 +18,8 @@ function Noble(props) {
     }
     return (
         <div className="gb-noble-wrapper">
-            <div className={'gb-noble-aspect-box' + borderClass} onClick={() => props.selectNoble(props.position)}>
-                <div className="gb-noble">
+            <div className="gb-noble-aspect-box" onClick={() => props.selectNoble(props.position)}>
+                <div className={'gb-noble' + borderClass}>
                     <span className="gb-points">3</span>
                     <div className="gb-noble-cost">{costs}</div>
                 </div>

@@ -1,0 +1,19 @@
+.gb-action-box {
+    background-color: #90caf9;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2%;
+    grid-area: action;
+    margin: 1%;
+    height: 65px;
+}
+
+.gb-action-text {
+    font-size: large;
+}
+
+.gb-options > *{
+    margin: 0 5px !important;
+}

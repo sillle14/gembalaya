@@ -15,7 +15,12 @@
 }
 
 .gb-selected-card, .gb-selected-noble, .gb-selected-player {
-    outline: 5px solid orangered;
+    box-shadow: 0 0 0 5px #f50057;
+    border-radius: 3px;
+}
+
+.gb-selected-card > .gb-card-info {
+    border-radius: 3px;
 }
 
 .gb-available-noble {
@@ -23,34 +28,9 @@
 }
 
 .gb-selected-coin > .gb-coin {
-    box-shadow: 0 0 0 4px orangered;
+    box-shadow: 0 0 0 4px #f50057;
 }
 
 .gb-selected-coin-2 > .gb-coin {
-    box-shadow: 0 0 0 4px orange
-}
-
-.gb-action-box {
-    background-color: lightblue;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    grid-area: action;
-    padding: 2%;
-    margin: 1%;
-}
-
-.gb-action-text {
-    padding: 4px 0;
-}
-
-.gb-options > *{
-    margin: 0 5px;
-}
-
-button {
-    font-size: 100%;
-    background-color: lightgrey;
-    border: 3px solid black;
-    border-radius: 10%;
+    box-shadow: 0 0 0 4px #ff9800
 }

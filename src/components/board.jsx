@@ -1,9 +1,10 @@
 import React from 'react'
 import {NobleSet} from './nobles'
 import {Piles} from './gems'
+import { ActionBox } from './actions'
 import {CardGrid} from './cards'
 import {Players, PlayerReserves} from './players'
-import {Logs, logBundle} from './logs'
+import {Logs} from './logs'
 import './styles/gem.css'
 import './styles/coin.css'
 import './styles/card.css'
@@ -11,72 +12,6 @@ import './styles/noble.css'
 import './styles/player.css'
 import './styles/board.css'
 import './styles/logs.css'
-import Bundle from '../bundle.js'
-
-function GemMessage(props) {
-    let message = [props.verb + ' ']
-    message = message.concat(logBundle(props.gems))
-    message.push('?')
-    return <span>{message}</span>
-}
-
-function ActionBox(props) {
-    // TODO: Organize this better
-
-    if (props.gameOver) {
-        const winners = props.gameOver.winnerIDs.map((id) => props.playerMap[id])
-        return <div className="gb-action-box"><span className="gb-action-text">
-            {'Game over. Winner(s): ' + winners.join(', ')}
-        </span></div>
-    }
-
-    if (!props.myTurn) {
-        return <div className="gb-action-box"><span className="gb-action-text">Wait for your turn!</span></div>
-    }
-
-    let options;
-
-    if (Object.keys(props.selectedCard).length !== 0) {
-        const buyDisabled = props.validCardBuy ? '' : 'disabled'
-        const reserveDisabled = props.validCardReserve ? '' : 'disabled'
-        options = <div className="gb-options">
-            <button disabled={buyDisabled} onClick={() => props.buyCard()}>Buy</button>
-            <button disabled={reserveDisabled} onClick={() => props.reserveCard()}>Reserve</button>
-        </div>
-    } else if (Bundle.getGemCount(props.selectedGems) !== 0) {
-        const disabled = props.validGemPick ? '' : 'disabled'
-        options = [
-            <div key="option" className="gb-options">
-                <GemMessage gems={props.selectedGems} verb="Take"></GemMessage>
-                <button disabled={disabled} onClick={() => props.takeGems()}>Confirm</button>
-            </div>,
-            <button key="clear" onClick={() => props.clearGems()}>Clear</button>
-        ]
-    } else if (props.stage === "nobles" && (props.selectedNoble || props.selectedNoble === 0)) {
-        options = <button onClick={() => props.takeNoble()}>Select</button>
-    } else if (props.stage === "nobles") {
-        options = <span className="gb-action-text">Select a noble.</span>
-    } else if (props.stage === "discard" && Bundle.getGemCount(props.discardedGems) > 0) {
-        const disabled = props.validDiscard ? '' : 'disabled'
-        options = [
-            <div key="option" className="gb-options">
-                <GemMessage gems={props.discardedGems} verb="Discard"></GemMessage>
-                <button disabled={disabled} onClick={() => props.discardGems()}>Confirm</button>
-            </div>,
-            <button key="clear" onClick={() => props.clearGems()}>Clear</button>
-        ]
-    } else if (props.stage === "discard") {
-        options = <span className="gb-action-text">Discard down to 10 gems.</span>
-    } else {
-        options = <span className="gb-action-text">Select a card or gem.</span>
-    }
-
-    return (
-        <div className="gb-action-box gb-selected-player">
-            {options}
-        </div>
-    )
-}
 
 export class GembalayaTable extends React.Component {
 

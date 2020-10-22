@@ -4,7 +4,7 @@ function Noble(props) {
     let costs = []; 
     for (const gem in props.cost) {
         if (props.cost[gem] > 0) {
-            const className = 'gem gb-gem-noble-cost gb-gem' + gem;
+            const className = 'gem gb-gem-noble-cost gb-gem-' + gem;
             costs.push(
                 <div className={className} key={gem}>{props.cost[gem]}</div>
             )

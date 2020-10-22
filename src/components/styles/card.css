@@ -106,7 +106,7 @@
     align-content: flex-end;
 }
 
-.gb-gemgb-card-cost {
+.gb-gem-card-cost {
     height: 50%;
     flex-basis: 36%;
     border-radius: 100%;
@@ -117,7 +117,7 @@
 }
 
 /* Fix aspect */
-.gb-gemgb-card-value {
+.gb-gem-card-value {
     height: 100%;
     width: 36%;
     margin-right: 5%;

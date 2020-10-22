@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "private": false,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "boardgame.io": "^0.40.0",
     "esm": "^3.2.25",
     "koa-static": "^5.0.0",

@@ -9,65 +9,65 @@
     user-select: none
 }
 
-.gb-gemonyx {
+.gb-gem-onyx {
     background-color: black;
     clip-path: polygon(20% 10%, 80% 10%, 100% 30%, 100% 70%, 80% 90%, 20% 90%, 0% 70%, 0% 30%);
 
 }
 
-.gb-gemsapphire {
+.gb-gem-sapphire {
     background: blue;
     clip-path: ellipse(50% 35% at 50% 50%);
 }
 
-.gb-gemruby {
+.gb-gem-ruby {
     background: red;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
-.gb-gemdiamond {
+.gb-gem-diamond {
     background: white;
     clip-path: polygon(50% 0%, 100% 30%, 50% 100%, 0% 30%);
     color: rgb(90, 90, 90);
 }
 
-.gb-gememerald {
+.gb-gem-emerald {
     background: green;
     clip-path: polygon(30% 0%, 70% 0%, 90% 20%, 90% 80%, 70% 100%, 30% 100%, 10% 80%, 10% 20%);
 }
 
-.gb-gemgold {
+.gb-gem-gold {
     width: 65%;
     height: 65%;
     background: gold;
 }
 
-.gb-gemonyx-text {
+.gb-gem-onyx-text {
     color: black;
     font-weight: bold;
 }
 
-.gb-gemruby-text {
+.gb-gem-ruby-text {
     color: red;
     font-weight: bold;
 }
 
-.gb-gemsapphire-text {
+.gb-gem-sapphire-text {
     color: blue;
     font-weight: bold;
 }
 
-.gb-gemdiamond-text {
+.gb-gem-diamond-text {
     color: white;
     font-weight: bold;
 }
 
-.gb-gememerald-text {
+.gb-gem-emerald-text {
     color: green;
     font-weight: bold;
 }
 
-.gb-gemgold-text {
+.gb-gem-gold-text {
     color: darkgoldenrod;
     font-weight: bold;
 }

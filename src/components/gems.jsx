@@ -14,7 +14,7 @@ function Gem(props) {
             <div className={'gb-coin-aspect-box' + selectClass} onClick={() => props.selectGem(props.gem)}>
                 <div className="gb-coin">
                     <div className="gb-coin-inner">
-                        <div className={'gem gb-gem' + props.gem + ' gb-gem-coin'}>{props.count}</div>
+                        <div className={'gem gb-gem-' + props.gem + ' gb-gem-coin'}>{props.count}</div>
                     </div>
                 </div>
             </div>

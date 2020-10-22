@@ -6,14 +6,14 @@ function Player(props) {
     let cards = []
     for (const gem in props.cards) {
         // No gold cards.
-        if (gem !== 'gold') { cards.push(<div key={gem} className={'gem gb-gem' + gem}>{props.cards[gem]}</div>) }
+        if (gem !== 'gold') { cards.push(<div key={gem} className={'gem gb-gem-' + gem}>{props.cards[gem]}</div>) }
     }
 
     let gems = []
     for (const gem in props.gems) {
         gems.push(<div
             key={gem} 
-            className={'gem gb-gem-player-coin gb-gem' + gem}
+            className={'gem gb-gem-player-coin gb-gem-' + gem}
             onClick={() => props.selectDiscard(gem)}
         >{props.gems[gem]}</div>)
     }
@@ -29,8 +29,8 @@ function Player(props) {
 
     return (
         <div className="gb-player-wrapper">
-            <div className={'gb-player-aspect-box' + (props.active ? ' gb-selected-player' : '')}>
-                <div className="gb-player-mat">
+            <div className="gb-player-aspect-box">
+                <div className={'gb-player-mat' + (props.active ? ' gb-selected-player' : '')}>
                     <div className="gb-player-info">
                         <span className="gb-points">{props.score}</span>
                         <span className="gb-player-name">{props.playerName}</span>

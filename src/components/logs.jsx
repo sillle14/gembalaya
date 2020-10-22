@@ -2,14 +2,14 @@ import React from 'react'
 import { animateScroll } from 'react-scroll'
 
 function logGem(gem) {
-    return <span key={gem} className={'gb-gem' + gem + '-text'}>{gem}</span>
+    return <span key={gem} className={'gb-gem-' + gem + '-text'}>{gem}</span>
 }
 
 export function logBundle(gems) {
     let message = []
     for (const gem in gems) {
         if (gems[gem] > 0) {
-            message.push(<span key={gem} className={'gb-gem' + gem + '-text'}>{gems[gem] + ' ' + gem + ' '}</span>)
+            message.push(<span key={gem} className={'gb-gem-' + gem + '-text'}>{gems[gem] + ' ' + gem + ' '}</span>)
         }
     }
     return message
@@ -54,7 +54,7 @@ function Log(props) {
             if (log.winnerIDs.length > 1) {
                 winStatement = 'Tie between players ' + winners.join(' and ')
             } else {
-                winStatement = `${winners[0]} wins!` // TODO
+                winStatement = `${winners[0]} wins!`
             }
             details = <span>{`Game over. ${winStatement}`}</span>
             break;

@@ -1,19 +1,19 @@
 import React from 'react'
-import { Card } from './cards.jsx'
+import { Card } from './cards'
 
 function Player(props) {
 
     let cards = []
     for (const gem in props.cards) {
         // No gold cards.
-        if (gem !== 'gold') { cards.push(<div key={gem} className={'gem gem-' + gem}>{props.cards[gem]}</div>) }
+        if (gem !== 'gold') { cards.push(<div key={gem} className={'gem gb-gem' + gem}>{props.cards[gem]}</div>) }
     }
 
     let gems = []
     for (const gem in props.gems) {
         gems.push(<div
             key={gem} 
-            className={'gem gem-player-coin gem-' + gem}
+            className={'gem gb-gem-player-coin gb-gem' + gem}
             onClick={() => props.selectDiscard(gem)}
         >{props.gems[gem]}</div>)
     }
@@ -23,25 +23,25 @@ function Player(props) {
         const tier = 'i'.repeat(props.reserves[i].tier)
         reserves.push(<div
             key={i}
-            className={'card-back card-back-' + tier}
+            className={'gb-card-back gb-card-back-' + tier}
         >{tier.toUpperCase()}</div>)
     }
 
     return (
-        <div className="player-wrapper">
-            <div className={'player-aspect-box' + (props.active ? ' selected-player' : '')}>
-                <div className="player-mat">
-                    <div className="player-info">
-                        <span className="points">{props.score}</span>
-                        <span className="player-name">{props.playerName}</span>
+        <div className="gb-player-wrapper">
+            <div className={'gb-player-aspect-box' + (props.active ? ' gb-selected-player' : '')}>
+                <div className="gb-player-mat">
+                    <div className="gb-player-info">
+                        <span className="gb-points">{props.score}</span>
+                        <span className="gb-player-name">{props.playerName}</span>
                     </div>
-                    <div className="player-holdings">
+                    <div className="gb-player-holdings">
                         {cards}
                     </div>
-                    <div className="player-holdings">
+                    <div className="gb-player-holdings">
                         {gems}
                     </div>
-                    <div className="player-public-reserves">
+                    <div className="gb-player-public-reserves">
                         {reserves}
                     </div>
                 </div>
@@ -69,7 +69,7 @@ export function Players(props) {
         ></Player>
         )
     }
-    return <div className='player-column'>{players}</div>
+    return <div className='gb-player-column'>{players}</div>
 }
 
 export function PlayerReserves(props) {
@@ -95,9 +95,9 @@ export function PlayerReserves(props) {
     }
 
     return (
-        <div className="player-reserves">
-            <span className="player-reserves-label">Your Reserves:</span>
-            <div className="player-reserves-cards">{reserves}</div>
+        <div className="gb-player-reserves">
+            <span className="gb-player-reserves-label">Your Reserves:</span>
+            <div className="gb-player-reserves-cards">{reserves}</div>
         </div>
     )
 }

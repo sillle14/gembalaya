@@ -2,14 +2,14 @@ import React from 'react'
 import { animateScroll } from 'react-scroll'
 
 function logGem(gem) {
-    return <span key={gem} className={'gem-' + gem + '-text'}>{gem}</span>
+    return <span key={gem} className={'gb-gem' + gem + '-text'}>{gem}</span>
 }
 
 export function logBundle(gems) {
     let message = []
     for (const gem in gems) {
         if (gems[gem] > 0) {
-            message.push(<span key={gem} className={'gem-' + gem + '-text'}>{gems[gem] + ' ' + gem + ' '}</span>)
+            message.push(<span key={gem} className={'gb-gem' + gem + '-text'}>{gems[gem] + ' ' + gem + ' '}</span>)
         }
     }
     return message
@@ -102,10 +102,10 @@ export class Logs extends React.Component {
         }
     
         return (
-            <div className="logs">
+            <div className="gb-logs">
                 <span>Game Log:</span>
-                <hr className="log-break"></hr>
-                <div className="scroll" id={this.props.playerID + '-log'}>
+                <hr className="gb-log-break"></hr>
+                <div className="gb-scroll" id={this.props.playerID + '-log'}>
                     {logs}
                 </div>
             </div>

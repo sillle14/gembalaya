@@ -6,6 +6,7 @@ import Bundle from './bundle'
 // Refactoring TODOs:
 // * simplify css
 // * organization of action box
+// * README
 
 // Other TODOs:
 // * more lobby css work

@@ -1,9 +1,9 @@
 import React from 'react'
-import {NobleSet} from './nobles.jsx'
-import {Piles} from './gems.jsx'
-import {CardGrid} from './cards.jsx'
-import {Players, PlayerReserves} from './players.jsx'
-import {Logs, logBundle} from './logs.jsx'
+import {NobleSet} from './nobles'
+import {Piles} from './gems'
+import {CardGrid} from './cards'
+import {Players, PlayerReserves} from './players'
+import {Logs, logBundle} from './logs'
 import './styles/gem.css'
 import './styles/coin.css'
 import './styles/card.css'
@@ -25,13 +25,13 @@ function ActionBox(props) {
 
     if (props.gameOver) {
         const winners = props.gameOver.winnerIDs.map((id) => props.playerMap[id])
-        return <div className="action-box"><span className="action-text">
+        return <div className="gb-action-box"><span className="gb-action-text">
             {'Game over. Winner(s): ' + winners.join(', ')}
         </span></div>
     }
 
     if (!props.myTurn) {
-        return <div className="action-box"><span className="action-text">Wait for your turn!</span></div>
+        return <div className="gb-action-box"><span className="gb-action-text">Wait for your turn!</span></div>
     }
 
     let options;
@@ -39,14 +39,14 @@ function ActionBox(props) {
     if (Object.keys(props.selectedCard).length !== 0) {
         const buyDisabled = props.validCardBuy ? '' : 'disabled'
         const reserveDisabled = props.validCardReserve ? '' : 'disabled'
-        options = <div className="options">
+        options = <div className="gb-options">
             <button disabled={buyDisabled} onClick={() => props.buyCard()}>Buy</button>
             <button disabled={reserveDisabled} onClick={() => props.reserveCard()}>Reserve</button>
         </div>
     } else if (Bundle.getGemCount(props.selectedGems) !== 0) {
         const disabled = props.validGemPick ? '' : 'disabled'
         options = [
-            <div key="option" className="options">
+            <div key="option" className="gb-options">
                 <GemMessage gems={props.selectedGems} verb="Take"></GemMessage>
                 <button disabled={disabled} onClick={() => props.takeGems()}>Confirm</button>
             </div>,
@@ -55,24 +55,24 @@ function ActionBox(props) {
     } else if (props.stage === "nobles" && (props.selectedNoble || props.selectedNoble === 0)) {
         options = <button onClick={() => props.takeNoble()}>Select</button>
     } else if (props.stage === "nobles") {
-        options = <span className="action-text">Select a noble.</span>
+        options = <span className="gb-action-text">Select a noble.</span>
     } else if (props.stage === "discard" && Bundle.getGemCount(props.discardedGems) > 0) {
         const disabled = props.validDiscard ? '' : 'disabled'
         options = [
-            <div key="option" className="options">
+            <div key="option" className="gb-options">
                 <GemMessage gems={props.discardedGems} verb="Discard"></GemMessage>
                 <button disabled={disabled} onClick={() => props.discardGems()}>Confirm</button>
             </div>,
             <button key="clear" onClick={() => props.clearGems()}>Clear</button>
         ]
     } else if (props.stage === "discard") {
-        options = <span className="action-text">Discard down to 10 gems.</span>
+        options = <span className="gb-action-text">Discard down to 10 gems.</span>
     } else {
-        options = <span className="action-text">Select a card or gem.</span>
+        options = <span className="gb-action-text">Select a card or gem.</span>
     }
 
     return (
-        <div className="action-box selected-player">
+        <div className="gb-action-box gb-selected-player">
             {options}
         </div>
     )
@@ -83,10 +83,10 @@ export class GembalayaTable extends React.Component {
     constructor(props) {
         super(props)
         this.playerMap = {}
-        if (this.props.gameMetadata) {
-            for (let i = 0; i < this.props.gameMetadata.length; i ++) {
+        if (this.props.matchData) {
+            for (let i = 0; i < this.props.matchData.length; i ++) {
                 // Limit to 10 characters
-                this.playerMap[this.props.gameMetadata[i].id] = this.props.gameMetadata[i].name.slice(0, 10)
+                this.playerMap[this.props.matchData[i].id] = this.props.matchData[i].name.slice(0, 10)
             }
         } else {
             for (let i = 0; i < this.props.ctx.numPlayers; i ++) {
@@ -94,14 +94,12 @@ export class GembalayaTable extends React.Component {
             }
         }
     }
-
-    //TODO: Game metadata holds player names, but only in lobby mode. Use that to get names if possible.
     
     render () {
         const myTurn = this.props.playerID === this.props.ctx.currentPlayer
         const stage = this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.props.ctx.currentPlayer]
         return (
-            <div className="board">
+            <div className="gb-board">
                 <Players 
                     players={this.props.G.players} 
                     currentPlayer={this.props.ctx.currentPlayer}
@@ -143,7 +141,7 @@ export class GembalayaTable extends React.Component {
                     selectedNoble={this.props.G.selectedNoble}
                     takeNoble={this.props.moves.takeNoble}
                 ></ActionBox>
-                <div className="sidebar">
+                <div className="gb-sidebar">
                     <PlayerReserves
                         reserves={this.props.G.players[this.props.playerID].reserves}
                         selectCard={this.props.moves.selectCard}

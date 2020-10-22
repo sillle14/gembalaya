@@ -188,9 +188,9 @@ export function discardGems(G, ctx) {
     ctx.events.endTurn()
 }
 
-/*******************
- *    SELECTIONS   *
- *******************/
+/******************
+ *   SELECTIONS   *
+ ******************/
 
 export function selectGem(G, ctx, gem) {
     if (

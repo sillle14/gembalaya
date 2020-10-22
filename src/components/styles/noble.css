@@ -1,20 +1,20 @@
-.noble-row {
+.gb-noble-row {
     display: flex;
     grid-area: nobles;
 }
 
-.noble-wrapper {
+.gb-noble-wrapper {
     flex-basis: 20%;
     padding: 1%;
 }
 
-.noble-aspect-box {
+.gb-noble-aspect-box {
     position: relative;
     height: 0;
     padding-bottom: 50%;
 }
 
-.noble {
+.gb-noble {
     position: absolute;
     top: 0;
     left: 0;
@@ -26,13 +26,13 @@
     background: rgb(233, 220, 145);
 }
 
-.noble-cost {
+.gb-noble-cost {
     display: flex;
     height: 50%;
     justify-content: space-around;
 }
 
-.gem-noble-cost {
+.gb-gem-noble-cost {
     clip-path: none;
     height: 100%;
     width: 25%;

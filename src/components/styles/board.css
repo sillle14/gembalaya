@@ -1,4 +1,4 @@
-.board {
+.gb-board {
     display: grid;
     grid-template-columns: 3fr 1fr 7fr 3fr;
     grid-template-rows: auto auto auto;
@@ -7,30 +7,30 @@
                             "action action action none"
 }
 
-.sidebar {
+.gb-sidebar {
     grid-area: sidebar;
     display: flex;
     flex-direction: column;
     padding: 1%;
 }
 
-.selected-card, .selected-noble, .selected-player {
+.gb-selected-card, .gb-selected-noble, .gb-selected-player {
     outline: 5px solid orangered;
 }
 
-.available-noble {
+.gb-available-noble {
     outline: 5px solid green;
 }
 
-.selected-coin > .coin {
+.gb-selected-coin > .gb-coin {
     box-shadow: 0 0 0 4px orangered;
 }
 
-.selected-coin-2 > .coin {
+.gb-selected-coin-2 > .gb-coin {
     box-shadow: 0 0 0 4px orange
 }
 
-.action-box {
+.gb-action-box {
     background-color: lightblue;
     display: flex;
     flex-direction: row-reverse;
@@ -40,11 +40,11 @@
     margin: 1%;
 }
 
-.action-text {
+.gb-action-text {
     padding: 4px 0;
 }
 
-.options > *{
+.gb-options > *{
     margin: 0 5px;
 }
 

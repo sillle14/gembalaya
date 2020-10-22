@@ -5,7 +5,7 @@ export function Card(props) {
     let costs = []; 
     for (const gem in props.cost) {
         if (props.cost[gem] > 0) {
-            const className = 'gem gem-card-cost gem-' + gem;
+            const className = 'gem gb-gemgb-card-cost gb-gem' + gem;
             costs.push(
                 <div className={className} key={gem}>{props.cost[gem]}</div>
             )
@@ -13,15 +13,15 @@ export function Card(props) {
     }
 
     return (
-        <div className="card-wrapper">
-            <div className={'card-aspect-box' + (props.selected ? ' selected-card' : '')} 
+        <div className="gb-card-wrapper">
+            <div className={'gb-card-aspect-box' + (props.selected ? ' gb-selected-card' : '')} 
                 onClick={() => props.selectCard(props.cardPosition)}>
-                <div className={'card card-' + props.gem}>
-                    <div className="card-info">
-                        <span className="points">{props.points || ''}</span> 
-                        <div className={'gem gem-card-value gem-' + props.gem}></div>
+                <div className={'gb-card gb-card-' + props.gem}>
+                    <div className="gb-card-info">
+                        <span className="gb-points">{props.points || ''}</span> 
+                        <div className={'gem gb-gemgb-card-value gb-gem' + props.gem}></div>
                     </div>
-                    <div className="card-costs">{costs}</div>
+                    <div className="gb-card-costs">{costs}</div>
                 </div>
             </div>
         </div>
@@ -32,11 +32,11 @@ export function Card(props) {
 function CardBack(props) {
     const numeral = 'i'.repeat(props.tier + 1) // Tier is 0 indexed
     return (
-        <div className="card-wrapper">
-            <div className={'card-aspect-box' + (props.selected ? ' selected-card': '')} onClick={() => props.selectCard({tier: props.tier})}>
-                <div className={'card card-back card-back-' + numeral}>
+        <div className="gb-card-wrapper">
+            <div className={'gb-card-aspect-box' + (props.selected ? ' gb-selected-card': '')} onClick={() => props.selectCard({tier: props.tier})}>
+                <div className={'gb-card gb-card-back gb-card-back-' + numeral}>
                     {numeral.toUpperCase()}
-                    <span className="card-back-count">{'(' + props.count + ')'}</span>
+                    <span className="gb-card-back-count">{'(' + props.count + ')'}</span>
                 </div>
             </div>
         </div>
@@ -65,9 +65,9 @@ export function CardGrid(props) {
                 ></Card>)
             }
         }
-        cardRows.push(<div className="card-row" key={tier}>{cards}</div>)
+        cardRows.push(<div className="gb-card-row" key={tier}>{cards}</div>)
     }
     return (
-        <div className="card-grid">{cardRows}</div>
+        <div className="gb-card-grid">{cardRows}</div>
     )
 }

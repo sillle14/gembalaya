@@ -1,20 +1,20 @@
-.coin-row {
+.gb-coin-row {
     display: flex;
     flex-direction: column;
     grid-area: gems;
 }
 
-.coin-wrapper {
+.gb-coin-wrapper {
     padding: 5%;
 }
 
-.coin-aspect-box {
+.gb-coin-aspect-box {
     position: relative;
     height: 0;
     padding-bottom: 100%;
 }
 
-.coin {
+.gb-coin {
     position: absolute;
     top: 0;
     left: 0;
@@ -27,7 +27,7 @@
     border-radius: 50%;
 }
 
-.coin-inner {
+.gb-coin-inner {
     width: 90%;
     height: 90%;
     background: tan;
@@ -37,7 +37,7 @@
     align-items: center;
 }
 
-.gem-coin {
+.gb-gem-coin {
     transform: scale(0.75);
 }
 

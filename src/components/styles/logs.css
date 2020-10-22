@@ -1,19 +1,15 @@
-.logs {
+.gb-logs {
     background: lightblue;
     padding: 5%;
     height: 100%;
     margin-top: 1%;
 }
 
-.log-break {
+.gb-log-break {
     border: 1px solid black;
 }
 
-.log-spacer {
-    border: 10px solid black;
-}
-
-.scroll {
+.gb-scroll {
     overflow-y: auto;
     display: flex;
     max-height: 50vh;

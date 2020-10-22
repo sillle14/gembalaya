@@ -4,7 +4,7 @@ function Noble(props) {
     let costs = []; 
     for (const gem in props.cost) {
         if (props.cost[gem] > 0) {
-            const className = 'gem gem-noble-cost gem-' + gem;
+            const className = 'gem gb-gem-noble-cost gb-gem' + gem;
             costs.push(
                 <div className={className} key={gem}>{props.cost[gem]}</div>
             )
@@ -12,16 +12,16 @@ function Noble(props) {
     }
     let borderClass = ''
     if (props.selected) {
-        borderClass = ' selected-noble'
+        borderClass = ' gb-selected-noble'
     } else if (props.available) {
-        borderClass = ' available-noble'
+        borderClass = ' gb-available-noble'
     }
     return (
-        <div className="noble-wrapper">
-            <div className={'noble-aspect-box' + borderClass} onClick={() => props.selectNoble(props.position)}>
-                <div className="noble">
-                    <span className="points">3</span>
-                    <div className="noble-cost">{costs}</div>
+        <div className="gb-noble-wrapper">
+            <div className={'gb-noble-aspect-box' + borderClass} onClick={() => props.selectNoble(props.position)}>
+                <div className="gb-noble">
+                    <span className="gb-points">3</span>
+                    <div className="gb-noble-cost">{costs}</div>
                 </div>
             </div>
         </div>
@@ -45,6 +45,6 @@ export function NobleSet(props) {
         )
     }
     return (
-        <div className="noble-row">{nobles}</div>
+        <div className="gb-noble-row">{nobles}</div>
     )
 }

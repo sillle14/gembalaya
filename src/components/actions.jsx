@@ -32,8 +32,8 @@ export function ActionBox(props) {
         const buyDisabled = props.validCardBuy ? '' : 'disabled';
         const reserveDisabled = props.validCardReserve ? '' : 'disabled';
         options = <div className="gb-options">
-            <Button variant="contained" disabled={buyDisabled} onClick={() => props.buyCard()}>Buy</Button>
-            <Button variant="contained" color="primary" disabled={reserveDisabled} onClick={() => props.reserveCard()}>Reserve</Button>
+            <Button variant="contained" disabled={reserveDisabled} onClick={() => props.reserveCard()}>Reserve</Button>
+            <Button variant="contained" color="primary" disabled={buyDisabled} onClick={() => props.buyCard()}>Buy</Button>
         </div>;
     } else if (Bundle.getGemCount(props.selectedGems) !== 0) {
         const disabled = props.validGemPick ? '' : 'disabled';

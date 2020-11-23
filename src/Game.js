@@ -1,3 +1,4 @@
+import { TurnOrder } from 'boardgame.io/core'
 import { tier1Cards, tier2Cards, tier3Cards, nobles } from './static'
 import * as moves from './moves'
 import Player from './player'
@@ -66,6 +67,7 @@ function setupGame(ctx, setupData) {
         logs: [],
         discardedGems: new Bundle(),
         validDiscard: false,
+        playerOrder: ctx.random.Shuffle(Object.keys(players)) // Randomize the player order.
     }
 }
 
@@ -96,7 +98,8 @@ export const Gembalaya = {
                     clearGems: moves.clearGems,
                 }
             }
-        }
+        },
+        order: TurnOrder.CUSTOM_FROM('playerOrder')
     },
     minPlayers: 2,
     maxPlayers: 4,

@@ -40,6 +40,7 @@ export class GembalayaTable extends React.Component {
                     currentPlayer={this.props.ctx.currentPlayer}
                     selectDiscard={this.props.moves.selectDiscard}
                     playerMap={this.playerMap}
+                    playerOrder={this.props.G.playerOrder}
                 ></Players>
                 <CardGrid 
                     board={this.props.G.board} 

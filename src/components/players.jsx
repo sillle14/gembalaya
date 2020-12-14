@@ -52,7 +52,7 @@ function Player(props) {
 
 export function Players(props) {
     let players = []
-    for (const playerID in props.players) {
+    props.playerOrder.forEach((playerID) => {
         const player = props.players[playerID]
         const playerName = props.playerMap[playerID]
         const active = props.currentPlayer === playerID
@@ -68,7 +68,7 @@ export function Players(props) {
             reserves={player.reserves}
         ></Player>
         )
-    }
+    })
     return <div className='gb-player-column'>{players}</div>
 }
 

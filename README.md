@@ -13,3 +13,7 @@ Alternatively, you can run `npm run dev-lobby` (with the server running) to use 
 This is currently setup for deployment to Heroku with the server and client running at a single port. Run `npm start` to deploy.
 
 However, this deployment only has a simple lobby implementation and no persistence. Check out [Lewis' House of Games](https://github.com/sillle14/lhog) for a more robust lobby implementation meant to host many boardgame.io games.
+
+## Publish
+
+To publish the package to npm, run `npm run publish:npm` to compile files for publication, followed by `npm publish`.

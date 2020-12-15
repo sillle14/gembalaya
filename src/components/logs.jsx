@@ -1,5 +1,5 @@
-import React from 'react'
 import { animateScroll } from 'react-scroll'
+import React from 'react'
 
 function logGem(gem) {
     return <span key={gem} className={'gb-gem-' + gem + '-text'}>{gem}</span>

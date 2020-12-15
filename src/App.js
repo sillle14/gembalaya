@@ -1,9 +1,10 @@
-import { Client } from 'boardgame.io/react';
-import { GembalayaTable } from './components/board'
-import {Gembalaya} from './Game'
-import logger from 'redux-logger';
-import { applyMiddleware } from 'redux';
+import { applyMiddleware } from 'redux'
+import { Client } from 'boardgame.io/react'
 import { SocketIO } from 'boardgame.io/multiplayer'
+import logger from 'redux-logger'
+
+import { Gembalaya } from './Game'
+import { GembalayaTable } from './components/board'
 
 // NOTE: Local multiplayer seems to mess up moves (they are taken twice)
 const GembalayaClient = Client({
@@ -12,6 +13,6 @@ const GembalayaClient = Client({
     debug: false, 
     multiplayer: SocketIO({ server: 'localhost:8000' }),
     enhancer: applyMiddleware(logger),
-});
+})
 
-export default GembalayaClient;
+export default GembalayaClient

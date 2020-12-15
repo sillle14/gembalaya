@@ -1,8 +1,9 @@
 import { TurnOrder } from 'boardgame.io/core'
-import { tier1Cards, tier2Cards, tier3Cards, nobles } from './static'
+
 import * as moves from './moves'
-import Player from './player'
+import { tier1Cards, tier2Cards, tier3Cards, nobles } from './static'
 import Bundle from './bundle'
+import Player from './player'
 
 // Refactoring TODOs:
 // * simplify css

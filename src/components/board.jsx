@@ -1,10 +1,12 @@
 import React from 'react'
-import {NobleSet} from './nobles'
-import {Piles} from './gems'
+
 import { ActionBox } from './actions'
-import {CardGrid} from './cards'
-import {Players, PlayerReserves} from './players'
-import {Logs} from './logs'
+import { CardGrid } from './cards'
+import { Logs } from './logs'
+import { NobleSet } from './nobles'
+import { Piles } from './gems'
+import { Players, PlayerReserves } from './players'
+
 import './styles/gem.css'
 import './styles/coin.css'
 import './styles/card.css'

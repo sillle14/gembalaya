@@ -1,12 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import GembalayaClient from './App';
-import * as serviceWorker from './serviceWorker';
+import { Lobby } from 'boardgame.io/react'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import { Gembalaya } from './Game'
 import { GembalayaTable } from './components/board'
-import {Gembalaya} from './Game'
-import { Lobby } from 'boardgame.io/react';
+import GembalayaClient from './App'
+
 import './components/styles/lobby.css'
+import './index.css'
 
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 
@@ -42,9 +43,3 @@ if (NO_LOBBY) {
     document.getElementById('root')
   )
 }
-
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

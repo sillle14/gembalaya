@@ -1,7 +1,7 @@
+import { Gembalaya } from './src/Game'
 import { Server } from 'boardgame.io/server'
-import path from 'path';
-import serve from 'koa-static';
-import { Gembalaya } from './src/Game';
+import path from 'path'
+import serve from 'koa-static'
 
 const PORT = process.env.PORT || 8000;
 const server = Server({ games: [Gembalaya] })
@@ -20,7 +20,7 @@ if (SINGLE_PORT) {
                 next
             )
         )
-    });
+    })
 } else {
     server.run(PORT)
 }

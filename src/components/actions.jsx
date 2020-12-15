@@ -1,8 +1,9 @@
 import React from 'react';
 import Button from '@material-ui/core/Button'
 
-import Bundle from '../bundle.js';
 import { logBundle } from './logs'
+import Bundle from '../bundle.js'
+
 import './styles/action.css'
 
 function GemMessage(props) {

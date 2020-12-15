@@ -9,6 +9,10 @@
     border: 1px solid black;
 }
 
+.gb-scroll > div {
+    margin-top: 10px;
+}
+
 .gb-scroll {
     overflow-y: auto;
     display: flex;

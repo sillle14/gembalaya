@@ -98,7 +98,6 @@ export class Logs extends React.Component {
         let logs = []
         for (let i = this.props.logs.length - 1; i >= 0; i--) {
             logs.push(<Log key={i} log={this.props.logs[i]} playerMap={this.props.playerMap}></Log>)
-            logs.push(<br key={i + "br"}></br>)
         }
     
         return (

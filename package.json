@@ -1,6 +1,6 @@
 {
   "name": "gembalaya",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "private": false,
   "dependencies": {
     "@material-ui/core": "^4.11.0",

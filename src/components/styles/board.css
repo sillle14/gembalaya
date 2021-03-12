@@ -7,6 +7,10 @@
                             "action action action none"
 }
 
+.gb-board * {
+    box-sizing: border-box;
+}
+
 .gb-sidebar {
     grid-area: sidebar;
     display: flex;

@@ -1,7 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
 .gb-card-grid {
     grid-area: board;
     display: flex;

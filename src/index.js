@@ -31,7 +31,6 @@ if (NO_LOBBY) {
   }
 
   // Render the lobby. This relies on a running server.
-  // TODO: Make the lobby way nicer looking!
   ReactDOM.render(
     <React.StrictMode>
       <Lobby

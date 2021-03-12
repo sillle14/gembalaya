@@ -30,18 +30,15 @@ export function ActionBox(props) {
     let options;
 
     if (Object.keys(props.selectedCard).length !== 0) {
-        const buyDisabled = props.validCardBuy ? '' : 'disabled';
-        const reserveDisabled = props.validCardReserve ? '' : 'disabled';
         options = <div className="gb-options">
-            <Button variant="contained" disabled={reserveDisabled} onClick={() => props.reserveCard()}>Reserve</Button>
-            <Button variant="contained" color="primary" disabled={buyDisabled} onClick={() => props.buyCard()}>Buy</Button>
+            <Button variant="contained" disabled={!props.validCardReserve} onClick={() => props.reserveCard()}>Reserve</Button>
+            <Button variant="contained" color="primary" disabled={!props.validCardBuy} onClick={() => props.buyCard()}>Buy</Button>
         </div>;
     } else if (Bundle.getGemCount(props.selectedGems) !== 0) {
-        const disabled = props.validGemPick ? '' : 'disabled';
         options = [
             <div key="option" className="gb-options">
                 <GemMessage gems={props.selectedGems} verb="Take"></GemMessage>
-                <Button variant="contained" disabled={disabled} onClick={() => props.takeGems()}>Confirm</Button>
+                <Button variant="contained" disabled={!props.validGemPick} onClick={() => props.takeGems()}>Confirm</Button>
             </div>,
             <Button variant="contained" key="clear" onClick={() => props.clearGems()}>Clear</Button>
         ];
@@ -50,11 +47,10 @@ export function ActionBox(props) {
     } else if (props.stage === "nobles") {
         options = <span className="gb-action-text">Select a noble.</span>;
     } else if (props.stage === "discard" && Bundle.getGemCount(props.discardedGems) > 0) {
-        const disabled = props.validDiscard ? '' : 'disabled';
         options = [
             <div key="option" className="gb-options">
                 <GemMessage gems={props.discardedGems} verb="Discard"></GemMessage>
-                <Button variant="contained" disabled={disabled} onClick={() => props.discardGems()}>Confirm</Button>
+                <Button variant="contained" disabled={!props.validDiscard} onClick={() => props.discardGems()}>Confirm</Button>
             </div>,
             <Button variant="contained" key="clear" onClick={() => props.clearGems()}>Clear</Button>
         ];

@@ -15,6 +15,10 @@ function GemMessage(props) {
 
 export function ActionBox(props) {
 
+    if (props.spectator) {
+        return <div className="gb-action-box"><span className="gb-action-text">{`Spectating ${props.playerMap[props.currentPlayer]}`}</span></div>
+    }
+
     if (props.gameOver) {
         const winners = props.gameOver.winnerIDs.map((id) => props.playerMap[id])
         const msg = winners.length > 1 ? `${winners.join(' and ')} Tie!` : `${winners[0]} wins!`

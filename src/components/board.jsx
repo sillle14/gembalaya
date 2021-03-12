@@ -75,16 +75,21 @@ export class GembalayaTable extends React.Component {
                     myTurn={myTurn}
                     gameOver={this.props.ctx.gameover}
                     playerMap={this.playerMap}
+                    currentPlayer={this.props.ctx.currentPlayer}
+                    spectator={!!!this.props.playerID}
                     stage={stage}
                     selectedNoble={this.props.G.selectedNoble}
                     takeNoble={this.props.moves.takeNoble}
                 ></ActionBox>
                 <div className="gb-sidebar">
                     <PlayerReserves
-                        reserves={this.props.G.players[this.props.playerID].reserves}
+                        reserves={this.props.G.players[this.props.playerID || this.props.ctx.currentPlayer].reserves}
                         selectCard={this.props.moves.selectCard}
                         playerID={this.props.playerID}
-                        selectedCard={this.props.G.selectedCardPosition}  
+                        selectedCard={this.props.G.selectedCardPosition}
+                        playerMap={this.playerMap}
+                        currentPlayer={this.props.ctx.currentPlayer}
+                        spectator={!!!this.props.playerID}  
                     ></PlayerReserves>
                     <Logs logs={this.props.G.logs} playerMap={this.playerMap} playerID={this.props.playerID}></Logs>
                 </div>

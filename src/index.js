@@ -15,6 +15,7 @@ if (NO_LOBBY) {
   // Code for local deployment no lobby both players on one screen, no seperate server.
   ReactDOM.render(
     <React.StrictMode>
+      <GembalayaClient playerID={null}/>
       <GembalayaClient playerID='0'/>
       <GembalayaClient playerID='1'/>
     </React.StrictMode>,

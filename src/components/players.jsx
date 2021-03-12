@@ -95,9 +95,16 @@ export function PlayerReserves(props) {
         ></Card>)
     }
 
+    let msg
+    if (props.spectator) {
+        msg = `${props.playerMap[props.currentPlayer]}'s Reserves:`
+    } else{
+        msg = 'Your Reserves:'
+    }
+
     return (
         <div className="gb-player-reserves">
-            <span className="gb-player-reserves-label">Your Reserves:</span>
+            <span className="gb-player-reserves-label">{msg}</span>
             <div className="gb-player-reserves-cards">{reserves}</div>
         </div>
     )

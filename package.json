@@ -1,10 +1,10 @@
 {
   "name": "gembalaya",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
-    "boardgame.io": "^0.40.0",
+    "boardgame.io": "^0.42.0",
     "esm": "^3.2.25",
     "koa-static": "^5.0.0",
     "minimist": "^1.2.5",

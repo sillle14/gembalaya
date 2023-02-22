@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 
 import { logBundle } from './logs'
 import Bundle from '../bundle.js'
@@ -12,6 +12,7 @@ function GemMessage(props) {
     return <span className="gb-action-text">{message}</span>
 }
 
+// TODO: Make the buttons look nicer
 export function ActionBox(props) {
 
     if (props.spectator) {

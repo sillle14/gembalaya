@@ -3,7 +3,10 @@
   "version": "1.2.0",
   "private": false,
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.10",
+    "@mui/styles": "^5.11.9",
     "boardgame.io": "^0.50.2",
     "esm": "^3.2.25",
     "koa-static": "^5.0.0",
@@ -45,8 +48,8 @@
   "babel": {
     "presets": [
       [
-        "@babel/preset-react", 
-        { 
+        "@babel/preset-react",
+        {
           "runtime": "automatic"
         }
       ]

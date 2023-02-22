@@ -12,7 +12,6 @@ function GemMessage(props) {
     return <span className="gb-action-text">{message}</span>
 }
 
-// TODO: Make the buttons look nicer
 export function ActionBox(props) {
 
     if (props.spectator) {
@@ -35,8 +34,8 @@ export function ActionBox(props) {
 
     if (Object.keys(props.selectedCard).length !== 0) {
         options = <div className="gb-options">
-            <Button variant="contained" disabled={!props.validCardReserve} onClick={() => props.reserveCard()}>Reserve</Button>
-            <Button variant="contained" color="primary" disabled={!props.validCardBuy} onClick={() => props.buyCard()}>Buy</Button>
+            <Button variant="contained" color="info" disabled={!props.validCardReserve} onClick={() => props.reserveCard()}>Reserve</Button>
+            <Button variant="contained" disabled={!props.validCardBuy} onClick={() => props.buyCard()}>Buy</Button>
         </div>;
     } else if (Bundle.getGemCount(props.selectedGems) !== 0) {
         options = [
@@ -44,7 +43,7 @@ export function ActionBox(props) {
                 <GemMessage gems={props.selectedGems} verb="Take"></GemMessage>
                 <Button variant="contained" disabled={!props.validGemPick} onClick={() => props.takeGems()}>Confirm</Button>
             </div>,
-            <Button variant="contained" key="clear" onClick={() => props.clearGems()}>Clear</Button>
+            <Button variant="contained" color="error" key="clear" onClick={() => props.clearGems()}>Clear</Button>
         ];
     } else if (props.stage === "nobles" && (props.selectedNoble || props.selectedNoble === 0)) {
         options = <Button variant="contained" onClick={() => props.takeNoble()}>Select</Button>;
@@ -56,7 +55,7 @@ export function ActionBox(props) {
                 <GemMessage gems={props.discardedGems} verb="Discard"></GemMessage>
                 <Button variant="contained" disabled={!props.validDiscard} onClick={() => props.discardGems()}>Confirm</Button>
             </div>,
-            <Button variant="contained" key="clear" onClick={() => props.clearGems()}>Clear</Button>
+            <Button variant="contained" color="error" key="clear" onClick={() => props.clearGems()}>Clear</Button>
         ];
     } else if (props.stage === "discard") {
         options = <span className="gb-action-text">Discard down to 10 gems.</span>;

@@ -51,7 +51,7 @@ function checkForNobles(G, ctx) {
         const noble = G.nobles[i]
         try {
             // Raises an error if the player can't afford the card.
-            new Bundle(currentPlayer.cards).subtractBundle(noble.cost)
+            Bundle.subtractBundles(currentPlayer.cards, noble.cost)
             availableNobles.push(i)
         } catch { }
     }
@@ -71,7 +71,7 @@ export function takeGems(G, ctx) {
     G.logs.push({playerID: ctx.currentPlayer, move: 'takeGems', gems: G.selectedGems})
 
     // Clear selection
-    G.selectedGems = new Bundle()
+    G.selectedGems = Bundle.new()
 
     G.availableNobles = checkForNobles(G, ctx)
     if (G.availableNobles.length > 0) {
@@ -79,7 +79,6 @@ export function takeGems(G, ctx) {
     } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
         ctx.events.setStage('discard')
     } else {
-        // TODO: Gem discarding
         checkForWin(G, ctx)
         ctx.events.endTurn()
     }
@@ -99,15 +98,15 @@ export function buyCard(G, ctx) {
         G.board[G.selectedCardPosition.tier][G.selectedCardPosition.position] = G.decks[G.selectedCardPosition.tier].pop()
     }
 
-    let effectiveCost = new Bundle(card.cost)
-    effectiveCost.discountBundle(player.cards)
+    let effectiveCost = {...card.cost}
+    Bundle.discountBundles(effectiveCost, player.cards)
 
 
-    let spend = new Bundle(player.gems)
+    let spend = {...player.gems}
     Bundle.subtractBundles(player.gems, effectiveCost)  // Spend gems.
 
     // Recalculate the true spend to account for gold gems.
-    spend.subtractBundle(player.gems)
+    Bundle.subtractBundles(spend, player.gems)
 
     Bundle.addBundles(G.gems, spend)                    // Return gems.
     player.cards[card.gem] += 1                         // Add bonus.
@@ -159,7 +158,6 @@ export function reserveCard(G, ctx) {
     } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
         ctx.events.setStage('discard')
     } else {
-        // TODO: Gem discarding
         checkForWin(G, ctx)
         ctx.events.endTurn()
     }
@@ -182,7 +180,7 @@ export function discardGems(G, ctx) {
     Bundle.subtractBundles(G.players[ctx.currentPlayer].gems, G.discardedGems)
     Bundle.addBundles(G.gems, G.discardedGems)
     G.logs.push({playerID: ctx.currentPlayer, move: 'discardGems', gems: G.discardedGems})
-    G.discardedGems = new Bundle()
+    G.discardedGems = Bundle.new()
 
     checkForWin(G, ctx)
     ctx.events.endTurn()
@@ -216,7 +214,7 @@ export function selectGem(G, ctx, gem) {
     G.selectedCardPosition = {}
 
     // Picking the gems is a valid move if there are 3 gems (guaranteed to be distinct) or 2 of the same.
-    G.validGemPick = G.selectedGems.gemCount === 3 || (Object.values(G.selectedGems).filter(count => count === 2).length > 0)
+    G.validGemPick = Bundle.getGemCount(G.selectedGems) === 3 || (Object.values(G.selectedGems).filter(count => count === 2).length > 0)
 
     // If all the other piles are empty, picking less than three gems is allowed.
     let otherGemsAvailable = false
@@ -239,7 +237,7 @@ export function selectGem(G, ctx, gem) {
     }
 }
 
-export function clearGems(G, ctx) { G.selectedGems = new Bundle(); G.discardedGems = new Bundle() }
+export function clearGems(G, ctx) { G.selectedGems = Bundle.new(); G.discardedGems = Bundle.new() }
 
 export function selectCard(G, ctx, cardPosition) {
     // Can't reserve from an empty deck.
@@ -255,7 +253,7 @@ export function selectCard(G, ctx, cardPosition) {
         const purchasingPower = Player.getEffectiveGems(G.players[ctx.currentPlayer])
         try {
             // Raises an error if the player can't afford the card.
-            new Bundle(purchasingPower).subtractBundle(cardCost)
+            Bundle.subtractBundles(purchasingPower, cardCost)
         } catch {
             G.validCardBuy = false;
         }
@@ -266,7 +264,7 @@ export function selectCard(G, ctx, cardPosition) {
     )
 
     // Clear selected gems.
-    G.selectedGems = new Bundle()
+    G.selectedGems = Bundle.new()
 
     // Select the card.
     G.selectedCardPosition = cardPosition
@@ -280,17 +278,17 @@ export function selectNoble(G, ctx, position) {
 }
 
 export function selectDiscard(G, ctx, gem) {
-    const ifDiscard = new Bundle(G.players[ctx.currentPlayer].gems)
+    const ifDiscard = {...G.players[ctx.currentPlayer].gems}
     try {
         G.discardedGems[gem] += 1
-        ifDiscard.subtractBundle(G.discardedGems)  // Raises an error if there are not enough to discard
+        Bundle.subtractBundles(ifDiscard, G.discardedGems)  // Raises an error if there are not enough to discard
     } catch {
         G.discardedGems[gem] -= 1  // Reset the discard count
         return INVALID_MOVE
     }
-    if (ifDiscard.gemCount < 10) {
+    if (Bundle.getGemCount(ifDiscard) < 10) {
         G.discardedGems[gem] -= 1  // Reset the discard count
         return INVALID_MOVE
     }
-    G.validDiscard = ifDiscard.gemCount === 10
+    G.validDiscard = Bundle.getGemCount(ifDiscard) === 10
 }

@@ -20,7 +20,7 @@ export class GembalayaTable extends React.Component {
     constructor(props) {
         super(props)
         this.playerMap = {}
-        if (this.props.matchData) {
+        if (this.props.matchData[0]?.name) {
             for (let i = 0; i < this.props.matchData.length; i ++) {
                 // Limit to 10 characters
                 this.playerMap[this.props.matchData[i].id] = this.props.matchData[i].name.slice(0, 10)

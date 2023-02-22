@@ -35,10 +35,10 @@ function setupGame(ctx, setupData) {
 
     let players = {}
     for (let i = 0; i < ctx.numPlayers; i ++) {
-        players[i] = new Player()
+        players[i] = Player.new()
     }
 
-    const gems = new Bundle({
+    const gems = Bundle.new({
         onyx: gemCount, 
         ruby: gemCount, 
         sapphire: gemCount, 
@@ -58,7 +58,7 @@ function setupGame(ctx, setupData) {
         players: players,
 
         // Game state
-        selectedGems: new Bundle(),
+        selectedGems: Bundle.new(),
         selectedCardPosition: {},
         selectedNoble: null,
         validGemPick: false,
@@ -66,7 +66,7 @@ function setupGame(ctx, setupData) {
         validCardReserve: false,
         availableNobles: [],
         logs: [],
-        discardedGems: new Bundle(),
+        discardedGems: Bundle.new(),
         validDiscard: false,
         playerOrder: ctx.random.Shuffle(Object.keys(players)) // Randomize the player order.
     }

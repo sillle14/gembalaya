@@ -12,7 +12,7 @@ import './index.css'
 const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 
 if (NO_LOBBY) {
-  // Code for local deployment no lobby both players on one screen, no seperate server.
+  // Code for local deployment no lobby both players on one screen, no separate server.
   ReactDOM.render(
     <React.StrictMode>
       <GembalayaClient playerID={null}/>

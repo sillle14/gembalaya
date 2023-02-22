@@ -21,16 +21,16 @@ const playerCountSettings = {
     4: {gems: 7, nobles: 5}
 }
 
-function setupGame(ctx, setupData) {
-    let tier1Deck = ctx.random.Shuffle(tier1Cards)
-    let tier2Deck = ctx.random.Shuffle(tier2Cards)
-    let tier3Deck = ctx.random.Shuffle(tier3Cards)
+function setupGame({ctx, random}) {
+    let tier1Deck = random.Shuffle(tier1Cards)
+    let tier2Deck = random.Shuffle(tier2Cards)
+    let tier3Deck = random.Shuffle(tier3Cards)
     let tier1Board = tier1Deck.splice(0, 4)
     let tier2Board = tier2Deck.splice(0, 4)
     let tier3Board = tier3Deck.splice(0, 4)
 
     const gemCount = playerCountSettings[ctx.numPlayers].gems
-    let gameNobles = ctx.random.Shuffle(nobles)
+    let gameNobles = random.Shuffle(nobles)
     gameNobles = gameNobles.slice(0, playerCountSettings[ctx.numPlayers].nobles)
 
     let players = {}
@@ -68,7 +68,7 @@ function setupGame(ctx, setupData) {
         logs: [],
         discardedGems: Bundle.new(),
         validDiscard: false,
-        playerOrder: ctx.random.Shuffle(Object.keys(players)) // Randomize the player order.
+        playerOrder: random.Shuffle(Object.keys(players)) // Randomize the player order.
     }
 }
 

@@ -6,11 +6,11 @@ class Player {
     }
 
     static getEffectiveGems(player) {
-        let effectiveGems = {}
+        let effectiveGems = Bundle.new()
         Bundle.addBundles(effectiveGems, player.gems)
         Bundle.addBundles(effectiveGems, player.cards)
         return effectiveGems
-    } 
+    }
 }
 
 export default Player

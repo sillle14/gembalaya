@@ -20,7 +20,7 @@ function getCardFromPosition(cardPosition, G) {
 }
 
 // Call this at the end of a player's turn, since we don't check for win conditions otherwise.
-function checkForWin(G, ctx) {
+function checkForWin(G, ctx, events) {
     
     // If anyone has more than 15, check for a winner.
     if (Object.values(G.players).filter(player => player.score >= 15).length > 0) {
@@ -39,7 +39,7 @@ function checkForWin(G, ctx) {
                 }
             }
             G.logs.push({move: 'endGame', winnerIDs: winnerIDs})
-            ctx.events.endGame({winnerIDs: winnerIDs})
+            events.endGame({winnerIDs: winnerIDs})
         }
     }
 }
@@ -63,7 +63,7 @@ function checkForNobles(G, ctx) {
  ***************/
 
 
-export function takeGems(G, ctx) {
+export function takeGems({G, ctx, events}) {
     // Take the gems.
     Bundle.subtractBundles(G.gems, G.selectedGems)
     Bundle.addBundles(G.players[ctx.currentPlayer].gems, G.selectedGems)
@@ -75,16 +75,16 @@ export function takeGems(G, ctx) {
 
     G.availableNobles = checkForNobles(G, ctx)
     if (G.availableNobles.length > 0) {
-        ctx.events.setStage('nobles')
+        events.setStage('nobles')
     } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
-        ctx.events.setStage('discard')
+        events.setStage('discard')
     } else {
-        checkForWin(G, ctx)
-        ctx.events.endTurn()
+        checkForWin(G, ctx, events)
+        events.endTurn()
     }
 }
 
-export function buyCard(G, ctx) {
+export function buyCard({G, ctx, events}) {
     let card
     const player = G.players[ctx.currentPlayer]
     if (G.selectedCardPosition.reserved) {
@@ -119,14 +119,14 @@ export function buyCard(G, ctx) {
 
     G.availableNobles = checkForNobles(G, ctx)
     if (G.availableNobles.length > 0) {
-        ctx.events.setStage('nobles')
+        events.setStage('nobles')
     } else {
-        checkForWin(G, ctx)
-        ctx.events.endTurn()
+        checkForWin(G, ctx, events)
+        events.endTurn()
     }
 }
 
-export function reserveCard(G, ctx) {
+export function reserveCard({G, ctx, events}) {
     const player = G.players[ctx.currentPlayer]
     let card
     if (G.selectedCardPosition.position === undefined) {
@@ -154,16 +154,16 @@ export function reserveCard(G, ctx) {
 
     G.availableNobles = checkForNobles(G, ctx)
     if (G.availableNobles.length > 0) {
-        ctx.events.setStage('nobles')
+        events.setStage('nobles')
     } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
-        ctx.events.setStage('discard')
+        events.setStage('discard')
     } else {
-        checkForWin(G, ctx)
-        ctx.events.endTurn()
+        checkForWin(G, ctx, events)
+        events.endTurn()
     }
 }
 
-export function takeNoble(G, ctx) {
+export function takeNoble({G, ctx, events}) {
     G.nobles.splice(G.selectedNoble, 1)
     G.players[ctx.currentPlayer].score += 3
 
@@ -172,25 +172,25 @@ export function takeNoble(G, ctx) {
     G.selectedNoble = null
     G.availableNobles = []
 
-    checkForWin(G, ctx)
-    ctx.events.endTurn()
+    checkForWin(G, ctx, events)
+    events.endTurn()
 }
 
-export function discardGems(G, ctx) {
+export function discardGems({G, ctx, events}) {
     Bundle.subtractBundles(G.players[ctx.currentPlayer].gems, G.discardedGems)
     Bundle.addBundles(G.gems, G.discardedGems)
     G.logs.push({playerID: ctx.currentPlayer, move: 'discardGems', gems: G.discardedGems})
     G.discardedGems = Bundle.new()
 
-    checkForWin(G, ctx)
-    ctx.events.endTurn()
+    checkForWin(G, ctx, events)
+    events.endTurn()
 }
 
 /******************
  *   SELECTIONS   *
  ******************/
 
-export function selectGem(G, ctx, gem) {
+export function selectGem({G}, gem) {
     if (
         gem === 'gold' ||                                       // Can't take gold.
         Bundle.getGemCount(G.selectedGems) >= 3 ||              // Can't take more than 3 gems.
@@ -237,9 +237,9 @@ export function selectGem(G, ctx, gem) {
     }
 }
 
-export function clearGems(G, ctx) { G.selectedGems = Bundle.new(); G.discardedGems = Bundle.new() }
+export function clearGems({G}) { G.selectedGems = Bundle.new(); G.discardedGems = Bundle.new() }
 
-export function selectCard(G, ctx, cardPosition) {
+export function selectCard({G, ctx}, cardPosition) {
     // Can't reserve from an empty deck.
     if (cardPosition.position === undefined && G.decks[cardPosition.tier].length === 0) { 
         return INVALID_MOVE 
@@ -270,14 +270,14 @@ export function selectCard(G, ctx, cardPosition) {
     G.selectedCardPosition = cardPosition
 }
 
-export function selectNoble(G, ctx, position) {
+export function selectNoble({G}, position) {
     if (!(G.availableNobles || []).includes(position)) {
         return INVALID_MOVE
     }
     G.selectedNoble = position 
 }
 
-export function selectDiscard(G, ctx, gem) {
+export function selectDiscard({G, ctx}, gem) {
     const ifDiscard = {...G.players[ctx.currentPlayer].gems}
     try {
         G.discardedGems[gem] += 1

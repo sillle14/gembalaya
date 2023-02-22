@@ -4,7 +4,7 @@
   "private": false,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
-    "boardgame.io": "^0.44.2",
+    "boardgame.io": "^0.50.2",
     "esm": "^3.2.25",
     "koa-static": "^5.0.0",
     "minimist": "^1.2.5",

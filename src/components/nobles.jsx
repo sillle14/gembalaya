@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Noble(props) {
     let costs = []; 
     for (const gem in props.cost) {

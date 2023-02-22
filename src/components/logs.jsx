@@ -1,5 +1,5 @@
 import { animateScroll } from 'react-scroll'
-import React from 'react'
+import { createRef, Component } from 'react';
 
 function logGem(gem) {
     return <span key={gem} className={'gb-gem-' + gem + '-text'}>{gem}</span>
@@ -75,11 +75,11 @@ function Log(props) {
     return <div>{details}</div>
 }
 
-export class Logs extends React.Component {
+export class Logs extends Component {
 
     constructor(props) {
         super(props);
-        this.bottom = React.createRef();
+        this.bottom = createRef();
     }
 
     scrollToBottom = () => {

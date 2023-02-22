@@ -1,5 +1,5 @@
 import { Lobby } from 'boardgame.io/react'
-import React from 'react'
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom'
 
 import { Gembalaya } from './Game'
@@ -14,10 +14,10 @@ const NO_LOBBY = process.env.REACT_APP_NO_LOBBY
 if (NO_LOBBY) {
   // Code for local deployment no lobby both players on one screen, no separate server.
   ReactDOM.render(
-    <React.StrictMode>
+    <StrictMode>
       <GembalayaClient playerID='0'/>
       <GembalayaClient playerID='1'/>
-    </React.StrictMode>,
+    </StrictMode>,
     document.getElementById('root')
   );
 } else {
@@ -32,13 +32,13 @@ if (NO_LOBBY) {
 
   // Render the lobby. This relies on a running server.
   ReactDOM.render(
-    <React.StrictMode>
+    <StrictMode>
       <Lobby
         gameServer={SERVER}
         lobbyServer={SERVER}
         gameComponents={[{game: Gembalaya, board: GembalayaTable}]}
       />
-    </React.StrictMode>,
+    </StrictMode>,
     document.getElementById('root')
   )
 }

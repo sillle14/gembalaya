@@ -44,7 +44,12 @@
   "module": "dist/main.js",
   "babel": {
     "presets": [
-      "@babel/react"
+      [
+        "@babel/preset-react", 
+        { 
+          "runtime": "automatic"
+        }
+      ]
     ],
     "plugins": [
       [

@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react';
 
 import { ActionBox } from './actions'
 import { CardGrid } from './cards'
@@ -15,7 +15,7 @@ import './styles/player.css'
 import './styles/board.css'
 import './styles/logs.css'
 
-export class GembalayaTable extends React.Component {
+export class GembalayaTable extends Component {
 
     constructor(props) {
         super(props)

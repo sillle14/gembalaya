@@ -1,23 +1,16 @@
-import Bundle from './bundle.js'
+import Bundle from './bundle'
 
 class Player {
-    constructor () {
-        this.score = 0
-        this.gems = new Bundle()
-        this.cards = new Bundle()
-        this.reserves = []
-    }
-
-    get effectiveGems() {
-        return Player.getEffectiveGems(this)
+    static new() {
+        return {score: 0, gems: Bundle.new(), cards: Bundle.new(), reserves: []}
     }
 
     static getEffectiveGems(player) {
-        let effectiveGems = new Bundle()
-        effectiveGems.addBundle(player.gems)
-        effectiveGems.addBundle(player.cards)
+        let effectiveGems = Bundle.new()
+        Bundle.addBundles(effectiveGems, player.gems)
+        Bundle.addBundles(effectiveGems, player.cards)
         return effectiveGems
-    } 
+    }
 }
 
 export default Player

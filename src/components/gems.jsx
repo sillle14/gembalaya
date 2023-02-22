@@ -1,5 +1,3 @@
-import React from 'react'
-
 const gems = ['onyx', 'ruby', 'sapphire', 'diamond', 'emerald', 'gold']
 
 function Gem(props) {

@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react';
 
 import { ActionBox } from './actions'
 import { CardGrid } from './cards'
@@ -15,12 +15,12 @@ import './styles/player.css'
 import './styles/board.css'
 import './styles/logs.css'
 
-export class GembalayaTable extends React.Component {
+export class GembalayaTable extends Component {
 
     constructor(props) {
         super(props)
         this.playerMap = {}
-        if (this.props.matchData) {
+        if (this.props.matchData[0]?.name) {
             for (let i = 0; i < this.props.matchData.length; i ++) {
                 // Limit to 10 characters
                 this.playerMap[this.props.matchData[i].id] = this.props.matchData[i].name.slice(0, 10)

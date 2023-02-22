@@ -1,19 +1,17 @@
 {
   "name": "gembalaya",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "private": false,
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "boardgame.io": "^0.44.2",
+    "@mui/material": "^5.11.10",
+    "boardgame.io": "^0.50.2",
     "esm": "^3.2.25",
     "koa-static": "^5.0.0",
     "minimist": "^1.2.5",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-scroll": "^1.8.2",
-    "redux-logger": "^3.0.6",
-    "typescript": "^3.9.3"
+    "redux-logger": "^3.0.6"
   },
   "scripts": {
     "start": "SINGLE_PORT=1 node -r esm server.js",
@@ -45,7 +43,12 @@
   "module": "dist/main.js",
   "babel": {
     "presets": [
-      "@babel/react"
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic"
+        }
+      ]
     ],
     "plugins": [
       [
@@ -57,10 +60,11 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.11.6",
+    "@babel/cli": "^7.21.0",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "babel-preset-react-app": "^9.1.2",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "react-scripts": "5.0.1"
   },
   "repository": {
     "type": "git",

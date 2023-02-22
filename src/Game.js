@@ -21,24 +21,24 @@ const playerCountSettings = {
     4: {gems: 7, nobles: 5}
 }
 
-function setupGame(ctx, setupData) {
-    let tier1Deck = ctx.random.Shuffle(tier1Cards)
-    let tier2Deck = ctx.random.Shuffle(tier2Cards)
-    let tier3Deck = ctx.random.Shuffle(tier3Cards)
+function setupGame({ctx, random}) {
+    let tier1Deck = random.Shuffle(tier1Cards)
+    let tier2Deck = random.Shuffle(tier2Cards)
+    let tier3Deck = random.Shuffle(tier3Cards)
     let tier1Board = tier1Deck.splice(0, 4)
     let tier2Board = tier2Deck.splice(0, 4)
     let tier3Board = tier3Deck.splice(0, 4)
 
     const gemCount = playerCountSettings[ctx.numPlayers].gems
-    let gameNobles = ctx.random.Shuffle(nobles)
+    let gameNobles = random.Shuffle(nobles)
     gameNobles = gameNobles.slice(0, playerCountSettings[ctx.numPlayers].nobles)
 
     let players = {}
     for (let i = 0; i < ctx.numPlayers; i ++) {
-        players[i] = new Player()
+        players[i] = Player.new()
     }
 
-    const gems = new Bundle({
+    const gems = Bundle.new({
         onyx: gemCount, 
         ruby: gemCount, 
         sapphire: gemCount, 
@@ -58,7 +58,7 @@ function setupGame(ctx, setupData) {
         players: players,
 
         // Game state
-        selectedGems: new Bundle(),
+        selectedGems: Bundle.new(),
         selectedCardPosition: {},
         selectedNoble: null,
         validGemPick: false,
@@ -66,9 +66,9 @@ function setupGame(ctx, setupData) {
         validCardReserve: false,
         availableNobles: [],
         logs: [],
-        discardedGems: new Bundle(),
+        discardedGems: Bundle.new(),
         validDiscard: false,
-        playerOrder: ctx.random.Shuffle(Object.keys(players)) // Randomize the player order.
+        playerOrder: random.Shuffle(Object.keys(players)) // Randomize the player order.
     }
 }
 
@@ -104,4 +104,5 @@ export const Gembalaya = {
     },
     minPlayers: 2,
     maxPlayers: 4,
+    deltaState: false
 };

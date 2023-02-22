@@ -104,4 +104,5 @@ export const Gembalaya = {
     },
     minPlayers: 2,
     maxPlayers: 4,
+    deltaState: false
 };

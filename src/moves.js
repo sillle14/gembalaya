@@ -44,14 +44,14 @@ function checkForWin(G, ctx, events) {
     }
 }
 
-function checkForNobles(G, ctx) {
+function checkForNobles(G, playerID) {
     let availableNobles = []
-    const currentPlayer = G.players[ctx.currentPlayer]
+    const currentPlayer = G.players[playerID]
     for (let i = 0; i < G.nobles.length; i ++) {
         const noble = G.nobles[i]
         try {
             // Raises an error if the player can't afford the card.
-            Bundle.subtractBundles(currentPlayer.cards, noble.cost)
+            Bundle.subtractBundles({...currentPlayer.cards}, noble.cost)
             availableNobles.push(i)
         } catch { }
     }
@@ -63,20 +63,20 @@ function checkForNobles(G, ctx) {
  ***************/
 
 
-export function takeGems({G, ctx, events}) {
+export function takeGems({G, ctx, events, playerID}) {
     // Take the gems.
     Bundle.subtractBundles(G.gems, G.selectedGems)
-    Bundle.addBundles(G.players[ctx.currentPlayer].gems, G.selectedGems)
+    Bundle.addBundles(G.players[playerID].gems, G.selectedGems)
 
-    G.logs.push({playerID: ctx.currentPlayer, move: 'takeGems', gems: G.selectedGems})
+    G.logs.push({playerID: playerID, move: 'takeGems', gems: G.selectedGems})
 
     // Clear selection
     G.selectedGems = Bundle.new()
 
-    G.availableNobles = checkForNobles(G, ctx)
+    G.availableNobles = checkForNobles(G, playerID)
     if (G.availableNobles.length > 0) {
         events.setStage('nobles')
-    } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
+    } else if (Bundle.getGemCount(G.players[playerID].gems) > 10) {
         events.setStage('discard')
     } else {
         checkForWin(G, ctx, events)
@@ -84,9 +84,9 @@ export function takeGems({G, ctx, events}) {
     }
 }
 
-export function buyCard({G, ctx, events}) {
+export function buyCard({G, ctx, events, playerID}) {
     let card
-    const player = G.players[ctx.currentPlayer]
+    const player = G.players[playerID]
     if (G.selectedCardPosition.reserved) {
         // For some reason, defining the card as the output of splice led to issues, I think because of the operation occuring
         //  both on the server and client. In any case, it works to define the card first.
@@ -109,15 +109,17 @@ export function buyCard({G, ctx, events}) {
     Bundle.subtractBundles(spend, player.gems)
 
     Bundle.addBundles(G.gems, spend)                    // Return gems.
+    console.log(player.cards[card.gem])
     player.cards[card.gem] += 1                         // Add bonus.
+    console.log(player.cards[card.gem])
     player.score += card.points                         // Add score.
 
-    G.logs.push({playerID: ctx.currentPlayer, move: 'buyCard', card: card, fromReserve: G.selectedCardPosition.reserved})
+    G.logs.push({playerID: playerID, move: 'buyCard', card: card, fromReserve: G.selectedCardPosition.reserved})
 
     // Clear selected card
     G.selectedCardPosition = {}
 
-    G.availableNobles = checkForNobles(G, ctx)
+    G.availableNobles = checkForNobles(G, playerID)
     if (G.availableNobles.length > 0) {
         events.setStage('nobles')
     } else {
@@ -126,8 +128,8 @@ export function buyCard({G, ctx, events}) {
     }
 }
 
-export function reserveCard({G, ctx, events}) {
-    const player = G.players[ctx.currentPlayer]
+export function reserveCard({G, ctx, events, playerID}) {
+    const player = G.players[playerID]
     let card
     if (G.selectedCardPosition.position === undefined) {
         card = {...G.decks[G.selectedCardPosition.tier].pop()}
@@ -147,15 +149,15 @@ export function reserveCard({G, ctx, events}) {
         Bundle.addBundles(player.gems, {gold: 1})
     } catch { }
 
-    G.logs.push({playerID: ctx.currentPlayer, move: 'reserveCard', card: card, hidePoints: G.selectedCardPosition.position === undefined})
+    G.logs.push({playerID: playerID, move: 'reserveCard', card: card, hidePoints: G.selectedCardPosition.position === undefined})
 
     // Clear selected card
     G.selectedCardPosition = {}
 
-    G.availableNobles = checkForNobles(G, ctx)
+    G.availableNobles = checkForNobles(G, playerID)
     if (G.availableNobles.length > 0) {
         events.setStage('nobles')
-    } else if (Bundle.getGemCount(G.players[ctx.currentPlayer].gems) > 10) {
+    } else if (Bundle.getGemCount(G.players[playerID].gems) > 10) {
         events.setStage('discard')
     } else {
         checkForWin(G, ctx, events)
@@ -163,11 +165,11 @@ export function reserveCard({G, ctx, events}) {
     }
 }
 
-export function takeNoble({G, ctx, events}) {
+export function takeNoble({G, ctx, events, playerID}) {
     G.nobles.splice(G.selectedNoble, 1)
-    G.players[ctx.currentPlayer].score += 3
+    G.players[playerID].score += 3
 
-    G.logs.push({playerID: ctx.currentPlayer, move: 'takeNoble'})
+    G.logs.push({playerID: playerID, move: 'takeNoble'})
 
     G.selectedNoble = null
     G.availableNobles = []
@@ -176,10 +178,10 @@ export function takeNoble({G, ctx, events}) {
     events.endTurn()
 }
 
-export function discardGems({G, ctx, events}) {
-    Bundle.subtractBundles(G.players[ctx.currentPlayer].gems, G.discardedGems)
+export function discardGems({G, ctx, events, playerID}) {
+    Bundle.subtractBundles(G.players[playerID].gems, G.discardedGems)
     Bundle.addBundles(G.gems, G.discardedGems)
-    G.logs.push({playerID: ctx.currentPlayer, move: 'discardGems', gems: G.discardedGems})
+    G.logs.push({playerID: playerID, move: 'discardGems', gems: G.discardedGems})
     G.discardedGems = Bundle.new()
 
     checkForWin(G, ctx, events)
@@ -239,7 +241,7 @@ export function selectGem({G}, gem) {
 
 export function clearGems({G}) { G.selectedGems = Bundle.new(); G.discardedGems = Bundle.new() }
 
-export function selectCard({G, ctx}, cardPosition) {
+export function selectCard({G, playerID}, cardPosition) {
     // Can't reserve from an empty deck.
     if (cardPosition.position === undefined && G.decks[cardPosition.tier].length === 0) { 
         return INVALID_MOVE 
@@ -250,7 +252,7 @@ export function selectCard({G, ctx}, cardPosition) {
     } else {
         G.validCardBuy = true
         const cardCost = getCardFromPosition(cardPosition, G).cost
-        const purchasingPower = Player.getEffectiveGems(G.players[ctx.currentPlayer])
+        const purchasingPower = Player.getEffectiveGems(G.players[playerID])
         try {
             // Raises an error if the player can't afford the card.
             Bundle.subtractBundles(purchasingPower, cardCost)
@@ -259,7 +261,7 @@ export function selectCard({G, ctx}, cardPosition) {
         }
     }
     G.validCardReserve = (
-        G.players[ctx.currentPlayer].reserves.length < 3 &&
+        G.players[playerID].reserves.length < 3 &&
         !cardPosition.reserved
     )
 
@@ -277,8 +279,8 @@ export function selectNoble({G}, position) {
     G.selectedNoble = position 
 }
 
-export function selectDiscard({G, ctx}, gem) {
-    const ifDiscard = {...G.players[ctx.currentPlayer].gems}
+export function selectDiscard({G, playerID}, gem) {
+    const ifDiscard = {...G.players[playerID].gems}
     try {
         G.discardedGems[gem] += 1
         Bundle.subtractBundles(ifDiscard, G.discardedGems)  // Raises an error if there are not enough to discard

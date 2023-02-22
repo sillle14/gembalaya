@@ -3,7 +3,6 @@ class Bundle {
         return Object.assign({onyx: 0, ruby: 0, sapphire: 0, diamond: 0, emerald: 0, gold: 0}, gems || {})
     }
 
-    
     static getGemCount(bundle) {
         return (bundle.onyx + bundle.ruby + bundle.sapphire + bundle.diamond + bundle.emerald + bundle.gold)
     }
